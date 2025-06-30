@@ -22,6 +22,12 @@ class AppColorScheme {
   final Color divider;
   final Color border;
   final Color highlight;
+  final Color lightest;
+  final Color lighter;
+  final Color light;
+  final Color dark;
+  final Color darker;
+  final Color darkest;
 
   AppColorScheme({
     required this.primary,
@@ -39,6 +45,12 @@ class AppColorScheme {
     required this.divider,
     required this.border,
     required this.highlight,
+    required this.lighter,
+    required this.lightest,
+    required this.light,
+    required this.dark,
+    required this.darker,
+    required this.darkest,
   });
 }
 
@@ -50,21 +62,28 @@ class AppColorThemeScheme {
       case AppColorTheme.theme1:
         return AppColorScheme(
           primary: AppColors.primary1,
-          secondary: AppColors.secondary1,
+          secondary: AppColors.lighter1,
           error: AppColors.error1,
-          background: AppColors.background1,
-          surface: AppColors.surface1,
-          card: AppColors.cardBackground1,
+          background: AppColors.lightest1,
+          surface: AppColors.light1,
+          card: AppColors.dark1,
           appBar: AppColors.primary1,
-          textPrimary: AppColors.textPrimary1,
-          textSecondary: AppColors.textSecondary1,
-          textDisabled: AppColors.textSecondary2,
-          icon: AppColors.primary1,
-          iconInactive: AppColors.textSecondary2,
-          divider: AppColors.divider1,
-          border: AppColors.border1,
+          textPrimary: AppColors.lightest1,
+          textSecondary: AppColors.lighter1,
+          textDisabled: AppColors.light1,
+          icon: AppColors.lightest1,
+          iconInactive: AppColors.lighter1,
+          divider: AppColors.darker1,
+          border: AppColors.dark1,
           highlight: AppColors.primary1,
+          lightest: AppColors.lightest1,
+          lighter: AppColors.lighter1,
+          light: AppColors.light1,
+          dark: AppColors.dark1,
+          darker: AppColors.darker1,
+          darkest: AppColors.darkest1,
         );
+
       case AppColorTheme.theme2:
         return AppColorScheme(
           primary: AppColors.primary2,
@@ -82,7 +101,14 @@ class AppColorThemeScheme {
           divider: AppColors.divider1,
           border: AppColors.border1,
           highlight: AppColors.primary2,
+          lightest: AppColors.lightest1,
+          lighter: AppColors.lighter1,
+          light: AppColors.light1,
+          dark: AppColors.dark1,
+          darker: AppColors.darker1,
+          darkest: AppColors.darkest1,
         );
+
       case AppColorTheme.theme3:
         return AppColorScheme(
           primary: AppColors.primary3,
@@ -100,7 +126,14 @@ class AppColorThemeScheme {
           divider: AppColors.divider1,
           border: AppColors.border1,
           highlight: AppColors.primary3,
+          lightest: AppColors.lightest1,
+          lighter: AppColors.lighter1,
+          light: AppColors.light1,
+          dark: AppColors.dark1,
+          darker: AppColors.darker1,
+          darkest: AppColors.darkest1,
         );
+
       case AppColorTheme.theme4:
         return AppColorScheme(
           primary: AppColors.primary4,
@@ -118,7 +151,14 @@ class AppColorThemeScheme {
           divider: AppColors.divider1,
           border: AppColors.border1,
           highlight: AppColors.primary4,
+          lightest: AppColors.lightest1,
+          lighter: AppColors.lighter1,
+          light: AppColors.light1,
+          dark: AppColors.dark1,
+          darker: AppColors.darker1,
+          darkest: AppColors.darkest1,
         );
+
       case AppColorTheme.theme5:
         return AppColorScheme(
           primary: AppColors.primary5,
@@ -136,6 +176,12 @@ class AppColorThemeScheme {
           divider: AppColors.divider1,
           border: AppColors.border1,
           highlight: AppColors.primary5,
+          lightest: AppColors.lightest1,
+          lighter: AppColors.lighter1,
+          light: AppColors.light1,
+          dark: AppColors.dark1,
+          darker: AppColors.darker1,
+          darkest: AppColors.darkest1,
         );
     }
   }

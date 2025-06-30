@@ -1,3 +1,4 @@
+import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AssetImageWidget extends StatelessWidget {
@@ -25,9 +26,12 @@ class AssetImageWidget extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      errorBuilder:
-          (context, error, stackTrace) =>
-              errorWidget ?? const Icon(Icons.broken_image),
+      errorBuilder: (context, error, stackTrace) =>
+          errorWidget ??
+          const Icon(
+            Icons.broken_image,
+            color: AppColors.palette1,
+          ),
     );
 
     if (borderRadius != null) {

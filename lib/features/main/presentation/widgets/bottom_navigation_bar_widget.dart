@@ -7,11 +7,12 @@ import 'package:flutter/material.dart';
 class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
   final Function(int index) onChange;
-
+  final Color selectedItemColor;
   const BottomNavigationBarWidget({
     super.key,
     required this.currentIndex,
     required this.onChange,
+    required this.selectedItemColor
   });
 
   @override
@@ -20,7 +21,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
       currentIndex: currentIndex,
       onTap: onChange,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: AppThemeColors.primary,
+      selectedItemColor: selectedItemColor,
       unselectedItemColor: AppColors.border2,
       showUnselectedLabels: true,
       items: [

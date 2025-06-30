@@ -23,7 +23,7 @@ class TextWidget extends StatelessWidget {
     this.listShadow,
     this.maxLines = 1000,
     required this.text,
-    this.color = AppColors.black,
+    this.color = AppColors.palette2,
     this.size = AppDimens.fontSizeMedium,
     this.fontWeight = FontWeight.normal,
     this.fontStyle = FontStyle.normal,

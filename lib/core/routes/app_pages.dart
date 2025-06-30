@@ -1,9 +1,8 @@
 import 'package:auto_fin/core/routes/app_routes.dart';
 import 'package:auto_fin/features/auth/page/signin_page.dart';
 import 'package:auto_fin/features/auth/page/signup_page.dart';
-import 'package:auto_fin/features/category/presentation/page/category_page.dart';
-import 'package:auto_fin/features/dashboard/di/dashboard_binding.dart';
-import 'package:auto_fin/features/dashboard/presentation/page/dashboard_page.dart';
+import 'package:auto_fin/features/dashboard/di_dashboard/dashboard_binding.dart';
+import 'package:auto_fin/features/dashboard/dashboard_page.dart';
 import 'package:auto_fin/features/main/di/main_binding.dart';
 import 'package:auto_fin/features/main/presentation/page/main_page.dart';
 import 'package:auto_fin/features/notFound/page/not_found_page.dart';
@@ -39,5 +38,4 @@ final appPage = [
     page: () => const SettingPage(),
     binding: SettingBinding(),
   ),
-  GetPage(name: CategoryPage.routeName, page: () => const CategoryPage()),
 ];
