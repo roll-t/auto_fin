@@ -21,6 +21,7 @@ class ShowroomPage extends GetView<ShowroomController> {
         return ItemMenuFeatureWidget(
           title: dataItem.title,
           iconUrl: dataItem.iconUrl,
+          routeNameUrl: dataItem.routeNameUrl,
         );
       },
     );

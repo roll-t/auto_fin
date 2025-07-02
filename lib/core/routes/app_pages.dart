@@ -1,13 +1,17 @@
 import 'package:auto_fin/core/routes/app_routes.dart';
 import 'package:auto_fin/features/auth/page/signin_page.dart';
 import 'package:auto_fin/features/auth/page/signup_page.dart';
-import 'package:auto_fin/features/dashboard/di_dashboard/dashboard_binding.dart';
 import 'package:auto_fin/features/dashboard/dashboard_page.dart';
+import 'package:auto_fin/features/dashboard/di_dashboard/dashboard_binding.dart';
 import 'package:auto_fin/features/main/di/main_binding.dart';
 import 'package:auto_fin/features/main/presentation/page/main_page.dart';
 import 'package:auto_fin/features/notFound/page/not_found_page.dart';
 import 'package:auto_fin/features/setting/di/setting_binding.dart';
 import 'package:auto_fin/features/setting/presentation/page/setting_page.dart';
+import 'package:auto_fin/features/showroom/all_card/di/all_car_binding.dart';
+import 'package:auto_fin/features/showroom/all_card/presentation/page/all_car_page.dart';
+import 'package:auto_fin/features/showroom/car_in_auto/di/car_in_auto_binding.dart';
+import 'package:auto_fin/features/showroom/car_in_auto/presentation/page/car_in_auto_page.dart';
 import 'package:auto_fin/features/splash/di/splash_binding.dart';
 import 'package:auto_fin/features/splash/presentation/page/splash_page.dart';
 import 'package:get/get.dart';
@@ -31,11 +35,27 @@ final appPage = [
     page: () => const DashboardPage(),
     binding: DashboardBinding(),
   ),
-  GetPage(name: AppRoutes.signin, page: () => const SigninPage()),
-  GetPage(name: AppRoutes.signup, page: () => const SignupPage()),
+  GetPage(
+    name: AppRoutes.signin,
+    page: () => const SigninPage(),
+  ),
+  GetPage(
+    name: AppRoutes.signup,
+    page: () => const SignupPage(),
+  ),
   GetPage(
     name: SettingPage.routeName,
     page: () => const SettingPage(),
     binding: SettingBinding(),
+  ),
+  GetPage(
+    name: AllCarPage.routeName,
+    page: () => const AllCarPage(),
+    binding: AllCarBinding(),
+  ),
+  GetPage(
+    name: CarInAutoPage.routeName,
+    page: () => const CarInAutoPage(),
+    binding: CarInAutoBinding(),
   ),
 ];

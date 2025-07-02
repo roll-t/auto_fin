@@ -10,7 +10,6 @@ class AppBinding extends Bindings {
     Get.put(ApiClient());
     Get.lazyPut(() => ThemeController(), fenix: true);
     Get.lazyPut(() => NotificationService(), fenix: true);
-    Get.put(
-      SplashController());
+    Get.put(SplashController());
   }
 }

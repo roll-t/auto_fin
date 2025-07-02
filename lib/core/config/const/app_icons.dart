@@ -15,4 +15,10 @@ class AppIcons {
   static String icPeople = "${_root}ic_people$_ext";
   static String icDashboard = "${_root}ic_dashboard$_ext";
   static String icNoImage = "${_root}ic_no_image$_ext";
+
+  static String icProfig = "${_root}ic_profig.png";
+  static String icAllCar = "${_root}ic_all_car.png";
+  static String icCarInGaga = "${_root}ic_car_in_gaga.png";
+  static String icCarBuy = "${_root}ic_car_buy.png";
+  static String icCarCategory = "${_root}ic_car_category.png";
 }
