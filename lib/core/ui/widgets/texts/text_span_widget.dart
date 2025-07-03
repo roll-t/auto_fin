@@ -1,3 +1,4 @@
+import 'package:auto_fin/core/config/const/app_dimens.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,15 +10,17 @@ class TextSpanWidget extends StatelessWidget {
   final FontWeight fontWeight1;
   final FontWeight fontWeight2;
   final Color textColor2;
+  final Color textColor1;
 
   const TextSpanWidget({
     super.key,
     required this.text1,
     required this.text2,
-    this.size = 16.0,
+    this.size = AppDimens.fontSizeMedium,
     this.fontWeight2 = FontWeight.normal,
     this.fontWeight1 = FontWeight.normal,
     this.textColor2 = AppColors.black,
+    this.textColor1 = AppColors.black,
   });
 
   @override
@@ -36,6 +39,7 @@ class TextSpanWidget extends StatelessWidget {
               fontSize: size,
               overflow: TextOverflow.ellipsis,
               fontWeight: fontWeight1,
+              color: textColor1,
             ),
           ),
           const TextSpan(text: " "), // Adding space between the texts

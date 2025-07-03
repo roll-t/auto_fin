@@ -1,5 +1,8 @@
+import 'package:auto_fin/core/config/const/app_icons.dart';
+import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/extension/empty_extension.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
+import 'package:auto_fin/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -9,11 +12,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? textTitleColor;
   final String? icon;
   final String? title;
-  final double? height;
+  final double height;
   final List<Widget>? menuItem;
   final bool hideBack;
   final PreferredSizeWidget? bottomAppBar;
-  final Function() onBack;
+  final VoidCallback onBack;
 
   const CustomAppBar({
     super.key,
@@ -30,35 +33,50 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   static void _defaultOnBack() {
     Get.back();
-  } // Default empty function
+  }
 
   @override
-  Size get preferredSize => Size.fromHeight(height!);
+  Size get preferredSize => Size.fromHeight(height);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       actions: menuItem,
-      toolbarHeight: preferredSize.height,
+      toolbarHeight: height,
       iconTheme: IconThemeData(
-        color: textTitleColor,
+        color: textTitleColor ?? Colors.black,
       ),
       elevation: 0.5,
       bottom: bottomAppBar,
       leading: hideBack
           ? const SizedBox.shrink()
-          : icon == null
-              ? const BackButton()
-              : IconButton(
+          : icon != null
+              ? IconButton(
                   icon: SvgPicture.asset(
                     icon!,
                     height: 11.0,
                     width: 11.0,
+                    fit: BoxFit.scaleDown,
+                    colorFilter: textTitleColor != null
+                        ? ColorFilter.mode(textTitleColor!, BlendMode.srcIn)
+                        : null,
                   ),
                   onPressed: onBack,
+                )
+              : IconButton(
+                  icon: Utils.iconSvg(
+                    svgUrl: AppIcons.icArrowBack,
+                  ),
+                  color: textTitleColor ?? AppColors.white,
+                  onPressed: onBack,
                 ),
-      title: TextWidget(text: title.orNA(),),
-      backgroundColor: Colors.transparent,
+      title: TextWidget(
+        text: title.orNA(),
+        color: textTitleColor ?? AppColors.white,
+        size: 16,
+        fontWeight: FontWeight.bold,
+      ),
+      backgroundColor: backgroundColor ?? Colors.transparent,
       centerTitle: true,
     );
   }

@@ -15,6 +15,11 @@ class AppIcons {
   static String icPeople = "${_root}ic_people$_ext";
   static String icDashboard = "${_root}ic_dashboard$_ext";
   static String icNoImage = "${_root}ic_no_image$_ext";
+  static String icArrowBack = "${_root}ic_arrow_back$_ext";
+  static String icSearch = "${_root}ic_search$_ext";
+  static String icArrowDropDown = "${_root}ic_arrow_drop_down$_ext";
+  static String icFilter = "${_root}ic_filter$_ext";
+  static String icArrowRight = "${_root}ic_arrow_right$_ext";
 
   static String icProfig = "${_root}ic_profig.png";
   static String icAllCar = "${_root}ic_all_car.png";

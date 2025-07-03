@@ -12,6 +12,10 @@ import 'package:auto_fin/features/showroom/all_card/di/all_car_binding.dart';
 import 'package:auto_fin/features/showroom/all_card/presentation/page/all_car_page.dart';
 import 'package:auto_fin/features/showroom/car_in_auto/di/car_in_auto_binding.dart';
 import 'package:auto_fin/features/showroom/car_in_auto/presentation/page/car_in_auto_page.dart';
+import 'package:auto_fin/features/showroom/profit_manage/di/profit_manage_binding.dart';
+import 'package:auto_fin/features/showroom/profit_manage/presentation/page/profit_manage_page.dart';
+import 'package:auto_fin/features/showroom/vehicle/di/vehicle_binding.dart';
+import 'package:auto_fin/features/showroom/vehicle/presentation/page/vehicle_page.dart';
 import 'package:auto_fin/features/splash/di/splash_binding.dart';
 import 'package:auto_fin/features/splash/presentation/page/splash_page.dart';
 import 'package:get/get.dart';
@@ -29,7 +33,10 @@ final appPage = [
     transition: Transition.fade,
     transitionDuration: const Duration(milliseconds: 800),
   ),
-  GetPage(name: NotFoundPage.routeName, page: () => const NotFoundPage()),
+  GetPage(
+    name: NotFoundPage.routeName,
+    page: () => const NotFoundPage(),
+  ),
   GetPage(
     name: AppRoutes.dashboard,
     page: () => const DashboardPage(),
@@ -57,5 +64,15 @@ final appPage = [
     name: CarInAutoPage.routeName,
     page: () => const CarInAutoPage(),
     binding: CarInAutoBinding(),
+  ),
+  GetPage(
+    name: VehiclePage.routeName,
+    page: () => const VehiclePage(),
+    binding: VehicleBinding(),
+  ),
+  GetPage(
+    name: ProfitManagePage.routeName,
+    page: () => const ProfitManagePage(),
+    binding: ProfitManageBinding(),
   ),
 ];
