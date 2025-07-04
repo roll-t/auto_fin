@@ -34,6 +34,8 @@ class StandardLayoutWidget extends StatelessWidget {
               AppThemeColors.lightest,
               AppThemeColors.lightest,
               AppThemeColors.lightest,
+              AppThemeColors.lightest,
+              AppThemeColors.lightest,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,

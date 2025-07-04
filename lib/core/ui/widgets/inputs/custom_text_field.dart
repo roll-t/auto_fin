@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String? label;
   final String? hintText;
+  final double? textSize;
   final TextEditingController? controller;
   final bool obscureText;
   final TextInputType? keyboardType;
@@ -28,10 +29,15 @@ class CustomTextField extends StatelessWidget {
   final Color errorBorderColor;
   final double borderWidth;
 
+  /// NEW
+  final double? height;
+  final List<BoxShadow>? boxShadow;
+
   const CustomTextField({
     super.key,
     this.label,
     this.hintText,
+    this.textSize,
     this.controller,
     this.obscureText = false,
     this.keyboardType,
@@ -53,6 +59,8 @@ class CustomTextField extends StatelessWidget {
     this.disabledBorderColor = Colors.grey,
     this.errorBorderColor = Colors.red,
     this.borderWidth = 1.0,
+    this.height,
+    this.boxShadow,
   });
 
   @override
@@ -72,7 +80,7 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       style: TextStyle(
         color: textColor ?? AppThemeColors.dark,
-        fontSize: 12
+        fontSize: textSize ?? 12,
       ),
       decoration: InputDecoration(
         filled: backgroundColor != null,
@@ -90,6 +98,11 @@ class CustomTextField extends StatelessWidget {
         disabledBorder: buildBorder(disabledBorderColor),
         errorBorder: buildBorder(errorBorderColor),
         focusedErrorBorder: buildBorder(errorBorderColor),
+        // adjust height via contentPadding
+        contentPadding: EdgeInsets.symmetric(
+          vertical: height != null ? (height! - 24) / 2 : 12,
+          horizontal: 12,
+        ),
       ),
     );
 
@@ -102,6 +115,16 @@ class CustomTextField extends StatelessWidget {
         ],
       );
     }
+
+    Widget decorated = Container(
+      height: height,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+        boxShadow: boxShadow,
+      ),
+      child: textField,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +140,7 @@ class CustomTextField extends StatelessWidget {
           ),
           const SizedBox(height: 6),
         ],
-        textField,
+        decorated,
       ],
     );
   }

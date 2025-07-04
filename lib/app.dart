@@ -10,6 +10,9 @@ import 'package:auto_fin/features/theme/controller/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -17,6 +20,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
+
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         Rx<AppColorScheme> colorScheme = themeController.appColorScheme;
@@ -26,6 +30,15 @@ class App extends StatelessWidget {
             translations: LocalizationService(),
             locale: LocalizationService.locale,
             fallbackLocale: LocalizationService.fallbackLocale,
+            supportedLocales: const [
+              Locale('vi', 'VN'),
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             getPages: appPage,
             initialRoute: AppRoutes.initial,
             initialBinding: AppBinding(),
