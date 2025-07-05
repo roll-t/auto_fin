@@ -1,5 +1,7 @@
+import 'dart:ui';
 import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
+import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
 import 'package:auto_fin/core/extension/empty_extension.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_fin/core/utils/utils.dart';
@@ -17,6 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool hideBack;
   final PreferredSizeWidget? bottomAppBar;
   final VoidCallback onBack;
+  final double blurSigma;
 
   const CustomAppBar({
     super.key,
@@ -29,6 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottomAppBar,
     this.hideBack = false,
     this.onBack = _defaultOnBack,
+    this.blurSigma = 10.0,
   });
 
   static void _defaultOnBack() {
@@ -36,47 +40,81 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(height);
+  Size get preferredSize =>
+      Size.fromHeight(height + (bottomAppBar?.preferredSize.height ?? 0));
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      actions: menuItem,
+      titleSpacing: 0,
+      leadingWidth: 0,
+      automaticallyImplyLeading: false,
       toolbarHeight: height,
       iconTheme: IconThemeData(
         color: textTitleColor ?? Colors.black,
       ),
       elevation: 0.5,
       bottom: bottomAppBar,
-      leading: hideBack
-          ? const SizedBox.shrink()
-          : icon != null
-              ? IconButton(
-                  icon: SvgPicture.asset(
-                    icon!,
-                    height: 11.0,
-                    width: 11.0,
-                    fit: BoxFit.scaleDown,
-                    colorFilter: textTitleColor != null
-                        ? ColorFilter.mode(textTitleColor!, BlendMode.srcIn)
-                        : null,
+      title: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: blurSigma,
+            sigmaY: blurSigma,
+          ),
+          child: Container(
+            padding: const EdgeInsets.only(
+              left: 5,
+              top: 10,
+              bottom: 10,
+            ),
+            decoration: BoxDecoration(
+              color: (backgroundColor ?? AppThemeColors.light)
+                  .withValues(alpha: 0.15),
+            ),
+            child: Row(
+              children: [
+                hideBack
+                    ? const SizedBox.shrink()
+                    : icon != null
+                        ? GestureDetector(
+                            onTap: onBack,
+                            child: SvgPicture.asset(
+                              icon!,
+                              height: 11.0,
+                              width: 11.0,
+                              fit: BoxFit.scaleDown,
+                              colorFilter: textTitleColor != null
+                                  ? ColorFilter.mode(
+                                      textTitleColor!,
+                                      BlendMode.srcIn,
+                                    )
+                                  : null,
+                            ),
+                          )
+                        : IconButton(
+                            icon: Utils.iconSvg(
+                              svgUrl: AppIcons.icArrowBack,
+                            ),
+                            color: textTitleColor ?? AppColors.white,
+                            onPressed: onBack,
+                          ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextWidget(
+                    text: title.orNA(),
+                    color: textTitleColor ?? AppColors.white,
+                    size: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  onPressed: onBack,
-                )
-              : IconButton(
-                  icon: Utils.iconSvg(
-                    svgUrl: AppIcons.icArrowBack,
-                  ),
-                  color: textTitleColor ?? AppColors.white,
-                  onPressed: onBack,
                 ),
-      title: TextWidget(
-        text: title.orNA(),
-        color: textTitleColor ?? AppColors.white,
-        size: 16,
-        fontWeight: FontWeight.bold,
+                ...menuItem ?? [],
+                const SizedBox(width: 20)
+              ],
+            ),
+          ),
+        ),
       ),
-      backgroundColor: backgroundColor ?? Colors.transparent,
+      backgroundColor: Colors.transparent,
       centerTitle: true,
     );
   }

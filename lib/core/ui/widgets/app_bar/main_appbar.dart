@@ -1,7 +1,7 @@
 import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
+import 'package:auto_fin/core/ui/widgets/circle_icon_button%20_widget.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
-import 'package:auto_fin/core/utils/utils.dart';
 import 'package:auto_fin/features/setting/presentation/page/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -85,44 +85,20 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       child: Row(
         children: [
-          _buildCircleIconButton(
+          CircleIconButton(
             svgUrl: AppIcons.icSetting,
             onTap: () {
               Get.toNamed(SettingPage.routeName);
             },
           ),
           const SizedBox(width: 16),
-          _buildCircleIconButton(
+          CircleIconButton(
             svgUrl: AppIcons.icUser,
             onTap: () {
               // handle user tap
             },
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildCircleIconButton({
-    required String svgUrl,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppThemeColors.lighter.withValues(alpha: .5),
-        ),
-        child: Center(
-          child: Utils.iconSvg(
-            color: AppThemeColors.primary,
-            svgUrl: svgUrl,
-            size: 20,
-          ),
-        ),
       ),
     );
   }

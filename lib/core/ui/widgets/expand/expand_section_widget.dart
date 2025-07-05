@@ -62,13 +62,11 @@ class ExpandSectionWidget extends StatelessWidget {
           ),
         ),
         Obx(
-          () => AnimatedCrossFade(
-            firstChild: const SizedBox.shrink(),
-            secondChild: child,
-            crossFadeState: controller.isExpanded.value
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
+          () => AnimatedOpacity(
+            opacity: controller.isExpanded.value ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 200),
+            child:
+                controller.isExpanded.value ? child : const SizedBox.shrink(),
           ),
         ),
       ],

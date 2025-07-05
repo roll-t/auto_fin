@@ -1,5 +1,6 @@
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
+import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,10 +10,22 @@ Future<T?> showCustomSelectBottomSheet<T>({
   required String Function(T data) getLabel,
   T? initialValue,
 }) async {
-  T selectedItem = initialValue ?? dataList.first;
+  if (dataList.isEmpty) {
+    // Nếu danh sách trống, không show bottom sheet
+    return null;
+  }
+
+  // Tìm index của initialValue
+  int initialIndex = 0;
+  if (initialValue != null) {
+    final index = dataList.indexOf(initialValue);
+    initialIndex = index >= 0 ? index : 0;
+  }
+
+  T selectedItem = dataList[initialIndex];
 
   FixedExtentScrollController scrollController = FixedExtentScrollController(
-    initialItem: initialValue != null ? dataList.indexOf(initialValue) : 0,
+    initialItem: initialIndex,
   );
 
   return await Get.bottomSheet<T>(
@@ -22,7 +35,7 @@ Future<T?> showCustomSelectBottomSheet<T>({
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.darkest1.withValues(alpha: .1),
+            color: AppColors.darkest1.withOpacity(0.1),
             offset: const Offset(0, -1),
             blurRadius: 6,
           ),
@@ -41,12 +54,11 @@ Future<T?> showCustomSelectBottomSheet<T>({
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppThemeColors.dark,
+          Center(
+            child: TextWidget(
+              text: title,
+              fontWeight: FontWeight.w500,
+              color: AppColors.darkest1,
             ),
           ),
           const SizedBox(height: 16),

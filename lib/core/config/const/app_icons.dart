@@ -23,6 +23,8 @@ class AppIcons {
   static String icArrowDown = "${_root}ic_arrow_down$_ext";
   static String icArrowUp = "${_root}ic_arrow_up$_ext";
   static String icList = "${_root}ic_list$_ext";
+  static String icEditing = "${_root}ic_editing$_ext";
+  static String icDelete = "${_root}ic_delete$_ext";
 
   static String icProfig = "${_root}ic_profig.png";
   static String icAllCar = "${_root}ic_all_car.png";

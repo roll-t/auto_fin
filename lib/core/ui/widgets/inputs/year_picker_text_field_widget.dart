@@ -2,18 +2,18 @@ import 'package:auto_fin/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class YearPickerTextField extends StatefulWidget {
-  final String label;
   final TextEditingController controller;
   final int startYear;
   final int endYear;
+  final double height;
   final Function(int)? onYearSelected;
 
   const YearPickerTextField({
     super.key,
-    required this.label,
     required this.controller,
     this.startYear = 1990,
     this.endYear = 2030,
+    this.height = 45,
     this.onYearSelected,
   });
 
@@ -59,12 +59,11 @@ class _YearPickerTextFieldState extends State<YearPickerTextField> {
       onTap: _showYearPicker,
       child: AbsorbPointer(
         child: CustomTextField(
-          label: widget.label,
           controller: widget.controller,
           hintText: 'Chọn năm',
           suffixIcon: const Icon(Icons.arrow_drop_down),
           backgroundColor: Colors.white,
-          height: 48,
+          height: widget.height,
         ),
       ),
     );

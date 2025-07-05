@@ -13,6 +13,7 @@ class SearchCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
+      enableBorder: true,
       prefixIcon: Padding(
         padding: const EdgeInsetsGeometry.all(10),
         child: Utils.iconSvg(
@@ -24,6 +25,7 @@ class SearchCardWidget extends StatelessWidget {
       borderRadius: 10,
       borderColor: AppThemeColors.lightest,
       borderWidth: 1,
+      controller: TextEditingController(),
     );
   }
 }

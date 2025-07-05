@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateTimePickerTextField extends StatefulWidget {
-  final String label;
   final TextEditingController controller;
   final DateTime? initialDate;
   final DateTime? firstDate;
   final DateTime? lastDate;
+  final double height;
   final Function(DateTime)? onDateSelected;
 
   const DateTimePickerTextField({
     super.key,
-    required this.label,
     required this.controller,
+    this.height = 45,
     this.initialDate,
     this.firstDate,
     this.lastDate,
@@ -61,12 +61,14 @@ class _DateTimePickerTextFieldState extends State<DateTimePickerTextField> {
       onTap: _showDatePicker,
       child: AbsorbPointer(
         child: CustomTextField(
-          label: widget.label,
           controller: widget.controller,
           hintText: 'Chọn ngày',
-          suffixIcon: const Icon(Icons.calendar_today, size: 15),
+          suffixIcon: const Icon(
+            Icons.calendar_today,
+            size: 15,
+          ),
           backgroundColor: Colors.white,
-          height: 48,
+          height: widget.height,
         ),
       ),
     );

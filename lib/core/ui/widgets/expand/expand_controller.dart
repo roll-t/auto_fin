@@ -6,7 +6,7 @@ class ExpandController extends GetxController {
 
   ExpandController({this.key});
 
-  RxBool isExpanded = false.obs;
+  RxBool isExpanded = true.obs;
 
   void toggle() {
     isExpanded.value = !isExpanded.value;

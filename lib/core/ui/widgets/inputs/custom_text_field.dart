@@ -1,12 +1,15 @@
+import 'package:auto_fin/core/config/const/enum.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
+import 'package:auto_fin/core/ui/widgets/inputs/date_time_picker_text_field_widget.dart';
+import 'package:auto_fin/core/ui/widgets/inputs/year_picker_text_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? label;
   final String? hintText;
   final double? textSize;
-  final TextEditingController? controller;
+  final TextEditingController controller;
   final bool obscureText;
   final TextInputType? keyboardType;
   final Widget? prefixIcon;
@@ -28,17 +31,33 @@ class CustomTextField extends StatelessWidget {
   final Color disabledBorderColor;
   final Color errorBorderColor;
   final double borderWidth;
+  final bool enableBorder;
 
-  /// NEW
   final double? height;
   final List<BoxShadow>? boxShadow;
+
+  /// NEW: type of input
+  final CustomTextFieldType type;
+
+  /// Dropdown-specific
+  final VoidCallback? onTap;
+
+  /// DatePicker-specific
+  final DateTime? firstDate;
+  final DateTime? lastDate;
+  final Function(DateTime)? onDateSelected;
+
+  /// YearPicker-specific
+  final int? startYear;
+  final int? endYear;
+  final Function(int)? onYearSelected;
 
   const CustomTextField({
     super.key,
     this.label,
     this.hintText,
     this.textSize,
-    this.controller,
+    required this.controller,
     this.obscureText = false,
     this.keyboardType,
     this.prefixIcon,
@@ -49,6 +68,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.minLines = 1,
     this.onChanged,
+    this.enableBorder = false,
     this.backgroundColor,
     this.textColor,
     this.hintColor,
@@ -58,60 +78,61 @@ class CustomTextField extends StatelessWidget {
     this.focusedBorderColor = AppColors.light1,
     this.disabledBorderColor = Colors.grey,
     this.errorBorderColor = Colors.red,
-    this.borderWidth = 1.0,
+    this.borderWidth = .5,
     this.height,
     this.boxShadow,
+    this.type = CustomTextFieldType.text,
+    this.onTap,
+    this.firstDate,
+    this.lastDate,
+    this.onDateSelected,
+    this.startYear,
+    this.endYear,
+    this.onYearSelected,
   });
 
   @override
   Widget build(BuildContext context) {
-    OutlineInputBorder buildBorder(Color color) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(color: color, width: borderWidth),
-        );
+    Widget inputChild;
 
-    Widget textField = TextField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      maxLines: obscureText ? 1 : maxLines,
-      minLines: minLines,
-      enabled: enabled,
-      onChanged: onChanged,
-      style: TextStyle(
-        color: textColor ?? AppThemeColors.dark,
-        fontSize: textSize ?? 12,
-      ),
-      decoration: InputDecoration(
-        filled: backgroundColor != null,
-        fillColor: backgroundColor,
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: hintColor ?? AppColors.neutralColor1,
-          fontSize: 12,
-        ),
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
-        errorText: errorText,
-        enabledBorder: buildBorder(borderColor),
-        focusedBorder: buildBorder(focusedBorderColor),
-        disabledBorder: buildBorder(disabledBorderColor),
-        errorBorder: buildBorder(errorBorderColor),
-        focusedErrorBorder: buildBorder(errorBorderColor),
-        // adjust height via contentPadding
-        contentPadding: EdgeInsets.symmetric(
-          vertical: height != null ? (height! - 24) / 2 : 12,
-          horizontal: 12,
-        ),
-      ),
-    );
+    switch (type) {
+      case CustomTextFieldType.text:
+        inputChild = _buildTextField();
+        break;
+      case CustomTextFieldType.dropdown:
+        inputChild = InkWell(
+          onTap: onTap,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          child: IgnorePointer(
+            child: _buildTextField(),
+          ),
+        );
+        break;
+      case CustomTextFieldType.datePicker:
+        inputChild = DateTimePickerTextField(
+          controller: controller,
+          firstDate: firstDate ?? DateTime(2000),
+          lastDate: lastDate ?? DateTime.now(),
+          onDateSelected: onDateSelected,
+        );
+        break;
+      case CustomTextFieldType.yearPicker:
+        inputChild = YearPickerTextField(
+          controller: controller,
+          startYear: startYear ?? 2000,
+          endYear: endYear ?? DateTime.now().year,
+          onYearSelected: onYearSelected,
+        );
+        break;
+    }
 
     if (leading != null) {
-      textField = Row(
+      inputChild = Row(
         children: [
           leading!,
           const SizedBox(width: 8),
-          Expanded(child: textField),
+          Expanded(child: inputChild),
         ],
       );
     }
@@ -119,11 +140,23 @@ class CustomTextField extends StatelessWidget {
     Widget decorated = Container(
       height: height,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: backgroundColor ?? AppColors.white,
         borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: boxShadow,
+        boxShadow: boxShadow ??
+            [
+              BoxShadow(
+                blurRadius: 4,
+                offset: const Offset(0, 1),
+                color: AppColors.neutralColor2.withValues(alpha: 0.25),
+              )
+            ],
       ),
-      child: textField,
+      child: inputChild,
+    );
+
+    decorated = IgnorePointer(
+      ignoring: !enabled,
+      child: decorated,
     );
 
     return Column(
@@ -142,6 +175,57 @@ class CustomTextField extends StatelessWidget {
         ],
         decorated,
       ],
+    );
+  }
+
+  Widget _buildTextField() {
+    InputBorder buildBorder(Color color) => !enableBorder
+        ? OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: const BorderSide(
+              color: AppColors.transparent,
+              width: 0,
+            ),
+          )
+        : OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: BorderSide(color: color, width: borderWidth),
+          );
+
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      maxLines: obscureText ? 1 : maxLines,
+      minLines: minLines,
+      enabled: enabled,
+      onChanged: onChanged,
+      style: TextStyle(
+        color: textColor ?? AppThemeColors.dark,
+        fontSize: textSize ?? 12,
+      ),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor:
+            enabled ? backgroundColor ?? AppColors.white : AppColors.palette5,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: hintColor ?? AppColors.neutralColor1,
+          fontSize: 12,
+        ),
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        errorText: errorText,
+        enabledBorder: buildBorder(borderColor),
+        focusedBorder: buildBorder(focusedBorderColor),
+        disabledBorder: buildBorder(disabledBorderColor),
+        errorBorder: buildBorder(errorBorderColor),
+        focusedErrorBorder: buildBorder(errorBorderColor),
+        contentPadding: EdgeInsets.symmetric(
+          vertical: height != null ? (height! - 24) / 2 : 12,
+          horizontal: 12,
+        ),
+      ),
     );
   }
 }

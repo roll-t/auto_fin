@@ -45,10 +45,9 @@ class TextWidget extends StatelessWidget {
         return value
             .split(' ')
             .map(
-              (word) =>
-                  word.isNotEmpty
-                      ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}'
-                      : '',
+              (word) => word.isNotEmpty
+                  ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}'
+                  : '',
             )
             .join(' ');
       case TextTransformType.normal:

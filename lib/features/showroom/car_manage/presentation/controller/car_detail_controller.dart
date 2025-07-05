@@ -1,4 +1,5 @@
 import 'package:auto_fin/core/ui/widgets/expand/expand_controller.dart';
+import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -113,17 +114,18 @@ class CarDetailController extends GetxController {
         padding: const EdgeInsets.all(16),
         child: Wrap(
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 15),
+            Center(
+              child: TextWidget(
+                text: title,
+                fontWeight: FontWeight.w500,
+                size: 14,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 30),
             ...items.map((item) {
               return ListTile(
-                title: Text(item),
+                title: TextWidget(text: item),
                 onTap: () => onSelected(item),
               );
             }).toList(),

@@ -1,5 +1,5 @@
 import 'package:auto_fin/core/config/const/app_icons.dart';
-import 'package:auto_fin/core/config/theme/app_colors.dart';
+import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
 import 'package:auto_fin/core/ui/widgets/standard_layout_widget.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_fin/core/utils/utils.dart';
@@ -79,11 +79,11 @@ class FilterBarWidget extends StatelessWidget {
         InkWell(
           onTap: () {},
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  width: 2,
-                  color: AppColors.white,
+                  width: 1.5,
+                  color: AppThemeColors.primary,
                 ),
               ),
             ),
@@ -92,14 +92,18 @@ class FilterBarWidget extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const TextWidget(
+                    TextWidget(
                       text: "Tất cả",
-                      color: AppColors.white,
+                      color: AppThemeColors.primary,
+                      fontWeight: FontWeight.w500,
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Utils.iconSvg(svgUrl: AppIcons.icArrowDropDown),
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Utils.iconSvg(
+                        svgUrl: AppIcons.icArrowDropDown,
+                        color: AppThemeColors.primary,
+                      ),
                     )
                   ],
                 ),
@@ -114,13 +118,15 @@ class FilterBarWidget extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const TextWidget(
+                  TextWidget(
                     text: "Mới nhất",
-                    color: AppColors.white,
+                    fontWeight: FontWeight.w500,
+                    color: AppThemeColors.primary,
                   ),
                   const SizedBox(width: 10),
                   Utils.iconSvg(
                     svgUrl: AppIcons.icFilter,
+                    color: AppThemeColors.primary,
                   )
                 ],
               ),
