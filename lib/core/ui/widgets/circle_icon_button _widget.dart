@@ -3,6 +3,7 @@ import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
 import 'package:auto_fin/core/utils/utils.dart';
 
 class CircleIconButton extends StatelessWidget {
+  final bool isActive;
   final String svgUrl;
   final VoidCallback onTap;
   final double size;
@@ -12,6 +13,7 @@ class CircleIconButton extends StatelessWidget {
 
   const CircleIconButton({
     super.key,
+    this.isActive = false,
     required this.svgUrl,
     required this.onTap,
     this.size = 30,
@@ -30,7 +32,9 @@ class CircleIconButton extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: backgroundColor ??
-              AppThemeColors.lighter.withValues(alpha: 0.5),
+              (!isActive
+                  ? AppThemeColors.lighter.withValues(alpha: 0.5)
+                  : AppThemeColors.lighter),
         ),
         child: Center(
           child: Utils.iconSvg(

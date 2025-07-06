@@ -1,3 +1,4 @@
+import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,8 @@ class DateTimePickerTextField extends StatefulWidget {
   final DateTime? lastDate;
   final double height;
   final Function(DateTime)? onDateSelected;
+  final bool enabled;
+  final Color? backgroundColor;
 
   const DateTimePickerTextField({
     super.key,
@@ -18,6 +21,8 @@ class DateTimePickerTextField extends StatefulWidget {
     this.firstDate,
     this.lastDate,
     this.onDateSelected,
+    this.enabled = true,
+    this.backgroundColor,
   });
 
   @override
@@ -27,6 +32,8 @@ class DateTimePickerTextField extends StatefulWidget {
 
 class _DateTimePickerTextFieldState extends State<DateTimePickerTextField> {
   void _showDatePicker() async {
+    if (!widget.enabled) return;
+
     DateTime initial = widget.initialDate ?? DateTime.now();
     DateTime first = widget.firstDate ?? DateTime(2000);
     DateTime last = widget.lastDate ?? DateTime(2100);
@@ -57,18 +64,26 @@ class _DateTimePickerTextFieldState extends State<DateTimePickerTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = widget.enabled
+        ? widget.backgroundColor ?? Colors.white
+        : AppColors.palette5;
+
     return GestureDetector(
-      onTap: _showDatePicker,
+      onTap: widget.enabled ? _showDatePicker : null,
       child: AbsorbPointer(
         child: CustomTextField(
           controller: widget.controller,
           hintText: 'Chọn ngày',
-          suffixIcon: const Icon(
+          suffixIcon: Icon(
             Icons.calendar_today,
             size: 15,
+            color: widget.enabled
+                ? AppColors.neutralColor2
+                : AppColors.neutralColor1,
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: bgColor,
           height: widget.height,
+          enabled: widget.enabled,
         ),
       ),
     );

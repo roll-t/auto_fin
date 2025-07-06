@@ -11,6 +11,10 @@ class AppColors {
   static const Color darkest1 = Color(0xFF081311);
 
   static const Color transparent = Color.fromARGB(0, 8, 19, 17);
+  static const Color warning = Color(0xFFfa983a);
+  static const Color error = Color(0xFFeb2f06);
+  static const Color success = Color(0xFF2ed573);
+  static const Color grey = Color(0xFF8890A6);
 
   static const neutralColor1 = Color(0xFF747496);
   static const neutralColor2 = Color(0xFF3C4143);

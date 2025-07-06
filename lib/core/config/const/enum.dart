@@ -4,3 +4,9 @@ enum CustomTextFieldType {
   datePicker,
   dropdown,
 }
+
+enum AlertType {
+  success,
+  error,
+  warning,
+}

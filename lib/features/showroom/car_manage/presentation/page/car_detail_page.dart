@@ -3,10 +3,10 @@ import 'package:auto_fin/core/config/const/enum.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/ui/widgets/app_bar/custom_appbar.dart';
 import 'package:auto_fin/core/ui/widgets/circle_icon_button%20_widget.dart';
+import 'package:auto_fin/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_fin/core/ui/widgets/expand/expand_section_widget.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:auto_fin/core/ui/widgets/standard_layout_widget.dart';
-import 'package:auto_fin/features/setting/presentation/page/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,17 +24,23 @@ class CarDetailPage extends GetView<CarDetailController> {
       appBar: CustomAppBar(
         title: "Chi tiết xe",
         menuItem: [
-          CircleIconButton(
-            svgUrl: AppIcons.icEditing,
-            onTap: () {
-              Get.toNamed(SettingPage.routeName);
+          Obx(
+            () {
+              return CircleIconButton(
+                isActive: controller.isEditMode.value,
+                svgUrl: AppIcons.icEditing,
+                onTap: controller.toggleEditMode,
+              );
             },
           ),
           const SizedBox(width: 16),
           CircleIconButton(
             svgUrl: AppIcons.icDelete,
             onTap: () {
-              Get.toNamed(SettingPage.routeName);
+              DialogUtils.showAlert(
+                content: "Bạn có muốn xóa xe này!",
+                alertType: AlertType.warning,
+              );
             },
           ),
         ],
@@ -50,44 +56,58 @@ class CarDetailPage extends GetView<CarDetailController> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  CustomTextField(
-                    label: "Tên xe",
-                    enabled: false,
-                    hintText: "Nhập tên xe",
-                    height: 45,
-                    textSize: 14,
-                    type: CustomTextFieldType.text,
-                    controller: TextEditingController(),
+                  Obx(
+                    () {
+                      return CustomTextField(
+                        enabled: controller.isEditMode.value,
+                        label: "Tên xe",
+                        hintText: "Nhập tên xe",
+                        height: 45,
+                        textSize: 14,
+                        type: CustomTextFieldType.text,
+                        controller: TextEditingController(),
+                      );
+                    },
                   ),
                   const SizedBox(height: 10),
                   Row(
                     children: [
                       Expanded(
                         flex: 1,
-                        child: CustomTextField(
-                          label: "Biển số xe",
-                          hintText: "Nhập biển số xe",
-                          backgroundColor: AppColors.white,
-                          height: 45,
-                          textSize: 14,
-                          type: CustomTextFieldType.text,
-                          controller: TextEditingController(),
+                        child: Obx(
+                          () {
+                            return CustomTextField(
+                              enabled: controller.isEditMode.value,
+                              label: "Biển số xe",
+                              hintText: "Nhập biển số xe",
+                              backgroundColor: AppColors.white,
+                              height: 45,
+                              textSize: 14,
+                              type: CustomTextFieldType.text,
+                              controller: TextEditingController(),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         flex: 1,
-                        child: CustomTextField(
-                          label: "Năm sản xuất",
-                          controller: TextEditingController(),
-                          startYear: 2000,
-                          endYear: DateTime.now().year,
-                          onYearSelected: (year) {
-                            print("Năm được chọn: $year");
+                        child: Obx(
+                          () {
+                            return CustomTextField(
+                              enabled: controller.isEditMode.value,
+                              label: "Năm sản xuất",
+                              controller: TextEditingController(),
+                              startYear: 2000,
+                              endYear: DateTime.now().year,
+                              onYearSelected: (year) {
+                                print("Năm được chọn: ");
+                              },
+                              height: 45,
+                              textSize: 14,
+                              type: CustomTextFieldType.yearPicker,
+                            );
                           },
-                          height: 45,
-                          textSize: 14,
-                          type: CustomTextFieldType.yearPicker,
                         ),
                       ),
                     ],
@@ -101,6 +121,7 @@ class CarDetailPage extends GetView<CarDetailController> {
                         flex: 1,
                         child: Obx(
                           () => CustomTextField(
+                            enabled: controller.isEditMode.value,
                             label: "Hãng xe",
                             hintText: "Chọn hãng xe",
                             controller: TextEditingController(
@@ -120,6 +141,7 @@ class CarDetailPage extends GetView<CarDetailController> {
                         flex: 1,
                         child: Obx(
                           () => CustomTextField(
+                            enabled: controller.isEditMode.value,
                             label: "Loại xe",
                             hintText: "Chọn loại xe",
                             controller: TextEditingController(
@@ -145,6 +167,7 @@ class CarDetailPage extends GetView<CarDetailController> {
                         flex: 1,
                         child: Obx(
                           () => CustomTextField(
+                            enabled: controller.isEditMode.value,
                             label: "Màu xe",
                             hintText: "Chọn màu xe",
                             controller: TextEditingController(
@@ -164,6 +187,7 @@ class CarDetailPage extends GetView<CarDetailController> {
                         flex: 1,
                         child: Obx(
                           () => CustomTextField(
+                            enabled: controller.isEditMode.value,
                             label: "Mẫu xe",
                             hintText: "Chọn mẫu xe",
                             controller: TextEditingController(
@@ -185,6 +209,7 @@ class CarDetailPage extends GetView<CarDetailController> {
                   /// Row 3: Trạng thái xe
                   Obx(
                     () => CustomTextField(
+                      enabled: controller.isEditMode.value,
                       label: "Trạng thái xe",
                       hintText: "Chọn trạng thái xe",
                       controller: TextEditingController(
@@ -212,31 +237,35 @@ class CarDetailPage extends GetView<CarDetailController> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: CustomTextField(
-                          label: "Giá niêm yết bán",
-                          hintText: "",
-                          backgroundColor: AppColors.white,
-                          height: 45,
-                          textSize: 14,
-                          type: CustomTextFieldType.text,
-                          controller: TextEditingController(),
-                        ),
+                        child: Obx(() {
+                          return CustomTextField(
+                            enabled: controller.isEditMode.value,
+                            label: "Giá niêm yết bán",
+                            hintText: "",
+                            backgroundColor: AppColors.white,
+                            height: 45,
+                            textSize: 14,
+                            type: CustomTextFieldType.text,
+                            controller: TextEditingController(),
+                          );
+                        }),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         flex: 1,
-                        child: CustomTextField(
-                          label: "Lợi nhuận",
-                          hintText: "",
-                          controller: TextEditingController(
-                            text: "-125,000,000",
-                          ),
-                          backgroundColor: AppColors.neutralColor3,
-                          height: 45,
-                          textSize: 14,
-                          enabled: false,
-                          type: CustomTextFieldType.text,
-                        ),
+                        child: Obx(() {
+                          return CustomTextField(
+                            enabled: controller.isEditMode.value,
+                            label: "Lợi nhuận",
+                            hintText: "",
+                            controller: TextEditingController(
+                              text: "-125,000,000",
+                            ),
+                            height: 45,
+                            textSize: 14,
+                            type: CustomTextFieldType.text,
+                          );
+                        }),
                       ),
                     ],
                   ),
@@ -250,39 +279,50 @@ class CarDetailPage extends GetView<CarDetailController> {
                         flex: 1,
                         child: Column(
                           children: [
-                            CustomTextField(
-                              label: "Ngày mua",
-                              controller: TextEditingController(),
-                              type: CustomTextFieldType.datePicker,
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime.now(),
-                              onDateSelected: (date) {
-                                print(
-                                    "Ngày đã chọn: ${date.toIso8601String()}");
+                            Obx(
+                              () {
+                                return CustomTextField(
+                                  enabled: controller.isEditMode.value,
+                                  label: "Ngày mua",
+                                  controller: TextEditingController(),
+                                  type: CustomTextFieldType.datePicker,
+                                  firstDate: DateTime(2020),
+                                  lastDate: DateTime.now(),
+                                  onDateSelected: (date) {
+                                    print(
+                                        "Ngày đã chọn: ${date.toIso8601String()}");
+                                  },
+                                  height: 45,
+                                  textSize: 14,
+                                );
                               },
-                              height: 45,
-                              textSize: 14,
                             ),
                             const SizedBox(height: 10),
-                            CustomTextField(
-                              label: "Giá mua",
-                              hintText: "125,000,000",
-                              backgroundColor: AppColors.white,
-                              height: 45,
-                              textSize: 14,
-                              type: CustomTextFieldType.text,
-                              controller: TextEditingController(),
-                            ),
+                            Obx(() {
+                              return CustomTextField(
+                                enabled: controller.isEditMode.value,
+                                label: "Giá mua",
+                                hintText: "125,000,000",
+                                backgroundColor: AppColors.white,
+                                height: 45,
+                                textSize: 14,
+                                type: CustomTextFieldType.text,
+                                controller: TextEditingController(),
+                              );
+                            }),
                             const SizedBox(height: 10),
-                            CustomTextField(
-                              label: "Chi phí mua",
-                              hintText: "",
-                              backgroundColor: AppColors.white,
-                              height: 45,
-                              textSize: 14,
-                              type: CustomTextFieldType.text,
-                              controller: TextEditingController(),
-                            ),
+                            Obx(() {
+                              return CustomTextField(
+                                enabled: controller.isEditMode.value,
+                                label: "Chi phí mua",
+                                hintText: "",
+                                backgroundColor: AppColors.white,
+                                height: 45,
+                                textSize: 14,
+                                type: CustomTextFieldType.text,
+                                controller: TextEditingController(),
+                              );
+                            }),
                           ],
                         ),
                       ),
@@ -291,39 +331,48 @@ class CarDetailPage extends GetView<CarDetailController> {
                         flex: 1,
                         child: Column(
                           children: [
-                            CustomTextField(
-                              label: "Ngày bán",
-                              controller: TextEditingController(),
-                              type: CustomTextFieldType.datePicker,
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime.now(),
-                              onDateSelected: (date) {
-                                print(
-                                    "Ngày đã chọn: ${date.toIso8601String()}");
-                              },
-                              height: 45,
-                              textSize: 14,
-                            ),
+                            Obx(() {
+                              return CustomTextField(
+                                enabled: controller.isEditMode.value,
+                                label: "Ngày bán",
+                                controller: TextEditingController(),
+                                type: CustomTextFieldType.datePicker,
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime.now(),
+                                onDateSelected: (date) {
+                                  print(
+                                      "Ngày đã chọn: ${date.toIso8601String()}");
+                                },
+                                height: 45,
+                                textSize: 14,
+                              );
+                            }),
                             const SizedBox(height: 10),
-                            CustomTextField(
-                              label: "Giá bán",
-                              hintText: "125,000,000",
-                              backgroundColor: AppColors.white,
-                              height: 45,
-                              textSize: 14,
-                              type: CustomTextFieldType.text,
-                              controller: TextEditingController(),
-                            ),
+                            Obx(() {
+                              return CustomTextField(
+                                enabled: controller.isEditMode.value,
+                                label: "Giá bán",
+                                hintText: "125,000,000",
+                                backgroundColor: AppColors.white,
+                                height: 45,
+                                textSize: 14,
+                                type: CustomTextFieldType.text,
+                                controller: TextEditingController(),
+                              );
+                            }),
                             const SizedBox(height: 10),
-                            CustomTextField(
-                              label: "Chi phí bán",
-                              hintText: "",
-                              backgroundColor: AppColors.white,
-                              height: 45,
-                              textSize: 14,
-                              type: CustomTextFieldType.text,
-                              controller: TextEditingController(),
-                            ),
+                            Obx(() {
+                              return CustomTextField(
+                                enabled: controller.isEditMode.value,
+                                label: "Chi phí bán",
+                                hintText: "",
+                                backgroundColor: AppColors.white,
+                                height: 45,
+                                textSize: 14,
+                                type: CustomTextFieldType.text,
+                                controller: TextEditingController(),
+                              );
+                            }),
                           ],
                         ),
                       ),

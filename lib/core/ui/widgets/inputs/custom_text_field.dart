@@ -109,20 +109,28 @@ class CustomTextField extends StatelessWidget {
           ),
         );
         break;
-      case CustomTextFieldType.datePicker:
-        inputChild = DateTimePickerTextField(
-          controller: controller,
-          firstDate: firstDate ?? DateTime(2000),
-          lastDate: lastDate ?? DateTime.now(),
-          onDateSelected: onDateSelected,
-        );
-        break;
+case CustomTextFieldType.datePicker:
+  inputChild = DateTimePickerTextField(
+    controller: controller,
+    firstDate: firstDate ?? DateTime(2000),
+    lastDate: lastDate ?? DateTime.now(),
+    onDateSelected: onDateSelected,
+    enabled: enabled,
+    backgroundColor: enabled
+        ? backgroundColor ?? AppColors.white
+        : AppColors.palette5,
+  );
+  break;
       case CustomTextFieldType.yearPicker:
         inputChild = YearPickerTextField(
           controller: controller,
           startYear: startYear ?? 2000,
           endYear: endYear ?? DateTime.now().year,
           onYearSelected: onYearSelected,
+              enabled: enabled,
+    backgroundColor: enabled
+        ? backgroundColor ?? AppColors.white
+        : AppColors.palette5,
         );
         break;
     }

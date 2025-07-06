@@ -2,7 +2,6 @@ import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
 import 'package:auto_fin/core/ui/widgets/app_bar/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class StandardLayoutWidget extends StatelessWidget {
   final PreferredSizeWidget? appBar;
@@ -25,7 +24,7 @@ class StandardLayoutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.focusScope?.unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Container(
         decoration: BoxDecoration(
