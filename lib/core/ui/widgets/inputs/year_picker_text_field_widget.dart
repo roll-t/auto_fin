@@ -1,5 +1,6 @@
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/custom_text_field.dart';
+import 'package:auto_fin/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 
 class YearPickerTextField extends StatefulWidget {
@@ -29,6 +30,7 @@ class YearPickerTextField extends StatefulWidget {
 class _YearPickerTextFieldState extends State<YearPickerTextField> {
   void _showYearPicker() async {
     if (!widget.enabled) return;
+    KeyboardUtils.hiddenKeyboard();
 
     int? picked = await showDialog<int>(
       context: context,

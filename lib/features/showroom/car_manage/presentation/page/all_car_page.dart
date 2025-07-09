@@ -1,8 +1,6 @@
-import 'package:auto_fin/core/config/const/app_icons.dart';
-import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
+import 'package:auto_fin/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
+import 'package:auto_fin/core/ui/widgets/filter/sort/Sort_toggle_widget.dart';
 import 'package:auto_fin/core/ui/widgets/standard_layout_widget.dart';
-import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
-import 'package:auto_fin/core/utils/utils.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/controller/all_car_controller.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/car_detail_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/widget/car_item_widget.dart';
@@ -16,25 +14,27 @@ class AllCarPage extends GetView<AllCarController> {
 
   @override
   Widget build(BuildContext context) {
-    return const StandardLayoutWidget(
-      padding: EdgeInsets.only(top: 20),
+    return StandardLayoutWidget(
+      padding: const EdgeInsets.only(top: 20),
       titleAppBar: "Toàn bộ xe",
 
       ///---> [Build-body]
       bodyBuilder: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                SearchCardWidget(),
-                SizedBox(height: 12),
-                FilterBarWidget(),
+                const SearchCardWidget(),
+                const SizedBox(height: 12),
+                FilterBarWidget(
+                  controller: controller,
+                ),
               ],
             ),
           ),
-          SizedBox(height: 8.0),
-          ListCarWidget()
+          const SizedBox(height: 8.0),
+          const ListCarWidget()
         ],
       ),
     );
@@ -68,71 +68,18 @@ class ListCarWidget extends StatelessWidget {
 }
 
 class FilterBarWidget extends StatelessWidget {
+  final AllCarController controller;
   const FilterBarWidget({
     super.key,
+    required this.controller,
   });
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InkWell(
-          onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  width: 1.5,
-                  color: AppThemeColors.primary,
-                ),
-              ),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TextWidget(
-                      text: "Tất cả",
-                      color: AppThemeColors.primary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    const SizedBox(width: 5),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Utils.iconSvg(
-                        svgUrl: AppIcons.icArrowDropDown,
-                        color: AppThemeColors.primary,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {},
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextWidget(
-                    text: "Mới nhất",
-                    fontWeight: FontWeight.w500,
-                    color: AppThemeColors.primary,
-                  ),
-                  const SizedBox(width: 10),
-                  Utils.iconSvg(
-                    svgUrl: AppIcons.icFilter,
-                    color: AppThemeColors.primary,
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
+        CustomPopupDropdown(controller: controller.filterCarPopup),
+        SortToggleWidget(controller: controller.sortController),
       ],
     );
   }

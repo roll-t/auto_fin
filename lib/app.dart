@@ -8,11 +8,10 @@ import 'package:auto_fin/features/notFound/page/not_found_page.dart';
 import 'package:auto_fin/features/splash/presentation/page/splash_page.dart';
 import 'package:auto_fin/features/theme/controller/theme_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

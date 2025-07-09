@@ -15,7 +15,7 @@ class SearchCardWidget extends StatelessWidget {
     return CustomTextField(
       enableBorder: true,
       prefixIcon: Padding(
-        padding: const EdgeInsetsGeometry.all(10),
+        padding: const EdgeInsets.all(10),
         child: Utils.iconSvg(
           svgUrl: AppIcons.icSearch,
         ),

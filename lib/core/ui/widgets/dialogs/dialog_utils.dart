@@ -1,7 +1,9 @@
+import 'package:auto_fin/core/config/const/app_images.dart';
 import 'package:auto_fin/core/config/const/enum.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class DialogUtils {
@@ -89,6 +91,90 @@ class DialogUtils {
                   ),
                 ],
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Hiển thị dialog xác nhận thoát App
+  static void showCustomExitConfirm() {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 30,
+                child: Image.asset(
+                  AppImages.iLogo,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              /// Tiêu đề
+              const TextWidget(
+                text: 'AutoFin',
+                fontWeight: FontWeight.bold,
+                size: 18,
+                color: Colors.black,
+              ),
+              const SizedBox(height: 8),
+
+              /// Nội dung
+              const TextWidget(
+                text: 'Bạn có muốn thoát ứng dụng không ?',
+                textAlign: TextAlign.center,
+                size: 14,
+                color: Colors.black87,
+              ),
+              const SizedBox(height: 24),
+
+              /// Nút bấm
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  /// NO
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text(
+                      'Ở lại',
+                      style: const TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
+                  /// YES
+                  TextButton(
+                    onPressed: () {
+                      SystemNavigator.pop();
+                    },
+                    child: const Text(
+                      'Thoát',
+                      style: const TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

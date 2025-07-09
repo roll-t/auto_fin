@@ -1,5 +1,6 @@
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/custom_text_field.dart';
+import 'package:auto_fin/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -33,7 +34,7 @@ class DateTimePickerTextField extends StatefulWidget {
 class _DateTimePickerTextFieldState extends State<DateTimePickerTextField> {
   void _showDatePicker() async {
     if (!widget.enabled) return;
-
+    KeyboardUtils.hiddenKeyboard();
     DateTime initial = widget.initialDate ?? DateTime.now();
     DateTime first = widget.firstDate ?? DateTime(2000);
     DateTime last = widget.lastDate ?? DateTime(2100);
@@ -47,8 +48,9 @@ class _DateTimePickerTextFieldState extends State<DateTimePickerTextField> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            dialogBackgroundColor: Colors.white,
-          ),
+              dialogTheme: const DialogTheme(
+            backgroundColor: AppColors.white,
+          )),
           child: child!,
         );
       },

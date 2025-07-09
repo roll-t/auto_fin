@@ -10,3 +10,8 @@ enum AlertType {
   error,
   warning,
 }
+
+enum SortType {
+  newest,
+  oldest,
+}

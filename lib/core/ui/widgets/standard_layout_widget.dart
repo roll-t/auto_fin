@@ -1,6 +1,7 @@
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
 import 'package:auto_fin/core/ui/widgets/app_bar/custom_appbar.dart';
+import 'package:auto_fin/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 
 class StandardLayoutWidget extends StatelessWidget {
@@ -23,9 +24,7 @@ class StandardLayoutWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
+      onTap: KeyboardUtils.hiddenKeyboard,
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
