@@ -9,6 +9,10 @@ extension StringNullExt on String? {
   String orNA() => this ?? "N/A";
 }
 
+extension StringEmptyExt on String? {
+  String orEmpty() => this ?? "";
+}
+
 extension WidgetVisibilityExtension on Widget? {
   Widget visible([bool isVisible = true]) {
     if (this == null || !isVisible) {

@@ -1,6 +1,7 @@
 import 'package:auto_fin/core/config/const/enum.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
+import 'package:auto_fin/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/date_time_picker_text_field_widget.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/year_picker_text_field_widget.dart';
 import 'package:auto_fin/core/utils/keyboard_utils.dart';
@@ -10,7 +11,7 @@ class CustomTextField extends StatelessWidget {
   final String? label;
   final String? hintText;
   final double? textSize;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool obscureText;
   final TextInputType? keyboardType;
   final Widget? prefixIcon;
@@ -25,6 +26,7 @@ class CustomTextField extends StatelessWidget {
   final Color? textColor;
   final Color? hintColor;
   final Color? labelColor;
+  final BottomSheetController? bottomSheetController;
 
   final double borderRadius;
   final Color borderColor;
@@ -58,7 +60,8 @@ class CustomTextField extends StatelessWidget {
     this.label,
     this.hintText,
     this.textSize,
-    required this.controller,
+    this.controller,
+    this.bottomSheetController,
     this.obscureText = false,
     this.keyboardType,
     this.prefixIcon,
@@ -115,7 +118,7 @@ class CustomTextField extends StatelessWidget {
         break;
       case CustomTextFieldType.datePicker:
         inputChild = DateTimePickerTextField(
-          controller: controller,
+          controller: controller ?? TextEditingController(),
           firstDate: firstDate ?? DateTime(2000),
           lastDate: lastDate ?? DateTime.now(),
           onDateSelected: onDateSelected,
@@ -126,7 +129,7 @@ class CustomTextField extends StatelessWidget {
         break;
       case CustomTextFieldType.yearPicker:
         inputChild = YearPickerTextField(
-          controller: controller,
+          controller: controller ?? TextEditingController(),
           startYear: startYear ?? 2000,
           endYear: endYear ?? DateTime.now().year,
           onYearSelected: onYearSelected,

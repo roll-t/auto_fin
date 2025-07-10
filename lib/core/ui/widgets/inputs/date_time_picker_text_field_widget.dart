@@ -48,9 +48,10 @@ class _DateTimePickerTextFieldState extends State<DateTimePickerTextField> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-              dialogTheme: const DialogTheme(
-            backgroundColor: AppColors.white,
-          )),
+            dialogTheme: const DialogThemeData(
+              backgroundColor: AppColors.white,
+            ),
+          ),
           child: child!,
         );
       },

@@ -1,4 +1,3 @@
-import 'package:auto_fin/core/config/const/app_dimens.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,11 +15,11 @@ class TextSpanWidget extends StatelessWidget {
     super.key,
     required this.text1,
     required this.text2,
-    this.size = AppDimens.fontSizeMedium,
+    this.size = 14,
     this.fontWeight2 = FontWeight.normal,
     this.fontWeight1 = FontWeight.normal,
-    this.textColor2 = AppColors.black,
-    this.textColor1 = AppColors.black,
+    this.textColor2 = AppColors.text,
+    this.textColor1 = AppColors.text,
   });
 
   @override
@@ -30,7 +29,7 @@ class TextSpanWidget extends StatelessWidget {
         style: TextStyle(
           fontSize: size,
           overflow: TextOverflow.ellipsis,
-          color: AppColors.black, // Default color for the text
+          color: AppColors.text,
         ),
         children: [
           TextSpan(

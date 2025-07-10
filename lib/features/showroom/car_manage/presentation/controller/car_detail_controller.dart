@@ -1,6 +1,7 @@
 import 'package:auto_fin/core/data/model/item_model.dart';
+import 'package:auto_fin/core/extension/empty_extension.dart';
 import 'package:auto_fin/core/ui/widgets/expand/expand_controller.dart';
-import 'package:auto_fin/core/ui/widgets/select_bottom_sheet_widget.dart';
+import 'package:auto_fin/core/ui/widgets/bottom_sheet/select_bottom_sheet_widget.dart';
 import 'package:auto_fin/core/utils/time_utils.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -53,16 +54,19 @@ class CarDetailController extends GetxController {
     "Xe trưng bày",
   ];
 
-  void selectBrand(String brand) => selectedBrand.value = brand;
-  void selectTypeCar(String type) => selectedTypeCar.value = type;
-  void selectColor(String color) => selectedColor.value = color;
-  void selectModel(String model) => selectedModel.value = model;
-  void selectStatus(String status) => selectedStatus.value = status;
+  void selectBrand(ItemModel brand) => selectedBrand.value = brand.title.orNA();
+
+  void selectTypeCar(ItemModel type) =>
+      selectedTypeCar.value = type.title.orNA();
+  void selectColor(ItemModel color) => selectedColor.value = color.title.orNA();
+  void selectModel(ItemModel model) => selectedModel.value = model.title.orNA();
+  void selectStatus(ItemModel status) =>
+      selectedStatus.value = status.title.orNA();
 
   void showSelectBottomSheet({
     required String title,
     required List<String> list,
-    required void Function(String) onSelected,
+    required void Function(ItemModel item) onSelected,
   }) {
     SelectBottomSheet.show(
       title: title,

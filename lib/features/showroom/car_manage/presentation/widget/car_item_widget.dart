@@ -1,5 +1,6 @@
 import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
+import 'package:auto_fin/core/ui/styles/app_container_styles.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_fin/core/utils/utils.dart';
@@ -26,18 +27,7 @@ class CarItemWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8.0),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(6.0),
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(1, 1),
-              blurRadius: 4,
-              spreadRadius: 2,
-              color: AppColors.darkest1.withValues(alpha: .1),
-            ),
-          ],
-        ),
+        decoration: AppContainerStyles.cardStyle(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

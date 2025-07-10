@@ -10,6 +10,8 @@ class AppColors {
   static const Color darker1 = Color(0xFF122A27);
   static const Color darkest1 = Color(0xFF081311);
 
+  static const text = Color(0xFF3C4143);
+
   static const Color transparent = Color.fromARGB(0, 8, 19, 17);
   static const Color warning = Color(0xFFfa983a);
   static const Color error = Color(0xFFeb2f06);
@@ -34,7 +36,7 @@ class AppColors {
   // Primary Colors
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFffffff);
-  
+
   static const Color primary2 = Color(0xFFFF0000);
   static const Color primary3 = Color(0xFF34C759);
   static const Color primary4 = Color(0xFFFFA500);
