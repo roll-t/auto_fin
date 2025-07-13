@@ -1,9 +1,7 @@
-import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/core/data/model/item_model.dart';
 import 'package:auto_fin/core/extension/empty_extension.dart';
-import 'package:auto_fin/core/ui/widgets/inputs/custom_text_field.dart';
+import 'package:auto_fin/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
-import 'package:auto_fin/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,17 +53,7 @@ class SelectBottomSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15),
-          CustomTextField(
-            prefixIcon: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Utils.iconSvg(
-                svgUrl: AppIcons.icSearch,
-              ),
-            ),
-            textSize: 14,
-            hintText: "Nhập thông tin tìm kiếm",
-            controller: TextEditingController(),
-          ),
+          const SearchWidget(height: 45),
           const SizedBox(height: 25),
           Expanded(
             child: ListView.builder(

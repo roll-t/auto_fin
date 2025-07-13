@@ -66,11 +66,14 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
             color: AppThemeColors.lightest,
           ),
           const SizedBox(width: 10),
-          TextWidget(
-            text: title,
-            size: 16,
-            fontWeight: FontWeight.bold,
-            color: AppThemeColors.lightest,
+          Expanded(
+            child: TextWidget(
+              text: title,
+              size: 16,
+              fontWeight: FontWeight.bold,
+              color: AppThemeColors.lightest,
+              maxLines: 1,
+            ),
           ),
         ],
       ),

@@ -16,13 +16,13 @@ class CustomPopupDropdown extends StatelessWidget {
     return InkWell(
       onTap: () => _showPopupMenu(context),
       child: Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: 5,
+          horizontal: 8,
+        ),
         decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              width: 1.5,
-              color: AppThemeColors.primary,
-            ),
-          ),
+          borderRadius: BorderRadius.circular(6.0),
+          color: AppThemeColors.primary.withValues(alpha: .1),
         ),
         child: Column(
           children: [

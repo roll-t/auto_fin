@@ -25,6 +25,7 @@ class AssetImageWidget extends StatelessWidget {
       assetPath,
       width: width,
       height: height,
+      filterQuality: FilterQuality.low,
       fit: fit,
       errorBuilder: (context, error, stackTrace) =>
           errorWidget ??

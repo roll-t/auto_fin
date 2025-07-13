@@ -62,7 +62,7 @@ class AppColorThemeScheme {
       case AppColorTheme.theme1:
         return AppColorScheme(
           primary: AppColors.primary1,
-          secondary: AppColors.lighter1,
+          secondary: AppColors.secondary1,
           error: AppColors.error1,
           background: AppColors.lightest1,
           surface: AppColors.light1,

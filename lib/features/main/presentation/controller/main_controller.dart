@@ -1,14 +1,14 @@
-import 'package:auto_fin/features/credit/di_credit/credit_binding.dart';
 import 'package:auto_fin/features/credit/credit_page.dart';
-import 'package:auto_fin/features/dashboard/di_dashboard/dashboard_binding.dart';
+import 'package:auto_fin/features/credit/di_credit/credit_binding.dart';
 import 'package:auto_fin/features/dashboard/dashboard_page.dart';
+import 'package:auto_fin/features/dashboard/di_dashboard/dashboard_binding.dart';
 import 'package:auto_fin/features/diamond/di_diamond/diamond_binding.dart';
 import 'package:auto_fin/features/diamond/diamond_page.dart';
 import 'package:auto_fin/features/money/di_monney/money_binding.dart';
 import 'package:auto_fin/features/money/money_page.dart';
 import 'package:auto_fin/features/people/di_people/people_binding.dart';
 import 'package:auto_fin/features/people/people_page.dart';
-import 'package:auto_fin/features/showroom/di_showroom/showroom_binding.dart';
+import 'package:auto_fin/features/showroom/showroom_binding.dart';
 import 'package:auto_fin/features/showroom/showroom_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';

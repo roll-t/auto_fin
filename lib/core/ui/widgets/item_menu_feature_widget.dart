@@ -24,7 +24,7 @@ class ItemMenuFeatureWidget extends StatelessWidget {
         Get.toNamed(routeNameUrl ?? "/");
       },
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
@@ -46,21 +46,23 @@ class ItemMenuFeatureWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              flex: 12,
+              flex: 1,
               child: AssetImageWidget(
                 assetPath: iconUrl ?? "",
               ),
             ),
-            const SizedBox(height: 10),
             Expanded(
-              flex: 10,
+              flex: 1,
               child: Center(
-                child: TextWidget(
-                  textAlign: TextAlign.center,
-                  text: displayTitle,
-                  size: 12,
-                  maxLines: 2,
-                  fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: TextWidget(
+                    textAlign: TextAlign.center,
+                    text: displayTitle,
+                    size: 12,
+                    maxLines: 2,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             )

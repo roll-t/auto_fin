@@ -10,7 +10,10 @@ class AppColors {
   static const Color darker1 = Color(0xFF122A27);
   static const Color darkest1 = Color(0xFF081311);
 
+  static const Color secondary1 = Color(0xFFCF4242);
+
   static const text = Color(0xFF3C4143);
+  static const Color greeen = Color(0xFF00AC67);
 
   static const Color transparent = Color.fromARGB(0, 8, 19, 17);
   static const Color warning = Color(0xFFfa983a);
@@ -43,7 +46,6 @@ class AppColors {
   static const Color primary5 = Color(0xFF8B00FF);
 
   // Secondary Colors
-  static const Color secondary1 = Color(0xFF34C759); // Green
   static const Color secondary2 = Color(0xFFFF4500); // Accent Red
   static const Color secondary3 = Color(0xFF34A853); // Teal
   static const Color secondary4 = Color(0xFF008080); // Teal

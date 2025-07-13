@@ -2,7 +2,6 @@ import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/ui/styles/app_container_styles.dart';
 import 'package:auto_fin/core/ui/widgets/texts/text_span_widget.dart';
-import 'package:auto_fin/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_fin/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -34,9 +33,12 @@ class CarItemWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextWidget(
-                  text: carName,
-                  fontWeight: FontWeight.bold,
+                 TextSpanWidget(
+                  textColor1: AppColors.grey,
+                  textColor2: AppColors.darker1,
+                  fontWeight2: FontWeight.bold,
+                  text1: "Tên xe: ",
+                  text2: carName,
                 ),
                 Utils.iconSvg(
                   svgUrl: AppIcons.icArrowRight,
@@ -46,18 +48,19 @@ class CarItemWidget extends StatelessWidget {
             ),
             const SizedBox(height: 6.0),
             TextSpanWidget(
-              textColor1: AppColors.neutralColor2,
-              textColor2: AppColors.darker1,
-              fontWeight2: FontWeight.w500,
+              textColor1: AppColors.grey,
+              textColor2: AppColors.greeen,
+              fontWeight2: FontWeight.bold,
+              fontStyle2: FontStyle.italic,
               text1: 'Trạng thái: ',
               text2: status,
               size: 12,
             ),
             const SizedBox(height: 6.0),
             TextSpanWidget(
-              textColor1: AppColors.neutralColor2,
+              textColor1: AppColors.grey,
               textColor2: AppColors.darker1,
-              fontWeight2: FontWeight.w500,
+              fontWeight2: FontWeight.bold,
               text1: 'Ngày Nhập: ',
               text2: importDate,
               size: 12,

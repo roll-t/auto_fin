@@ -2,8 +2,8 @@ import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/features/main/model/item_menu_feature_model.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/all_car_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/car_in_auto_page.dart';
-import 'package:auto_fin/features/showroom/profit_manage/presentation/page/profit_manage_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/vehicle_page.dart';
+import 'package:auto_fin/features/showroom/profit_manage/presentation/page/profit_manage_page.dart';
 import 'package:get/get.dart';
 
 class ShowroomController extends GetxController {
@@ -19,7 +19,7 @@ class ShowroomController extends GetxController {
       routeNameUrl: AllCarPage.routeName,
     ),
     ItemMenuFeatureModel(
-      title: "Quản lý xe ở auto",
+      title: "Quản lý xe ở Auto",
       iconUrl: AppIcons.icCarInGaga,
       routeNameUrl: CarInAutoPage.routeName,
     ),

@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
@@ -104,6 +105,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     text: title.orNA(),
                     color: textTitleColor ?? AppColors.white,
                     size: 16,
+                    maxLines: 1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

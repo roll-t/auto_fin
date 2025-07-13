@@ -10,6 +10,8 @@ class TextSpanWidget extends StatelessWidget {
   final FontWeight fontWeight2;
   final Color textColor2;
   final Color textColor1;
+  final FontStyle fontStyle1;
+  final FontStyle fontStyle2;
 
   const TextSpanWidget({
     super.key,
@@ -20,6 +22,8 @@ class TextSpanWidget extends StatelessWidget {
     this.fontWeight1 = FontWeight.normal,
     this.textColor2 = AppColors.text,
     this.textColor1 = AppColors.text,
+    this.fontStyle1 = FontStyle.normal,
+    this.fontStyle2 = FontStyle.normal,
   });
 
   @override
@@ -39,6 +43,7 @@ class TextSpanWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               fontWeight: fontWeight1,
               color: textColor1,
+              fontStyle: fontStyle1,
             ),
           ),
           const TextSpan(text: " "), // Adding space between the texts
@@ -49,6 +54,7 @@ class TextSpanWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               fontWeight: fontWeight2,
               color: textColor2, // Custom color for the second text
+              fontStyle: fontStyle2,
             ),
           ),
         ],
