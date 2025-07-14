@@ -28,10 +28,10 @@ class ShowroomController extends GetxController {
       iconUrl: AppIcons.icCarBuy,
       routeNameUrl: VehiclePage.routeName,
     ),
-    ItemMenuFeatureModel(
-      title: "Quản lý danh mục xe",
-      iconUrl: AppIcons.icCarCategory,
-      routeNameUrl: "/",
-    ),
+    // ItemMenuFeatureModel(
+    //   title: "Quản lý danh mục xe",
+    //   iconUrl: AppIcons.icCarCategory,
+    //   routeNameUrl: "/",
+    // ),
   ];
 }

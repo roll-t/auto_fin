@@ -48,7 +48,6 @@ class ProfitYearCard extends StatelessWidget {
   const ProfitYearCard({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,7 +81,7 @@ class ProfitYearCard extends StatelessWidget {
                   text: "Xe đã bán",
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic,
-                  color: AppColors.greeen,
+                  color: AppColors.green,
                 )
               ],
             ),

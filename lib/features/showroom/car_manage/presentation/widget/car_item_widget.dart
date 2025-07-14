@@ -49,7 +49,7 @@ class CarItemWidget extends StatelessWidget {
             const SizedBox(height: 6.0),
             TextSpanWidget(
               textColor1: AppColors.grey,
-              textColor2: AppColors.greeen,
+              textColor2: AppColors.green,
               fontWeight2: FontWeight.bold,
               fontStyle2: FontStyle.italic,
               text1: 'Trạng thái: ',

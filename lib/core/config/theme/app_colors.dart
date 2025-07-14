@@ -13,7 +13,8 @@ class AppColors {
   static const Color secondary1 = Color(0xFFCF4242);
 
   static const text = Color(0xFF3C4143);
-  static const Color greeen = Color(0xFF00AC67);
+  static const Color green = Color(0xFF00AC67);
+  static const Color yellow = Color(0xFFe58e26);
 
   static const Color transparent = Color.fromARGB(0, 8, 19, 17);
   static const Color warning = Color(0xFFfa983a);
