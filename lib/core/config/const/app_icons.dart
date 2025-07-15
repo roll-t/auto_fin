@@ -30,5 +30,6 @@ class AppIcons {
   static String icAllCar = "${_root}ic_all_car.png";
   static String icCarInGaga = "${_root}ic_car_in_gaga.png";
   static String icCarBuy = "${_root}ic_car_buy.png";
+  static String icAddCar = "${_root}ic_add_car.png";
   static String icCarCategory = "${_root}ic_car_category.png";
 }

@@ -50,7 +50,7 @@ class StandardLayoutWidget extends StatelessWidget {
           body: Padding(
             padding: padding ??
                 const EdgeInsets.symmetric(
-                  horizontal: 20,
+                  horizontal: 16,
                 ).copyWith(
                   top: 40,
                 ),

@@ -10,6 +10,7 @@ import 'package:auto_fin/features/setting/di/setting_binding.dart';
 import 'package:auto_fin/features/setting/presentation/page/setting_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/di/all_car_binding.dart';
 import 'package:auto_fin/features/showroom/car_manage/di/car_detail_binding.dart';
+import 'package:auto_fin/features/showroom/car_manage/presentation/page/add_car_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/all_car_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/di/car_in_auto_binding.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/car_in_auto_page.dart';
@@ -81,5 +82,10 @@ final appPage = [
     name: CarDetailPage.routeName,
     page: () => const CarDetailPage(),
     binding: CarDetailBinding(),
+  ),
+  GetPage(
+    name: AddCarPage.routeName,
+    page: () => const AddCarPage(),
+    binding: AllCarBinding(),
   ),
 ];

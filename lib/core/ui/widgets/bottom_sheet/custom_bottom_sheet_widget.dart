@@ -34,13 +34,16 @@ class CustomBottomSheetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null) ...[
           TextWidget(
             text: label.orNA(),
-            size: 12,
+            size: 14,
+            fontWeight: FontWeight.bold,
             color: AppColors.text,
-          )
+          ),
+          const SizedBox(height: 6.0)
         ],
         GestureDetector(
           onTap: () {
@@ -78,7 +81,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
                     else
                       TextWidget(
                         text: hint,
-                        size: 14,
+                        size: 12,
                         color: AppColors.palette1,
                         maxLines: 1,
                       ),

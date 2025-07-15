@@ -155,14 +155,16 @@ class CustomTextField extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? AppColors.white,
         borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: boxShadow ??
-            [
-              BoxShadow(
-                blurRadius: 4,
-                offset: const Offset(0, 1),
-                color: AppColors.neutralColor2.withValues(alpha: 0.25),
-              )
-            ],
+        boxShadow: type == CustomTextFieldType.datePicker
+            ? null
+            : boxShadow ??
+                [
+                  BoxShadow(
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                    color: AppColors.neutralColor2.withValues(alpha: 0.25),
+                  )
+                ],
       ),
       child: inputChild,
     );

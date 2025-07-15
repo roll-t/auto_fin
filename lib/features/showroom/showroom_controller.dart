@@ -1,5 +1,6 @@
 import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/features/main/model/item_menu_feature_model.dart';
+import 'package:auto_fin/features/showroom/car_manage/presentation/page/add_car_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/all_car_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/car_in_auto_page.dart';
 import 'package:auto_fin/features/showroom/car_manage/presentation/page/vehicle_page.dart';
@@ -12,6 +13,11 @@ class ShowroomController extends GetxController {
       title: "Quản lý lợi nhuận",
       iconUrl: AppIcons.icProfig,
       routeNameUrl: ProfitManagePage.routeName,
+    ),
+    ItemMenuFeatureModel(
+      title: "Thêm xe mới",
+      iconUrl: AppIcons.icAddCar,
+      routeNameUrl: AddCarPage.routeName,
     ),
     ItemMenuFeatureModel(
       title: "Toàn bộ xe",
@@ -28,10 +34,5 @@ class ShowroomController extends GetxController {
       iconUrl: AppIcons.icCarBuy,
       routeNameUrl: VehiclePage.routeName,
     ),
-    // ItemMenuFeatureModel(
-    //   title: "Quản lý danh mục xe",
-    //   iconUrl: AppIcons.icCarCategory,
-    //   routeNameUrl: "/",
-    // ),
   ];
 }
