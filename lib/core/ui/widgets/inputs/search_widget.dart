@@ -9,7 +9,7 @@ class SearchWidget extends StatelessWidget {
   final Function(String value)? onSearch;
   final double height;
   final String hint;
-  const SearchWidget({
+  const SearchWidget({ 
     super.key,
     this.hint = "Nhập nội dung tìm kiếm....",
     this.onSearch,
@@ -18,7 +18,7 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTextField(
+    return CustomTextField(  
       onChanged: onSearch,
       enableBorder: true,
       borderColor: AppThemeColors.lighter,

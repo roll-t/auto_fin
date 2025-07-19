@@ -1,13 +1,13 @@
 import 'package:auto_fin/features/credit/credit_page.dart';
-import 'package:auto_fin/features/credit/di_credit/credit_binding.dart';
+import 'package:auto_fin/features/credit/credit_binding.dart';
 import 'package:auto_fin/features/dashboard/dashboard_page.dart';
 import 'package:auto_fin/features/dashboard/di_dashboard/dashboard_binding.dart';
-import 'package:auto_fin/features/diamond/di_diamond/diamond_binding.dart';
+import 'package:auto_fin/features/diamond/diamond_binding.dart';
 import 'package:auto_fin/features/diamond/diamond_page.dart';
-import 'package:auto_fin/features/money/di_monney/money_binding.dart';
+import 'package:auto_fin/features/money/money_binding.dart';
 import 'package:auto_fin/features/money/money_page.dart';
-import 'package:auto_fin/features/people/di_people/people_binding.dart';
-import 'package:auto_fin/features/people/people_page.dart';
+import 'package:auto_fin/features/employee/employee_binding.dart';
+import 'package:auto_fin/features/employee/employee_page.dart';
 import 'package:auto_fin/features/showroom/showroom_binding.dart';
 import 'package:auto_fin/features/showroom/showroom_page.dart';
 import 'package:flutter/widgets.dart';
@@ -23,7 +23,7 @@ class MainController extends GetxController {
     DiamondPage.routeName,
     CreditPage.routeName,
     MoneyPage.routeName,
-    PeoplePage.routeName,
+    EmployeePage.routeName,
   ];
 
   List<String> titles = [
@@ -72,11 +72,11 @@ class MainController extends GetxController {
           binding: MoneyBinding(),
           transition: Transition.fadeIn,
         );
-      case '/PeoplePage':
+      case '/EmployeePage':
         return GetPageRoute(
           settings: settings,
-          page: () => const PeoplePage(),
-          binding: PeopleBinding(),
+          page: () => const EmployeePage(),
+          binding: EmployeeBinding(),
           transition: Transition.fadeIn,
         );
     }

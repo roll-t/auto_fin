@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 class Utils {
   static SvgPicture iconSvg({
-    String? svgUrl,
+    required String svgUrl,
     double size = 25,
     Color? color,
   }) {

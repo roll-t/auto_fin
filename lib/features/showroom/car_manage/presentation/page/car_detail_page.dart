@@ -2,6 +2,7 @@ import 'package:auto_fin/core/config/const/app_icons.dart';
 import 'package:auto_fin/core/config/const/enum.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/ui/widgets/app_bar/custom_appbar.dart';
+import 'package:auto_fin/core/ui/widgets/buttons/index.dart';
 import 'package:auto_fin/core/ui/widgets/circle_icon_button%20_widget.dart';
 import 'package:auto_fin/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_fin/core/ui/widgets/expand/expand_section_widget.dart';
@@ -9,14 +10,11 @@ import 'package:auto_fin/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:auto_fin/core/ui/widgets/standard_layout_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../controller/car_detail_controller.dart';
 
 class CarDetailPage extends GetView<CarDetailController> {
   static String routeName = "/CarDetailPage";
-
   const CarDetailPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return StandardLayoutWidget(
@@ -46,6 +44,7 @@ class CarDetailPage extends GetView<CarDetailController> {
         ],
       ),
       bodyBuilder: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,6 +222,12 @@ class CarDetailPage extends GetView<CarDetailController> {
                       onTap: () => controller.showStatusBottomSheet(),
                     ),
                   ),
+                  const SizedBox(height: 30),
+                  PrimaryButton(
+                    isMaxParent: true,
+                    text: "Cập nhật Thông tin xe",
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ),
@@ -378,29 +383,12 @@ class CarDetailPage extends GetView<CarDetailController> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
 
-                  /// Button cập nhật
-                  Align(
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 12),
-                      ),
-                      onPressed: () {
-                        // Implement your update logic here
-                      },
-                      child: const Text(
-                        "Cập Nhật Mua Bán",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                  PrimaryButton(
+                    isMaxParent: true,
+                    text: "Cập nhật mua bán",
+                    onPressed: () {},
                   ),
                   const SizedBox(height: 20),
                 ],

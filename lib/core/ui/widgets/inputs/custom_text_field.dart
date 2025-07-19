@@ -1,6 +1,7 @@
 import 'package:auto_fin/core/config/const/enum.dart';
 import 'package:auto_fin/core/config/theme/app_colors.dart';
 import 'package:auto_fin/core/config/theme/app_theme_colors.dart';
+import 'package:auto_fin/core/ui/styles/app_container_styles.dart';
 import 'package:auto_fin/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/date_time_picker_text_field_widget.dart';
 import 'package:auto_fin/core/ui/widgets/inputs/year_picker_text_field_widget.dart';
@@ -157,14 +158,7 @@ class CustomTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: type == CustomTextFieldType.datePicker
             ? null
-            : boxShadow ??
-                [
-                  BoxShadow(
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                    color: AppColors.neutralColor2.withValues(alpha: 0.25),
-                  )
-                ],
+            : boxShadow ?? AppContainerStyles.cardShadow(),
       ),
       child: inputChild,
     );

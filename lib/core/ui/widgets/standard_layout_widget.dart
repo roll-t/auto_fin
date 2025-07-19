@@ -41,6 +41,7 @@ class StandardLayoutWidget extends StatelessWidget {
           ),
         ),
         child: Scaffold(
+          resizeToAvoidBottomInset: true,
           backgroundColor: Colors.transparent,
           appBar: titleAppBar != null
               ? CustomAppBar(

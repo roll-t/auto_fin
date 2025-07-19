@@ -32,4 +32,22 @@ class AppIcons {
   static String icCarBuy = "${_root}ic_car_buy.png";
   static String icAddCar = "${_root}ic_add_car.png";
   static String icCarCategory = "${_root}ic_car_category.png";
+
+  static String icRetail = "${_root}ic_retail.png";
+  static String icGoldInventory = "${_root}ic_gold_inventory.png";
+  static String icExportGold = "${_root}ic_export_gold.png";
+  static String icFlowMoney = "${_root}ic_flow_money.png";
+
+  static String ic20Loan = "${_root}ic_20_loan.png";
+  static String icMonthlyPrincipalInterest =
+      "${_root}ic_monthly_principal_interest.png";
+  static String icReportDebt = "${_root}ic_report_debt.png";
+
+  static String icIncomeExpenseByCategory =
+      "${_root}ic_income_expense_by_category.png";
+  static String icReportWeeklyMonthly = "${_root}ic_report_weekly_monthly.png";
+
+  static String icSalary = "${_root}ic_salary.png";
+  static String icAttendance = "${_root}ic_attendance.png";
+  static String icRose = "${_root}ic_rose.png";
 }
