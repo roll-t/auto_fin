@@ -3,6 +3,7 @@ import 'package:auto_find/core/extension/empty_extension.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,14 +13,20 @@ class SelectBottomSheet extends StatelessWidget {
   final void Function(ItemModel item) onSelected;
   final double? height;
   final bool hasSearch;
-  const SelectBottomSheet({
+
+  /// Dùng để filter dữ liệu cục bộ
+  final RxList<ItemModel> filteredItems = <ItemModel>[].obs;
+
+  SelectBottomSheet({
     super.key,
     required this.title,
     required this.items,
     required this.onSelected,
     this.height,
     this.hasSearch = true,
-  });
+  }) {
+    filteredItems.assignAll(items); // Gán danh sách ban đầu
+  }
 
   static void show({
     required String title,
@@ -33,6 +40,27 @@ class SelectBottomSheet extends StatelessWidget {
         onSelected: onSelected,
       ),
     );
+  }
+
+  void _onSearchChanged(String value) {
+    final query = _normalize(value.trim());
+
+    if (query.isEmpty) {
+      filteredItems.assignAll(items);
+    } else {
+      filteredItems.assignAll(
+        items.where(
+          (item) {
+            final title = _normalize(item.title ?? '');
+            return title.contains(query);
+          },
+        ),
+      );
+    }
+  }
+
+  String _normalize(String input) {
+    return removeDiacritics(input).toLowerCase();
   }
 
   @override
@@ -55,26 +83,35 @@ class SelectBottomSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15),
-          if(hasSearch)
-          ...[
-            const SearchWidget(height: 45),
+          if (hasSearch) ...[
+            SearchWidget(
+              height: 45,
+              onSearch: _onSearchChanged, // 🔥 Gọi search khi nhập
+            ),
             const SizedBox(height: 25),
           ],
           Expanded(
-            child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                ItemModel item = items[index];
-                return ListTile(
-                  title: TextWidget(text: item.title.orNA()),
-                  onTap: () {
-                    onSelected(item);
-                    Get.back();
-                  },
+            child: Obx(() {
+              if (filteredItems.isEmpty) {
+                return const Center(
+                  child: Text("Không tìm thấy kết quả"),
                 );
-              },
-            ),
-          )
+              }
+              return ListView.builder(
+                itemCount: filteredItems.length,
+                itemBuilder: (context, index) {
+                  final item = filteredItems[index];
+                  return ListTile(
+                    title: TextWidget(text: item.title.orNA()),
+                    onTap: () {
+                      onSelected(item);
+                      Get.back();
+                    },
+                  );
+                },
+              );
+            }),
+          ),
         ],
       ),
     );

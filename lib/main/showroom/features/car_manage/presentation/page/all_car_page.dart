@@ -1,4 +1,5 @@
 import 'package:auto_find/core/config/theme/app_colors.dart';
+import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
 import 'package:auto_find/core/ui/styles/app_container_styles.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
@@ -117,7 +118,7 @@ class _ListCarWidget extends GetView<AllCarController> {
                 return CarItemWidget(
                   carName: car.name.orNA(),
                   status: car.status.orNA(),
-                  importDate: car.createdAt.toString(),
+                  importDate: car.createdAt.toString().toVNDate(),
                   onTap: () {
                     Get.toNamed(
                       const CarDetailPage().routeName,

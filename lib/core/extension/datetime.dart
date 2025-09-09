@@ -1,9 +1,12 @@
 import 'package:intl/intl.dart';
 
-extension VietnamTimeExtension on String {
-  String toVietnamTime({String pattern = 'dd/MM/yyyy'}) {
-    DateTime utcTime = DateTime.parse(this);
-    DateTime vnTime = utcTime.add(const Duration(hours: 7));
-    return DateFormat(pattern).format(vnTime);
+extension FormatDateVN on String {
+  String toVNDate() {
+    try {
+      final dateTime = DateTime.parse(this);
+      return DateFormat('dd/MM/yyyy').format(dateTime);
+    } catch (e) {
+      return this; 
+    }
   }
 }

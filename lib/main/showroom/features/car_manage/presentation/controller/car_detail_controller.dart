@@ -1,5 +1,8 @@
+import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/const/app_logger.dart';
+import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
+import 'package:auto_find/core/extension/number_extensions.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/select_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
@@ -56,7 +59,7 @@ class CarDetailController extends GetxController
   final soldPriceController = TextEditingController();
   final soldCostController = TextEditingController();
 
-  // dropdown (hãng xe, loại xe, màu xe, mẫu xe, trạng thái)
+  // Dropdown (hãng xe, loại xe, màu xe, mẫu xe, trạng thái)
   Rx<ItemModel> selectedBrand = ItemModel().obs;
   Rx<ItemModel> selectedTypeCar = ItemModel().obs;
   Rx<ItemModel> selectedColor = ItemModel().obs;
@@ -113,26 +116,27 @@ class CarDetailController extends GetxController
       carDetail.value = car;
 
       /// ---- Fill dữ liệu vào controller ----
-      nameController.text = car.name.orNA();
-      plateController.text = car.plate.orNA();
+      nameController.text = car.name.orEmpty();
+      plateController.text = car.plate.orEmpty();
       releaseYearController.text = car.releaseYear.toString();
 
-      priceController.text = (car.price ?? 0).toString();
-      profitController.text = (car.profit ?? 0).toString();
+      priceController.text = (car.price ?? 0).toString().toCurrency();
+      profitController.text = (car.profit ?? 0).toString().toCurrency();
 
-      importDateController.text = car.importDate.toString();
-      importPriceController.text = (car.importPrice ?? 0).toString();
-      importCostController.text = (car.importCost ?? 0).toString();
+      importDateController.text = car.importDate.toString().toVNDate();
+      importPriceController.text =
+          (car.importPrice ?? 0).toString().toCurrency();
+      importCostController.text = (car.importCost ?? 0).toString().toCurrency();
 
-      soldDateController.text = car.soldDate.toString();
-      soldPriceController.text = (car.soldPrice ?? 0).toString();
-      soldCostController.text = (car.soldCost ?? 0).toString();
+      soldDateController.text = (car.soldDate ?? "").toString().toVNDate();
+      soldPriceController.text = (car.soldPrice ?? 0).toString().toCurrency();
+      soldCostController.text = (car.soldCost ?? 0).toString().toCurrency();
 
       // ---- Fill dropdown ----
-      selectedBrand.value = ItemModel(title: car.brand.orNA());
-      brandController.text = (selectedBrand.value.title).orNA();
+      selectedBrand.value = ItemModel(title: car.brand);
+      brandController.text = (selectedBrand.value.title).orEmpty();
 
-      selectedColor.value = ItemModel(title: car.color.orNA());
+      selectedColor.value = ItemModel(title: car.color);
       colorController.text = (selectedColor.value.title).orNA();
 
       selectedTypeCar.value = ItemModel(title: car.type.orNA());
@@ -267,6 +271,10 @@ class CarDetailController extends GetxController
   /// Cập nhật thông tin cơ bản của xe
   Future<void> updateCarInfo() async {
     KeyboardUtils.hiddenKeyboard();
+
+    // ✅ Thêm validate trước khi xử lý
+    if (!validateCarInfo()) return;
+
     try {
       final currentCar = carDetail.value;
       if (currentCar == null) return;
@@ -302,6 +310,10 @@ class CarDetailController extends GetxController
   /// Cập nhật thông tin mua bán xe
   Future<void> updateTransactionInfo() async {
     KeyboardUtils.hiddenKeyboard();
+
+    // ✅ Thêm validate trước khi xử lý
+    if (!validateTransactionInfo()) return;
+
     try {
       final currentCar = carDetail.value;
       if (currentCar == null) return;
@@ -329,6 +341,114 @@ class CarDetailController extends GetxController
     } catch (e) {
       AppLogger.e("❌ updateTransactionInfo error: $e");
     }
+  }
+
+  /// ---------------- VALIDATION ----------------
+  /// ✅ Validate thông tin cơ bản xe
+  bool validateCarInfo() {
+    if (nameController.text.isEmpty) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Tên xe không được để trống",
+      );
+      return false;
+    }
+
+    if (plateController.text.isEmpty) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Biển số xe không được để trống",
+      );
+      return false;
+    }
+
+    if (releaseYearController.text.isEmpty ||
+        int.tryParse(releaseYearController.text) == null) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Năm sản xuất không hợp lệ",
+      );
+      return false;
+    }
+
+    if (selectedBrand.value.title?.isEmpty ?? false) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Vui lòng chọn hãng xe",
+      );
+      return false;
+    }
+
+    if (selectedTypeCar.value.title?.isEmpty ?? false) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Vui lòng chọn loại xe",
+      );
+      return false;
+    }
+
+    if (priceController.text.isEmpty ||
+        double.tryParse(priceController.text) == null) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Giá niêm yết không hợp lệ",
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  /// ✅ Validate thông tin mua bán xe
+  bool validateTransactionInfo() {
+    if (importDateController.text.isEmpty) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Ngày mua không được để trống",
+      );
+      return false;
+    }
+
+    if (importPriceController.text.isEmpty ||
+        double.tryParse(importPriceController.text) == null) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Giá mua không hợp lệ",
+      );
+      return false;
+    }
+
+    if (importCostController.text.isEmpty ||
+        double.tryParse(importCostController.text) == null) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Chi phí mua không hợp lệ",
+      );
+      return false;
+    }
+
+    // Nếu đã có ngày bán thì validate luôn giá bán & chi phí bán
+    if (soldDateController.text.isNotEmpty) {
+      if (soldPriceController.text.isEmpty ||
+          double.tryParse(soldPriceController.text) == null) {
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          content: "Giá bán không hợp lệ",
+        );
+        return false;
+      }
+
+      if (soldCostController.text.isEmpty ||
+          double.tryParse(soldCostController.text) == null) {
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          content: "Chi phí bán không hợp lệ",
+        );
+        return false;
+      }
+    }
+
+    return true;
   }
 
   @override

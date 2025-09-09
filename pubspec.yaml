@@ -35,6 +35,7 @@ dependencies:
   fluttertoast: ^8.2.12
   recase: ^4.1.0
   flutter_launcher_icons: ^0.14.4
+  diacritic: ^0.1.6
 
   
   flutter_localizations:

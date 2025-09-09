@@ -15,3 +15,4 @@ Future<void> configs() async {
   // await notificationConfigs();
   await languageConfigs();
 }
+

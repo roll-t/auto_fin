@@ -3,6 +3,7 @@ enum CustomTextFieldType {
   yearPicker,
   datePicker,
   dropdown,
+  money,
 }
 
 enum AlertType {

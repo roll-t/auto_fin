@@ -1,11 +1,13 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
+import 'package:auto_find/core/extension/number_extensions.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_find/core/ui/widgets/inputs/date_time_picker_text_field_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/year_picker_text_field_widget.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? label;
@@ -106,6 +108,9 @@ class CustomTextField extends StatelessWidget {
     switch (type) {
       case CustomTextFieldType.text:
         inputChild = _buildTextField();
+        break;
+      case CustomTextFieldType.money:
+        inputChild = _buildMoneyField();
         break;
       case CustomTextFieldType.dropdown:
         inputChild = InkWell(
@@ -213,6 +218,68 @@ class CustomTextField extends StatelessWidget {
       enabled: enabled,
       onChanged: onChanged,
       onSubmitted: onSubmit,
+      style: TextStyle(
+        color: textColor ?? AppColors.text700,
+        fontSize: textSize ?? 14,
+      ),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: enabled
+            ? backgroundColor ?? AppColors.white
+            : AppColors.neutralColor6,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: hintColor ?? AppColors.palette2,
+          fontSize: 14,
+        ),
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        errorText: errorText,
+        enabledBorder: buildBorder(borderColor),
+        focusedBorder: buildBorder(focusedBorderColor),
+        disabledBorder: buildBorder(disabledBorderColor),
+        errorBorder: buildBorder(errorBorderColor),
+        focusedErrorBorder: buildBorder(errorBorderColor),
+        contentPadding: EdgeInsets.symmetric(
+          vertical: height != null ? (height! - 24) / 2 : 12,
+          horizontal: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMoneyField() {
+    InputBorder buildBorder(Color color) => !enableBorder
+        ? OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: const BorderSide(
+              color: AppColors.transparent,
+              width: 0,
+            ),
+          )
+        : OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: BorderSide(color: color, width: borderWidth),
+          );
+
+    return TextField(
+      controller: controller,
+      scrollPadding: scrollPadding ?? EdgeInsets.zero,
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          if (newValue.text.isEmpty) return newValue;
+
+          // Dùng ext để format
+          final formatted = newValue.text.toCurrency();
+
+          return TextEditingValue(
+            text: formatted,
+            selection: TextSelection.collapsed(offset: formatted.length),
+          );
+        }),
+      ],
       style: TextStyle(
         color: textColor ?? AppColors.text700,
         fontSize: textSize ?? 14,
