@@ -1,6 +1,7 @@
 import 'package:auto_find/main/navigation/di/navigation_binding.dart';
 import 'package:auto_find/main/navigation/presentation/page/navigation_page.dart';
 import 'package:auto_find/core/ui/widgets/notFound/not_found_page.dart';
+import 'package:auto_find/main/showroom/di/showroom_binding.dart';
 import 'package:auto_find/main/showroom/features/add_car/di/add_car_binding.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/page/add_car_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/di/all_car_binding.dart';
@@ -52,18 +53,25 @@ final appPage = [
   GetPage(
     name: const ProfitManagePage().routeName,
     page: () => const ProfitManagePage(),
-    binding: ProfitManageBinding(),
+    bindings: [
+      ShowroomBinding(),
+      ProfitManageBinding(),
+    ],
   ),
   GetPage(
-    name: const AddCarPage().routeName,
-    page: () => const AddCarPage(),
-    binding: AddCarBinding(),
-  ),
+      name: const AddCarPage().routeName,
+      page: () => const AddCarPage(),
+      bindings: [
+        ShowroomBinding(),
+        AddCarBinding(),
+      ]),
   GetPage(
-    name: const AllCarPage().routeName,
-    page: () => const AllCarPage(),
-    binding: AllCarBinding(),
-  ),
+      name: const AllCarPage().routeName,
+      page: () => const AllCarPage(),
+      bindings: [
+        ShowroomBinding(),
+        AllCarBinding(),
+      ]),
   GetPage(
     name: const CarDetailPage().routeName,
     page: () => const CarDetailPage(),

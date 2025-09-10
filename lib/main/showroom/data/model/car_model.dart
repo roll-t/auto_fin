@@ -8,7 +8,7 @@ class CarModel {
   final String? product;
   final String? status;
   final String? type;
-  final int? releaseYear;
+  final String? releaseYear;
   final bool? isDeleted;
   final String? deletedAt;
   final DateTime? createdAt;
@@ -59,7 +59,7 @@ class CarModel {
     String? product,
     String? status,
     String? type,
-    int? releaseYear,
+    String? releaseYear,
     bool? isDeleted,
     String? deletedAt,
     DateTime? createdAt,
@@ -112,9 +112,7 @@ class CarModel {
       product: json['product']?.toString(),
       status: json['status']?.toString(),
       type: json['type']?.toString(),
-      releaseYear: json['release_year'] is int
-          ? json['release_year']
-          : int.tryParse(json['release_year']?.toString() ?? ''),
+      releaseYear: json['release_year'].toString(),
       isDeleted: json['isDeleted'] is bool
           ? json['isDeleted']
           : json['isDeleted']?.toString().toLowerCase() == 'true',

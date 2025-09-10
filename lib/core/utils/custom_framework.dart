@@ -72,8 +72,7 @@ abstract class CustomState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final body =
-        size.width > 800 ? buildTabletBody(context) : buildBody(context);
+    final body = size.width > 800 ? buildTabletBody(context) : buildBody(context);
 
     return GestureDetector(
       onTap: dismissKeyboard ? KeyboardUtils.hiddenKeyboard : null,

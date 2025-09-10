@@ -3,6 +3,7 @@ import 'package:auto_find/core/extension/empty_extension.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
+import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,54 +66,57 @@ class SelectBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height ?? MediaQuery.of(context).size.height * .6,
-      decoration: BoxDecoration(
-        color: Get.theme.cardColor,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(16),
+    return GestureDetector(
+      onTap: hasSearch ? KeyboardUtils.hiddenKeyboard : null,
+      child: Container(
+        height: height ?? MediaQuery.of(context).size.height * .6,
+        decoration: BoxDecoration(
+          color: Get.theme.cardColor,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(16),
+          ),
         ),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Center(
-            child: TextWidget(
-              text: title,
-              textStyle: AppTextStyle.medium16,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Center(
+              child: TextWidget(
+                text: title,
+                textStyle: AppTextStyle.medium16,
+              ),
             ),
-          ),
-          const SizedBox(height: 15),
-          if (hasSearch) ...[
-            SearchWidget(
-              height: 45,
-              onSearch: _onSearchChanged, // 🔥 Gọi search khi nhập
-            ),
-            const SizedBox(height: 25),
-          ],
-          Expanded(
-            child: Obx(() {
-              if (filteredItems.isEmpty) {
-                return const Center(
-                  child: Text("Không tìm thấy kết quả"),
-                );
-              }
-              return ListView.builder(
-                itemCount: filteredItems.length,
-                itemBuilder: (context, index) {
-                  final item = filteredItems[index];
-                  return ListTile(
-                    title: TextWidget(text: item.title.orNA()),
-                    onTap: () {
-                      onSelected(item);
-                      Get.back();
-                    },
+            const SizedBox(height: 15),
+            if (hasSearch) ...[
+              SearchWidget(
+                height: 45,
+                onSearch: _onSearchChanged,
+              ),
+              const SizedBox(height: 25),
+            ],
+            Expanded(
+              child: Obx(() {
+                if (filteredItems.isEmpty) {
+                  return const Center(
+                    child: Text("Không tìm thấy kết quả"),
                   );
-                },
-              );
-            }),
-          ),
-        ],
+                }
+                return ListView.builder(
+                  itemCount: filteredItems.length,
+                  itemBuilder: (context, index) {
+                    final item = filteredItems[index];
+                    return ListTile(
+                      title: TextWidget(text: item.title.orNA()),
+                      onTap: () {
+                        onSelected(item);
+                        Get.back();
+                      },
+                    );
+                  },
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

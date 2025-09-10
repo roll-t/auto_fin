@@ -4,6 +4,11 @@ import 'package:get/get.dart';
 class AddCarBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AddCarController>(() => AddCarController());
+    Get.lazyPut<AddCarController>(
+      () => AddCarController(
+        Get.find(),
+        Get.find(),
+      ),
+    );
   }
 }

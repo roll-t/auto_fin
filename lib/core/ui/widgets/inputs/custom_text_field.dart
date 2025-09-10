@@ -1,13 +1,14 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/extension/number_extensions.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_find/core/ui/widgets/inputs/date_time_picker_text_field_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/year_picker_text_field_widget.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_multi_formatter/formatters/money_input_enums.dart';
+import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? label;
@@ -253,7 +254,7 @@ class CustomTextField extends StatelessWidget {
         ? OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius),
             borderSide: const BorderSide(
-              color: AppColors.transparent,
+              color: Colors.transparent,
               width: 0,
             ),
           )
@@ -262,40 +263,62 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(color: color, width: borderWidth),
           );
 
+    final moneyFormatter = MoneyInputFormatter(
+      thousandSeparator: ThousandSeparator.Period,
+      mantissaLength: 0,
+    );
+
     return TextField(
       controller: controller,
       scrollPadding: scrollPadding ?? EdgeInsets.zero,
-      keyboardType: TextInputType.number,
+      keyboardType:
+          const TextInputType.numberWithOptions(decimal: false, signed: false),
+      textInputAction: TextInputAction.done,
       inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
         TextInputFormatter.withFunction((oldValue, newValue) {
-          if (newValue.text.isEmpty) return newValue;
+          if (newValue.text.isEmpty) {
+            return const TextEditingValue(
+              text: '',
+              selection: TextSelection.collapsed(offset: 0),
+            );
+          }
 
-          // Dùng ext để format
-          final formatted = newValue.text.toCurrency();
+          final numericValue =
+              int.tryParse(newValue.text.replaceAll('.', '')) ?? 0;
+          if (numericValue > 999999999999) {
+            // Giữ giá trị cũ nếu vượt quá 999.999.999.999
+            return oldValue;
+          }
 
-          return TextEditingValue(
-            text: formatted,
-            selection: TextSelection.collapsed(offset: formatted.length),
-          );
+          // Format theo VND
+          return moneyFormatter.formatEditUpdate(oldValue, newValue);
         }),
       ],
       style: TextStyle(
-        color: textColor ?? AppColors.text700,
+        color: textColor ?? Colors.black,
         fontSize: textSize ?? 14,
       ),
       decoration: InputDecoration(
         filled: true,
-        fillColor: enabled
-            ? backgroundColor ?? AppColors.white
-            : AppColors.neutralColor6,
+        fillColor:
+            enabled ? backgroundColor ?? Colors.white : AppColors.neutralColor6,
         hintText: hintText,
         hintStyle: TextStyle(
-          color: hintColor ?? AppColors.palette2,
+          color: hintColor ?? Colors.grey,
           fontSize: 14,
         ),
         prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
+        suffixIcon: suffixIcon ??
+            const SizedBox(
+              width: 30,
+              height: 30,
+              child: Center(
+                child: Text(
+                  "VND",
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ),
+            ),
         errorText: errorText,
         enabledBorder: buildBorder(borderColor),
         focusedBorder: buildBorder(focusedBorderColor),

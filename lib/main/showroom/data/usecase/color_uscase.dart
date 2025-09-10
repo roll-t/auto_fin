@@ -1,6 +1,6 @@
 import 'package:auto_find/main/showroom/data/model/color_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
-import 'package:auto_find/main/showroom/domain/repositories/color_repository.dart';
+import 'package:auto_find/main/showroom/data/repositories/color_repository.dart';
 
 class ColorUsecase {
   final ColorRepository _repository;

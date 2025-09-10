@@ -1,6 +1,6 @@
 import 'package:auto_find/main/showroom/data/model/type_car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
-import 'package:auto_find/main/showroom/domain/repositories/type_car_repository.dart';
+import 'package:auto_find/main/showroom/data/repositories/type_car_repository.dart';
 
 class TypeCarUsecase {
   final TypeCarRepository _repository;

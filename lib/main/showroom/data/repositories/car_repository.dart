@@ -3,30 +3,31 @@ import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/source/car_api.dart';
+import 'package:get/get.dart';
 
 class CarRepository {
   final CarApi _api = CarApi();
 
-Future<ListModel<CarModel>> getCars({
-  int pageSize = 20,
-  String? startAfter,
-}) async {
-  final result = await _api.getCars(
-    pageSize: pageSize,
-    startAfter: startAfter,
-  );
+  Future<ListModel<CarModel>> getCars({
+    int pageSize = 20,
+    String? startAfter,
+  }) async {
+    final result = await _api.getCars(
+      pageSize: pageSize,
+      startAfter: startAfter,
+    );
 
-  if (result.isSuccess) {
-    if (result.data is Map<String, dynamic>) {
-      return ListModel<CarModel>.fromJson(
-        result.data as Map<String, dynamic>,
-        (json) => CarModel.fromJson(json),
-      );
+    if (result.isSuccess) {
+      if (result.data is Map<String, dynamic>) {
+        return ListModel<CarModel>.fromJson(
+          result.data as Map<String, dynamic>,
+          (json) => CarModel.fromJson(json),
+        );
+      }
+      return ListModel<CarModel>(items: [], nextPageToken: null);
     }
-    return ListModel<CarModel>(items: [], nextPageToken: null);
+    throw Exception(result.message);
   }
-  throw Exception(result.message);
-}
 
   Future<CarModel> getCarDetail(int id) async {
     final result = await _api.getCarDetail(id);
@@ -37,8 +38,20 @@ Future<ListModel<CarModel>> getCars({
   }
 
   Future<void> createCar(CarModel car) async {
+    DialogUtils.showProgressDialog();
     final result = await _api.createCar(car);
-    if (!result.isSuccess) throw Exception(result.message);
+    Get.back();
+    if (result.isSuccess) {
+      DialogUtils.showAlert(
+        alertType: AlertType.success,
+        content: result.message,
+      );
+    } else if (!result.isSuccess) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.message,
+      );
+    }
   }
 
   Future<void> updateCar(CarModel car) async {

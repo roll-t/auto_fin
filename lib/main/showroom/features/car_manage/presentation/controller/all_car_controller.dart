@@ -2,7 +2,7 @@ import 'package:auto_find/core/model/ui/popup_dropdown_model.dart';
 import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_controller.dart';
 import 'package:auto_find/core/ui/widgets/filter/sort/sort_controller.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
-import 'package:auto_find/main/showroom/domain/usecase/car_usecase.dart';
+import 'package:auto_find/main/showroom/data/usecase/car_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -59,7 +59,7 @@ class AllCarController extends GetxController {
 
     try {
       final result = await _carUsecase.getCars(
-        pageSize: 8,
+        pageSize: 20,
         startAfter: loadMore ? _nextPageToken : null,
       );
 

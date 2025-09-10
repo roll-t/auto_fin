@@ -1,6 +1,6 @@
 import 'package:auto_find/main/showroom/data/model/brand_car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_brand_model.dart';
-import 'package:auto_find/main/showroom/domain/repositories/brand_car_repository.dart';
+import 'package:auto_find/main/showroom/data/repositories/brand_car_repository.dart';
 
 class BrandProductUsecase {
   final BrandCarRepository _repository;
