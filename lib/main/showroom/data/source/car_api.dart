@@ -1,4 +1,3 @@
-import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/result.dart';
 import 'package:auto_find/core/services/network/api_client.dart';
 import 'package:auto_find/core/services/network/api_endpoint.dart';
@@ -8,26 +7,27 @@ import 'package:get/get.dart';
 class CarApi {
   final ApiClient _client = Get.find<ApiClient>();
 
+  /// Danh sách xe (có thể lọc theo status + phân trang)
   Future<Result> getCars({
-    int pageSize = 20,
-    String? startAfter,
+    String? status,
+    int? pageSize,
+    String? pageToken,
   }) {
     final query = {
-      'pageSize': pageSize,
-      if (startAfter != null) 'startAfter': startAfter,
+      if (status != null) 'status': status,
+      if (pageSize != null) 'pageSize': pageSize,
+      if (pageToken != null) 'pageToken': pageToken,
     };
     return _client.get(ApiEndpoint.cars, query: query);
   }
 
   /// Lấy toàn bộ xe (ẩn soft-delete)
   Future<Result> getAllCars({String? sort}) {
-    final query = {
-      if (sort != null) 'sort': sort,
-    };
+    final query = {if (sort != null) 'sort': sort};
     return _client.get(ApiEndpoint.allCars, query: query);
   }
 
-  /// Lấy chi tiết xe theo ID
+  /// Lấy chi tiết xe
   Future<Result> getCarDetail(int carId) {
     return _client.get(ApiEndpoint.carDetail(carId));
   }
@@ -40,53 +40,62 @@ class CarApi {
     );
   }
 
-/// Cập nhật xe
-Future<Result> updateCar(int carId, CarModel car) async {
-  final response = await _client.put(
-    ApiEndpoint.carDetail(carId),
-    data: car.toJson(),
-  );
-
-  if (response.data is Map<String, dynamic>) {
-    return Result(
-      status: Results.success,
-      data: response.data["data"],
-      message: response.data["message"]?.toString(),
+  /// Cập nhật xe
+  Future<Result> updateCar(int carId, CarModel car) {
+    return _client.put(
+      ApiEndpoint.carDetail(carId),
+      data: car.toJson(),
     );
   }
-
-  return Result(
-    status: Results.error,
-    data: null,
-    message: "Phản hồi không hợp lệ",
-  );
-}
 
   /// Xoá mềm xe
   Future<Result> deleteCar(int carId) {
     return _client.delete(ApiEndpoint.carDetail(carId));
   }
 
-  /// Lấy danh sách xe đã bán
-  Future<Result> getSoldCars() {
-    return _client.get(ApiEndpoint.carsSold);
+  /// Danh sách xe đã bán (+ tổng giá trị, lợi nhuận)
+  Future<Result> getSoldCars({int? pageSize, String? pageToken}) {
+    final query = {
+      if (pageSize != null) 'pageSize': pageSize,
+      if (pageToken != null) 'pageToken': pageToken,
+    };
+    return _client.get(ApiEndpoint.carsSold, query: query);
   }
 
-  /// Lấy danh sách xe đang ở showroom
+  /// Danh sách xe đang ở showroom
   Future<Result> getShowroomCars() {
     return _client.get(ApiEndpoint.carsShowroom);
   }
 
-  /// Lấy danh sách xe đã nhập (sort theo ngày nhập)
-  Future<Result> getImportedCars() {
-    return _client.get(ApiEndpoint.carsImported);
+  /// Tìm kiếm xe theo name / plate / status
+  /// - Nếu [all] = true -> trả toàn bộ (bỏ phân trang)
+  Future<Result> searchCars({
+    String? name,
+    String? plate,
+    String? status,
+    bool? all,
+    int? pageSize,
+    String? pageToken,
+  }) {
+    final query = {
+      if (name != null) 'name': name,
+      if (plate != null) 'plate': plate,
+      if (status != null) 'status': status,
+      if (all != null) 'all': all,
+      if (pageSize != null) 'pageSize': pageSize,
+      if (pageToken != null) 'pageToken': pageToken,
+    };
+    return _client.get(ApiEndpoint.carsSearch, query: query);
   }
 
-  /// Lấy dữ liệu biểu đồ (năm bắt buộc)
+  /// Lấy dữ liệu biểu đồ (line/bar) – bắt buộc phải truyền [year]
   Future<Result> getCharts({required int year}) {
-    final query = {'year': year};
-    return _client.get(ApiEndpoint.carsCharts, query: query);
+    return _client.get(
+      ApiEndpoint.carsCharts,
+      query: {'year': year},
+    );
   }
+  
 
   /// Bảng lợi nhuận dạng ma trận
   Future<Result> getProfitMatrix({int? year, int? month}) {
@@ -112,12 +121,12 @@ Future<Result> updateCar(int carId, CarModel car) async {
     return _client.get(ApiEndpoint.carsTopProfit);
   }
 
-  /// Top 5 xe có giá trị cao nhất
+  /// Top 5 xe giá trị cao nhất
   Future<Result> getTopValue() {
     return _client.get(ApiEndpoint.carsTopValue);
   }
 
-  /// Top 5 xe đã bán gần đây
+  /// Top 5 xe bán gần đây
   Future<Result> getTopRecent() {
     return _client.get(ApiEndpoint.carsTopRecent);
   }

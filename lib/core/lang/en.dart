@@ -61,4 +61,5 @@ Map<String, String> en = {
   "Hoàn thành": 'Complete',
   "Đăng xuất": 'Log out',
   "Quản Lý": 'Manage',
+  "Xe đã được tạo": 'Car created',
 };

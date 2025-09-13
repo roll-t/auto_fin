@@ -67,42 +67,6 @@ class _BodyBuilder extends GetView<AddCarController> {
               Row(
                 children: [
                   Expanded(
-                    child: CustomTextField(
-                      label: "Tên xe",
-                      hintText: "Nhập tên xe",
-                      controller:
-                          controller.nameController, // 🆕 gắn controller
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextField(
-                      label: "Biển số",
-                      hintText: "Nhập biển số xe",
-                      controller:
-                          controller.plateController, // 🆕 gắn controller
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: CustomTextField(
-                      type: CustomTextFieldType.yearPicker,
-                      label: "Năm sản xuất",
-                      hintText: "Chọn năm sản xuất",
-                      controller:
-                          controller.yearController, // 🆕 gắn controller
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
                     child: CustomBottomSheetWidget(
                       height: 45,
                       label: "Hãng xe",
@@ -132,24 +96,60 @@ class _BodyBuilder extends GetView<AddCarController> {
                   Expanded(
                     child: CustomBottomSheetWidget(
                       height: 45,
-                      label: "Màu xe",
-                      titleBottomSheet: "Màu xe",
-                      hint: "Chọn màu xe",
-                      controller: controller.colorController, // 🆕
-                      onSelectedItem: (item) =>
-                          controller.selectedColor.value = item,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: CustomBottomSheetWidget(
-                      height: 45,
                       label: "Mẫu xe",
                       titleBottomSheet: "Mẫu xe",
                       hint: "Chọn mẫu xe",
                       controller: controller.modelController, // 🆕
                       onSelectedItem: (item) =>
                           controller.selectedModel.value = item,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: CustomTextField(
+                      type: CustomTextFieldType.yearPicker,
+                      label: "Năm sản xuất",
+                      hintText: "Chọn năm sản xuất",
+                      controller:
+                          controller.yearController, // 🆕 gắn controller
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      label: "Tên xe",
+                      hintText: "Nhập tên xe",
+                      controller:
+                          controller.nameController, // 🆕 gắn controller
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      label: "Biển số",
+                      hintText: "Nhập biển số xe",
+                      controller:
+                          controller.plateController, // 🆕 gắn controller
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: CustomBottomSheetWidget(
+                      height: 45,
+                      label: "Màu xe",
+                      titleBottomSheet: "Màu xe",
+                      hint: "Chọn màu xe",
+                      controller: controller.colorController, // 🆕
+                      onSelectedItem: (item) =>
+                          controller.selectedColor.value = item,
                     ),
                   ),
                 ],

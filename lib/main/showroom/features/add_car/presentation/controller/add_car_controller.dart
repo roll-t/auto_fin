@@ -24,8 +24,7 @@ class AddCarController extends GetxController {
   final nameController = TextEditingController();
   final plateController = TextEditingController();
   final yearController = TextEditingController();
-  final buyDateController =
-      TextEditingController(text: DateTime.now().toString().toVNDate());
+  final buyDateController = TextEditingController(text: DateTime.now().toString().toVNDate());
   final buyPriceController = TextEditingController();
   final buyCostController = TextEditingController();
   final sellPriceController = TextEditingController();
@@ -72,45 +71,91 @@ class AddCarController extends GetxController {
         .assignAll(_dropdownDataCarFeatureController.statusList);
   }
 
-  /// 🧾 Validate dữ liệu trước khi thêm
+  /// 🧾 Validate dữ liệu trước khi thêm xe
   bool validateForm() {
     final currentYear = DateTime.now().year;
 
+    // 1️⃣ Hãng xe
+    if (selectedBrand.value == null) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Vui lòng chọn hãng xe",
+      );
+      return false;
+    }
+
+    // 2️⃣ Loại xe
+    if (selectedType.value == null) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Vui lòng chọn loại xe",
+      );
+      return false;
+    }
+
+    // 3️⃣ Mẫu xe (optional → bỏ qua nếu không bắt buộc)
+
+    // 4️⃣ Năm sản xuất
+    final yearText = yearController.text.trim();
+    final year = int.tryParse(yearText);
+    if (yearText.isEmpty || year == null || year > currentYear) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Năm sản xuất phải là số và ≤ $currentYear",
+      );
+      return false;
+    }
+
+    // 5️⃣ Tên xe
     if (nameController.text.trim().isEmpty) {
       DialogUtils.showAlert(
-          alertType: AlertType.error, content: "Vui lòng nhập tên xe");
+        alertType: AlertType.error,
+        content: "Vui lòng nhập tên xe",
+      );
       return false;
     }
+
+    // 6️⃣ Biển số
     if (plateController.text.trim().isEmpty) {
       DialogUtils.showAlert(
-          alertType: AlertType.error, content: "Vui lòng nhập biển số");
+        alertType: AlertType.error,
+        content: "Vui lòng nhập biển số",
+      );
       return false;
     }
-    final year = int.tryParse(yearController.text);
-    if (yearController.text.trim().isEmpty ||
-        year == null ||
-        year > currentYear) {
+
+    // 7️⃣ Màu xe (nếu bắt buộc)
+    if (selectedColor.value == null) {
       DialogUtils.showAlert(
-          alertType: AlertType.error,
-          content: "Năm sản xuất phải là số và ≤ $currentYear");
+        alertType: AlertType.error,
+        content: "Vui lòng chọn màu xe",
+      );
       return false;
     }
+
+    // 8️⃣ Trạng thái xe (nếu bắt buộc)
+    if (selectedStatus.value == null) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: "Vui lòng chọn trạng thái xe",
+      );
+      return false;
+    }
+
+    // 9️⃣ Giá niêm yết bán (không bắt buộc → bỏ qua nếu rỗng)
+
+    // 🔟 Giá mua
     final buyPrice = buyPriceController.text.toCurrencyDouble();
     if (buyPriceController.text.trim().isEmpty || buyPrice <= 0) {
       DialogUtils.showAlert(
-          alertType: AlertType.error, content: "Giá mua phải > 0");
+        alertType: AlertType.error,
+        content: "Giá mua phải > 0",
+      );
       return false;
     }
-    if (selectedBrand.value == null) {
-      DialogUtils.showAlert(
-          alertType: AlertType.error, content: "Vui lòng chọn hãng xe");
-      return false;
-    }
-    if (selectedType.value == null) {
-      DialogUtils.showAlert(
-          alertType: AlertType.error, content: "Vui lòng chọn loại xe");
-      return false;
-    }
+
+    // 1️⃣1️⃣ Chi phí mua (optional → không kiểm tra nếu không bắt buộc)
+
     return true;
   }
 
@@ -136,12 +181,9 @@ class AddCarController extends GetxController {
         color: selectedColor.value?.title ?? "",
         status: selectedStatus.value?.title ?? "",
         // Giá & chi phí
-        importPrice:
-            double.tryParse(buyPriceController.text.replaceAll(',', '')) ?? 0,
-        importCost:
-            double.tryParse(buyCostController.text.replaceAll(',', '')) ?? 0,
-        price:
-            double.tryParse(sellPriceController.text.replaceAll(',', '')) ?? 0,
+        importPrice: buyPriceController.text.toCurrencyDouble(),
+        importCost: buyCostController.text.toCurrencyDouble(),
+        price:sellPriceController.text.toCurrencyDouble(), // nếu rỗng sẽ là 0.0
 
         // Optional
         product: selectedModel.value?.title ?? "",
@@ -174,7 +216,11 @@ class AddCarController extends GetxController {
     buyPriceController.clear();
     buyCostController.clear();
     sellPriceController.clear();
-
+    brandController.itemSelected.value = ItemModel(title: "");
+    typeController.itemSelected.value = ItemModel(title: "");
+    modelController.itemSelected.value = ItemModel(title: "");
+    colorController.itemSelected.value = ItemModel(title: "");
+    statusController.itemSelected.value = ItemModel(title: "");
     selectedBrand.value = null;
     selectedType.value = null;
     selectedColor.value = null;

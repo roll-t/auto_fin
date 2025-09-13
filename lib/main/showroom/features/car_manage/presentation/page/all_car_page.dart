@@ -1,9 +1,7 @@
-import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
 import 'package:auto_find/core/ui/styles/app_container_styles.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
 import 'package:auto_find/core/ui/widgets/filter/sort/Sort_toggle_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
@@ -46,38 +44,42 @@ class _BodyBuilder extends GetView<AllCarController> {
           margin: AppPadding.h16,
           child: Column(
             children: [
-              Row(
-                children: List.generate(
-                  controller.items.length,
-                  (index) {
-                    return Obx(
-                      () {
-                        final bool isActive =
-                            controller.selectedIndex.value == index;
-                        return GestureDetector(
-                          onTap: () => controller.setSelected(index),
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 12),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color:
-                                  isActive ? AppColors.accent : AppColors.grey,
-                            ),
-                            padding: AppPadding.v8h16,
-                            child: TextWidget(
-                              color: AppColors.white,
-                              text: controller.items[index],
-                              textStyle: AppTextStyle.medium14,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 12),
-              const SearchWidget(
+              // Row(
+              //   children: List.generate(
+              //     controller.items.length,
+              //     (index) {
+              //       return Obx(
+              //         () {
+              //           final bool isActive =
+              //               controller.selectedIndex.value == index;
+              //           return GestureDetector(
+              //             onTap: () => controller.setSelected(index),
+              //             child: Container(
+              //               margin: const EdgeInsets.only(right: 12),
+              //               decoration: BoxDecoration(
+              //                 borderRadius: BorderRadius.circular(8),
+              //                 color:
+              //                     isActive ? AppColors.accent : AppColors.grey,
+              //               ),
+              //               padding: AppPadding.v8h16,
+              //               child: TextWidget(
+              //                 color: AppColors.white,
+              //                 text: controller.items[index],
+              //                 textStyle: AppTextStyle.medium14,
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //       );
+              //     },
+              //   ),
+              // ),
+              // const SizedBox(height: 12),
+              SearchWidget(
+                onSubmit: (value) {
+                  controller.searchText.value = value;
+                  controller.refreshCars();
+                },
                 height: 40,
               ),
               const SizedBox(height: 12),
@@ -102,7 +104,9 @@ class _ListCarWidget extends GetView<AllCarController> {
     return Expanded(
       child: Obx(() {
         if (controller.isLoading.value && controller.cars.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
         return Padding(
           padding: AppPadding.h16,
@@ -145,7 +149,12 @@ class _FilterBarWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomPopupDropdown(controller: controller.filterCarPopup),
+        CustomPopupDropdown(
+          controller: controller.filterCarPopup,
+          onSelected: (value) {
+            controller.fetchCars();
+          },
+        ),
         SortToggleWidget(controller: controller.sortController),
       ],
     );

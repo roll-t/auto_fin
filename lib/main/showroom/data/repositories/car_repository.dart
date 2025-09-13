@@ -8,13 +8,16 @@ import 'package:get/get.dart';
 class CarRepository {
   final CarApi _api = CarApi();
 
+  /// Danh sách xe (có phân trang + filter status)
   Future<ListModel<CarModel>> getCars({
+    String? status,
     int pageSize = 20,
-    String? startAfter,
+    String? pageToken,
   }) async {
     final result = await _api.getCars(
+      status: status,
       pageSize: pageSize,
-      startAfter: startAfter,
+      pageToken: pageToken,
     );
 
     if (result.isSuccess) {
@@ -25,6 +28,17 @@ class CarRepository {
         );
       }
       return ListModel<CarModel>(items: [], nextPageToken: null);
+    }
+    throw Exception(result.message);
+  }
+
+  /// Lấy toàn bộ xe (không phân trang)
+  Future<List<CarModel>> getAllCars({String? sort}) async {
+    final result = await _api.getAllCars(sort: sort);
+    if (result.isSuccess) {
+      final list =
+          (result.data as List).map((e) => CarModel.fromJson(e)).toList();
+      return list;
     }
     throw Exception(result.message);
   }
@@ -41,15 +55,10 @@ class CarRepository {
     DialogUtils.showProgressDialog();
     final result = await _api.createCar(car);
     Get.back();
-    if (result.isSuccess) {
+    if (result.data is Map<String, dynamic>) {
       DialogUtils.showAlert(
-        alertType: AlertType.success,
-        content: result.message,
-      );
-    } else if (!result.isSuccess) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: result.message,
+        alertType: result.isSuccess ? AlertType.success : AlertType.error,
+        content: result.data['message'] ?? "N/A",
       );
     }
   }
@@ -65,5 +74,101 @@ class CarRepository {
   Future<void> deleteCar(int id) async {
     final result = await _api.deleteCar(id);
     if (!result.isSuccess) throw Exception(result.message);
+  }
+
+  /// Danh sách xe đã bán
+  Future<ListModel<CarModel>> getSoldCars({
+    int? pageSize,
+    String? pageToken,
+  }) async {
+    final result =
+        await _api.getSoldCars(pageSize: pageSize, pageToken: pageToken);
+    if (result.isSuccess) {
+      return ListModel<CarModel>.fromJson(
+        result.data,
+        (json) => CarModel.fromJson(json),
+      );
+    }
+    throw Exception(result.message);
+  }
+
+  /// Xe trong showroom
+  Future<List<CarModel>> getShowroomCars() async {
+    final result = await _api.getShowroomCars();
+    if (result.isSuccess) {
+      return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
+    }
+    throw Exception(result.message);
+  }
+
+  /// Tìm kiếm xe
+  Future<ListModel<CarModel>> searchCars({
+    String? name,
+    String? plate,
+    String? status,
+    bool? all,
+    int? pageSize,
+    String? pageToken,
+  }) async {
+    final result = await _api.searchCars(
+      name: name,
+      plate: plate,
+      status: status,
+      all: all,
+      pageSize: pageSize,
+      pageToken: pageToken,
+    );
+    if (result.isSuccess) {
+      return ListModel<CarModel>.fromJson(
+        result.data,
+        (json) => CarModel.fromJson(json),
+      );
+    }
+    throw Exception(result.message);
+  }
+
+  /// Biểu đồ line/bar
+  Future<Map<String, dynamic>> getCharts({required int year}) async {
+    final result = await _api.getCharts(year: year);
+    if (result.isSuccess) return result.data;
+    throw Exception(result.message);
+  }
+
+  /// Ma trận lợi nhuận
+  Future<Map<String, dynamic>> getProfitMatrix({int? year, int? month}) async {
+    final result = await _api.getProfitMatrix(year: year, month: month);
+    if (result.isSuccess) return result.data;
+    throw Exception(result.message);
+  }
+
+  /// Top 5 thương hiệu lợi nhuận cao
+  Future<List<dynamic>> getTopBrands() async {
+    final result = await _api.getTopBrands();
+    if (result.isSuccess) return result.data as List;
+    throw Exception(result.message);
+  }
+
+  Future<List<dynamic>> getTopProducts() async {
+    final result = await _api.getTopProducts();
+    if (result.isSuccess) return result.data as List;
+    throw Exception(result.message);
+  }
+
+  Future<List<dynamic>> getTopProfit() async {
+    final result = await _api.getTopProfit();
+    if (result.isSuccess) return result.data as List;
+    throw Exception(result.message);
+  }
+
+  Future<List<dynamic>> getTopValue() async {
+    final result = await _api.getTopValue();
+    if (result.isSuccess) return result.data as List;
+    throw Exception(result.message);
+  }
+
+  Future<List<dynamic>> getTopRecent() async {
+    final result = await _api.getTopRecent();
+    if (result.isSuccess) return result.data as List;
+    throw Exception(result.message);
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 class SearchWidget extends StatelessWidget {
   final Function(String value)? onSearch;
+  final Function(String value)? onSubmit;
   final double height;
   final String hint;
   final Color? backgroundColor;
@@ -14,6 +15,7 @@ class SearchWidget extends StatelessWidget {
     super.key,
     this.hint = "Nhập nội dung tìm kiếm....",
     this.onSearch,
+    this.onSubmit,
     this.height = 45,
     this.backgroundColor,
   });
@@ -21,6 +23,7 @@ class SearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
+      onSubmit: onSubmit,
       onChanged: onSearch,
       enableBorder: true,
       borderColor: AppThemeColors.light100,

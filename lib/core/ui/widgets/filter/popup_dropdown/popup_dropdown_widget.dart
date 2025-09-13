@@ -13,10 +13,13 @@ class CustomPopupDropdown extends StatelessWidget {
   /// Context để hiển thị popup. Nếu không truyền sẽ dùng context hiện tại.
   final BuildContext? popupContext;
 
+  final Function(PopupDropdownModel value)? onSelected;
+
   const CustomPopupDropdown({
     super.key,
     required this.controller,
     this.popupContext,
+    this.onSelected,
   });
 
   @override
@@ -62,9 +65,9 @@ class CustomPopupDropdown extends StatelessWidget {
 
   void _showPopupMenu(BuildContext context) async {
     // Tìm vị trí widget trên màn hình
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    final Offset offset = renderBox.localToGlobal(Offset.zero);
-    final Size size = renderBox.size;
+    final renderBox = context.findRenderObject() as RenderBox;
+    final offset = renderBox.localToGlobal(Offset.zero);
+    final size = renderBox.size;
 
     // Hiển thị popup ngay bên dưới
     final selected = await showMenu<PopupDropdownModel>(
@@ -87,6 +90,9 @@ class CustomPopupDropdown extends StatelessWidget {
 
     if (selected != null) {
       controller.selectItem(selected);
+      if (onSelected != null) {
+        onSelected!(selected);
+      }
     }
   }
 }

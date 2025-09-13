@@ -30,4 +30,6 @@ Map<String, String> vi = {
   AppContent.selectThem: AppContent.selectThem,
   "Báo cáo": "Báo cáo",
   "Car updated": "Xe đã cập nhật",
+  "Car created": 'Xe đã được tạo',
+
 };

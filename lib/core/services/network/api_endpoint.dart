@@ -30,6 +30,7 @@ class ApiEndpoint {
   static const carsTopProfit = '/cars/top/profit';
   static const carsTopValue = '/cars/top/value';
   static const carsTopRecent = '/cars/top/recent';
+    static const String carsSearch = '/cars/search';
 
   // ---------------------- Brand Car ---------------------- //
   static const String brandProducts = "/brand_products";
