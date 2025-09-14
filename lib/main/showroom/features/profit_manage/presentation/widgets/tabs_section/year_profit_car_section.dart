@@ -4,12 +4,17 @@ import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_w
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
+import 'package:auto_find/main/showroom/features/profit_manage/presentation/controller/profit_manage_controller.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/controller/tabs_section/year_profit_car_section_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class YearProfitCarSection extends GetView<YearProfitCarSectionController> {
-  const YearProfitCarSection({super.key});
+  final ProfitManageController profitManageController;
+  const YearProfitCarSection({
+    super.key,
+    required this.profitManageController,
+  });
 
   @override
   Widget build(BuildContext context) {

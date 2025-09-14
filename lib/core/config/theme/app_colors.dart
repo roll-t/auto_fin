@@ -89,6 +89,6 @@ class AppColors {
   static const palette4 = Color(0xFFFCFCFF);
   static const palette5 = Color(0xFFF1EEFF);
 
-  static const Color shimmerBase = Color.fromARGB(255, 175, 174, 174);
-  static const Color shimmerHighlight = Color.fromARGB(255, 226, 226, 226);
+  static const Color shimmerBase = Color.fromARGB(255, 218, 218, 218);
+  static const Color shimmerHighlight = Color.fromARGB(255, 238, 238, 238);
 }

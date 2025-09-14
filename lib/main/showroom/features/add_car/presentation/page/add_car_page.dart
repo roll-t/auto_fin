@@ -64,6 +64,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                   ),
                 ],
               ),
+              const SizedBox(height: 14),
               Row(
                 children: [
                   Expanded(

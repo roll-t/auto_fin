@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class WrapBodyWidget extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
+  final EdgeInsets? margin;
   final Widget? header;
   final Color backgroundColor;
   final Color backgroundHeader;
@@ -16,11 +17,13 @@ class WrapBodyWidget extends StatelessWidget {
     this.backgroundColor = AppColors.white,
     this.backgroundHeader = AppColors.white,
     this.padding = const EdgeInsets.all(12),
+    this.margin,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: margin,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: backgroundColor,

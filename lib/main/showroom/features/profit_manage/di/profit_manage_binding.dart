@@ -6,7 +6,11 @@ import 'package:get/get.dart';
 class ProfitManageBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ProfitManageController());
+    Get.lazyPut(
+      () => ProfitManageController(
+        Get.find(),
+      ),
+    );
     Get.lazyPut(() => YearProfitCarSectionController());
     Get.lazyPut(() => CarProfitSectionController());
   }

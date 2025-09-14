@@ -2,6 +2,7 @@ import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
+import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
 import 'package:auto_find/main/showroom/data/source/car_api.dart';
 import 'package:get/get.dart';
 
@@ -135,9 +136,19 @@ class CarRepository {
   }
 
   /// Ma trận lợi nhuận
-  Future<Map<String, dynamic>> getProfitMatrix({int? year, int? month}) async {
+  Future<ProfitMatrixResponseModel> getProfitMatrix(
+      {int? year, int? month}) async {
     final result = await _api.getProfitMatrix(year: year, month: month);
-    if (result.isSuccess) return result.data;
+
+    if (result.isSuccess) {
+      final data = result.data;
+      if (data is Map<String, dynamic>) {
+        return ProfitMatrixResponseModel.fromJson(data);
+      } else {
+        throw Exception("Dữ liệu trả về không hợp lệ: $data");
+      }
+    }
+
     throw Exception(result.message);
   }
 

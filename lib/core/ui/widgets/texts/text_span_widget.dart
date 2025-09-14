@@ -6,6 +6,7 @@ class TextSpanWidget extends StatelessWidget {
   final String text1;
   final String text2;
   final double size;
+  final int maxLine;
   final FontWeight fontWeight1;
   final FontWeight fontWeight2;
   final Color textColor2;
@@ -18,6 +19,7 @@ class TextSpanWidget extends StatelessWidget {
     required this.text1,
     required this.text2,
     this.size = 14,
+    this.maxLine = 999,
     this.fontWeight2 = FontWeight.normal,
     this.fontWeight1 = FontWeight.normal,
     this.textColor2 = AppColors.text700,
@@ -29,6 +31,8 @@ class TextSpanWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
+      maxLines: maxLine,
+      overflow: TextOverflow.ellipsis,
       text: TextSpan(
         style: TextStyle(
           fontSize: size,

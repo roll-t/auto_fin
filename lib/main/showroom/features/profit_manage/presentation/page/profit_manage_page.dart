@@ -1,8 +1,13 @@
+import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/model/ui/item_model.dart';
+import 'package:auto_find/core/extension/number_extensions.dart';
+import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
+import 'package:auto_find/core/ui/widgets/shimmer/shimmer_widget.dart';
 import 'package:auto_find/core/ui/widgets/tab_bar/custom_tab_bar_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
+import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
+import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/controller/profit_manage_controller.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/widgets/tabs_section/car_profit_section.dart';
@@ -37,13 +42,24 @@ class _BodyBuilder extends StatelessWidget {
 
         ///---> [Tab barx]
         GetBuilder<ProfitManageController>(
+          id: "TAB_BAR_ID",
           builder: (controller) {
             return CustomTabBarWidget(
               label: "Tiêu chí thống kê",
               controller: controller.tabBarController,
-              tabBodies: const [
-                YearProfitCarSection(),
-                CarProfitSection(),
+              tabBodies: [
+                controller.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : YearProfitCarSection(
+                        profitManageController: controller,
+                      ),
+                controller.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const CarProfitSection(),
               ],
             );
           },
@@ -53,71 +69,110 @@ class _BodyBuilder extends StatelessWidget {
   }
 }
 
-class _ProfitAvenueWidget extends StatelessWidget {
+class _ProfitAvenueWidget extends GetView<ProfitManageController> {
   const _ProfitAvenueWidget();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6.0),
-          color: AppColors.white,
-        ),
-        child: GetBuilder<ProfitManageController>(
-          builder: (controller) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+    return WrapBodyWidget(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      header: Row(
+        children: [
+          const Expanded(
+            child: TextWidget(
+              text: "Thống kê doanh thu",
+              textStyle: AppTextStyle.semiBold14,
+            ),
+          ),
+          SizedBox(
+            width: 120,
+            child: CustomBottomSheetWidget(
+              leadingIconUrl: AppVectors.icCurrency,
+              height: 30,
+              hint: "Chọn đơn vị tiền",
+              controller: controller.currencyUnitController,
+              onSelectedItem: controller.onCurrencyUnitChanged,
+            ),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: CustomBottomSheetWidget(
+                  label: "Năm",
+                  hint: "Chọn năm",
+                  controller: controller.yearBottomSheetController,
+                  onSelectedItem: controller.onYearSelected,
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: CustomBottomSheetWidget(
+                  label: "Tháng",
+                  hint: "Chọn tháng",
+                  controller: controller.monthBottomSheetController,
+                  onSelectedItem: controller.onMonthSelected,
+                ),
+              ),
+            ],
+          ),
+          GetBuilder<ProfitManageController>(
+            id: "TOTAL_PROFIT_ID",
+            builder: (_) {
+              final String unitTitle =
+                  "${controller.currencyUnitController.itemSelected.value.title}";
+              final String totalValue = controller.totalValue
+                      ?.toCurrencyWithUnit(controller.currencyUnitController) ??
+                  "0 $unitTitle";
+              final String totalProfit = controller.totalProfit
+                      ?.toCurrencyWithUnit(controller.currencyUnitController) ??
+                  "0 $unitTitle";
+
+              if (controller.isLoading) {
+                return const Column(
                   children: [
-                    Expanded(
-                      child: CustomBottomSheetWidget(
-                        hint: "Chọn năm",
-                        controller: controller.yearBottomSheetController,
-                        onSelectedItem: (ItemModel item) {
-                          controller.yearSelected = item;
-                        },
-                      ),
+                    SizedBox(height: 16),
+                    ShimmerWidget(
+                      height: 16,
+                      width: 220,
                     ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: CustomBottomSheetWidget(
-                        hint: "Chọn tháng",
-                        controller: controller.monthBottomSheetController,
-                        onSelectedItem: (ItemModel item) {
-                          controller.yearSelected = item;
-                        },
-                      ),
+                    SizedBox(height: 16),
+                    ShimmerWidget(
+                      height: 16,
+                      width: 220,
                     ),
                   ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 16),
-                      TextSpanWidget(
-                        fontWeight2: FontWeight.bold,
-                        textColor2: AppColors.accent,
-                        text1: "Tổng giá trị: ",
-                        text2: "161,333,500,000 VNĐ",
-                      ),
-                      SizedBox(height: 16),
-                      TextSpanWidget(
-                        fontWeight2: FontWeight.bold,
-                        textColor2: AppColors.accent,
-                        text1: "Tổng lợi nhuận: ",
-                        text2: "8,823,900,000 VNĐ",
-                      ),
-                    ],
+                );
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  TextSpanWidget(
+                    maxLine: 1,
+                    fontWeight2: FontWeight.bold,
+                    textColor2: AppColors.accent,
+                    text1: "Tổng giá trị bán: ",
+                    text2: totalValue,
                   ),
-                ),
-              ],
-            );
-          },
-        ));
+                  const SizedBox(height: 16),
+                  TextSpanWidget(
+                    maxLine: 1,
+                    fontWeight2: FontWeight.bold,
+                    textColor2: AppColors.accent,
+                    text1: "Tổng lợi nhuận: ",
+                    text2: totalProfit,
+                  ),
+                ],
+              );
+            },
+          )
+        ],
+      ),
+    );
   }
 }

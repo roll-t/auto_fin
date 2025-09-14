@@ -73,12 +73,14 @@ class CustomBottomSheetWidget extends StatelessWidget {
               onData: (value) {
                 return Row(
                   children: [
-                    if (leadingIconUrl.isNotNullOrEmpty)
+                    if (leadingIconUrl.isNotNullOrEmpty) ...[
                       Utils.iconSvg(
                         svgUrl: leadingIconUrl.orIcNull(),
                         color: AppColors.text300,
                         size: 18,
                       ),
+                      const SizedBox(width: 6),
+                    ],
                     const SizedBox(width: 4),
                     Expanded(
                       child: TextWidget(
