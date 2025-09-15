@@ -6,7 +6,7 @@ import 'package:auto_find/core/ui/styles/app_container_styles.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
-import 'package:auto_find/core/ui/widgets/filter/sort/Sort_toggle_widget.dart';
+import 'package:auto_find/core/ui/widgets/filter/sort/sort_toggle_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/load_more_list_view_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
@@ -19,6 +19,9 @@ import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+/// ----------------------------
+/// MAIN PAGE
+/// ----------------------------
 class AllCarPage extends CustomState {
   const AllCarPage({super.key});
 
@@ -35,6 +38,9 @@ class AllCarPage extends CustomState {
   Widget buildBody(BuildContext context) => const _BodyBuilder();
 }
 
+/// ----------------------------
+/// BODY BUILDER
+/// ----------------------------
 class _BodyBuilder extends GetView<AllCarController> {
   const _BodyBuilder();
 
@@ -42,123 +48,72 @@ class _BodyBuilder extends GetView<AllCarController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          decoration: AppContainerStyles.card200(),
-          padding: AppPadding.all16,
-          margin: AppPadding.h16,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _HeaderTabBar(controller: controller),
-              const SizedBox(height: 12),
-              GetBuilder<AllCarController>(
-                id: "HEADER_MANAGE_CAR_ID",
-                builder: (_) {
-                  ///---> [CARS IN SHOWROOM TAB]
-                  if (controller.headerTabSelectedIndex.value == 1) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SearchWidget(
-                          onSubmit: (value) {
-                            controller.searchText.value = value;
-                            controller.refreshCars();
-                          },
-                          height: 40,
-                        ),
-                        const SizedBox(height: 12),
-                        _FilterBarWidget(controller: controller),
-                        const SizedBox(height: 12),
-                        TextSpanWidget(
-                          text1: "Số lượng: ",
-                          text2: "${controller.cars.length}",
-                          textColor2: AppColors.accent,
-                          fontWeight2: FontWeight.bold,
-                        ),
-                        const SizedBox(height: 8),
-                        TextSpanWidget(
-                          text1: "Giá trị kho: ",
-                          text2:
-                              "${controller.inventoryValue.value.toString().toCurrency()} VND",
-                          textColor2: AppColors.accent,
-                          fontWeight2: FontWeight.bold,
-                        ),
-                      ],
-                    );
-                  }
-
-                  ///---> [CARS IN SHOWROOM TAB]
-                  if (controller.headerTabSelectedIndex.value == 2) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 12),
-                        _FilterBarWidget(controller: controller),
-                        const SizedBox(height: 12),
-                        TextSpanWidget(
-                          text1: "Tổng giá trị: ",
-                          text2:
-                              "${controller.soldValue.value.toString().toCurrency()} VND",
-                          textColor2: AppColors.accent,
-                          fontWeight2: FontWeight.bold,
-                        ),
-                        const SizedBox(height: 8),
-                        TextSpanWidget(
-                          text1: "Tổng lợi nhuận: ",
-                          text2:
-                              "${controller.profit.value.toString().toCurrency()} VND",
-                          textColor2: AppColors.accent,
-                          fontWeight2: FontWeight.bold,
-                        ),
-                      ],
-                    );
-                  }
-
-                  ///---> [ALL CARS TAB]
-                  return Column(
-                    children: [
-                      SearchWidget(
-                        onSubmit: (value) {
-                          controller.searchText.value = value;
-                          controller.refreshCars();
-                        },
-                        height: 40,
-                      ),
-                      const SizedBox(height: 12),
-                      _FilterBarWidget(
-                        controller: controller,
-                      ),
-                    ],
-                  );
-                },
-              )
-            ],
-          ),
-        ),
-        const SizedBox(height: 8.0),
-        const _ListCarWidget()
+        _HeaderSection(controller: controller),
+        const SizedBox(height: 8),
+        const _ListCarWidget(),
       ],
     );
   }
 }
 
+/// ----------------------------
+/// HEADER SECTION (tabs + filter)
+/// ----------------------------
+class _HeaderSection extends StatelessWidget {
+  final AllCarController controller;
+  const _HeaderSection({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: AppContainerStyles.card200(),
+      padding: AppPadding.all16,
+      margin: AppPadding.h16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _HeaderTabBar(controller: controller),
+          const SizedBox(height: 12),
+          GetBuilder<AllCarController>(
+            id: "HEADER_MANAGE_CAR_ID",
+            builder: (_) {
+              switch (controller.headerTabSelectedIndex.value) {
+                case 1:
+                  return _ShowroomTabContent(controller: controller);
+                case 2:
+                  return _SoldCarTabContent(controller: controller);
+                default:
+                  return _AllCarTabContent(controller: controller);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// ----------------------------
+/// TAB BAR
+/// ----------------------------
 class _HeaderTabBar extends StatelessWidget {
   final AllCarController controller;
-  final ScrollController tabScrollController = ScrollController();
+  final ScrollController _scrollCtrl = ScrollController();
 
   _HeaderTabBar({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: tabScrollController,
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: List.generate(controller.headerTabItem.length, (index) {
+    return SizedBox(
+      height: 40,
+      child: ListView.separated(
+        controller: _scrollCtrl,
+        scrollDirection: Axis.horizontal,
+        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        itemCount: controller.headerTabItem.length,
+        itemBuilder: (_, index) {
           return Obx(() {
-            final bool isActive =
-                controller.headerTabSelectedIndex.value == index;
-
+            final isActive = controller.headerTabSelectedIndex.value == index;
             return GestureDetector(
               onTap: () {
                 controller.onSetSelectedHeaderTab(index);
@@ -166,49 +121,45 @@ class _HeaderTabBar extends StatelessWidget {
               },
               child: Container(
                 margin: const EdgeInsets.only(right: 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: isActive ? AppColors.accent : AppColors.grey,
-                ),
                 padding: AppPadding.v8h16,
+                decoration: BoxDecoration(
+                  color: isActive ? AppColors.accent : AppColors.grey,
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: TextWidget(
+                  text: controller.headerTabItem[index].title.orNA(),
                   color: AppColors.white,
-                  text: (controller.headerTabItem[index].title).orNA(),
                   textStyle: AppTextStyle.medium14,
                 ),
               ),
             );
           });
-        }),
+        },
       ),
     );
   }
 
   void _scrollToCenter(int index, BuildContext context) {
-    /// Lấy kích thước màn hình
     final screenWidth = MediaQuery.of(context).size.width;
-
-    /// Tính offset của item theo index
-    double itemWidth = 100; // tạm thời, hoặc đo bằng GlobalKey
-    double spacing = 12; // như trong margin
-    double targetOffset =
+    const itemWidth = 100.0;
+    const spacing = 12.0;
+    double target =
         index * (itemWidth + spacing) - (screenWidth / 2) + (itemWidth / 2);
-
-    /// Giới hạn offset không bị âm hoặc vượt quá max
-    targetOffset = targetOffset.clamp(
+    target = target.clamp(
       0.0,
-      tabScrollController.position.maxScrollExtent,
+      _scrollCtrl.position.maxScrollExtent,
     );
-
-    /// Animate scroll
-    tabScrollController.animateTo(
-      targetOffset,
+    _scrollCtrl.animateTo(
+      target,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
   }
 }
 
+/// ----------------------------
+/// LIST OF CARS
+/// ----------------------------
 class _ListCarWidget extends GetView<AllCarController> {
   const _ListCarWidget();
 
@@ -217,9 +168,7 @@ class _ListCarWidget extends GetView<AllCarController> {
     return Expanded(
       child: Obx(() {
         if (controller.isLoading.value && controller.cars.isEmpty) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
         return Padding(
           padding: AppPadding.h16,
@@ -231,19 +180,17 @@ class _ListCarWidget extends GetView<AllCarController> {
               isLoadMore: controller.isLoadMore.value,
               scrollController: controller.scrollController,
               dataNullWidget: const TextWidget(text: "Không có dữ liệu"),
-              itemBuilder: (car) {
-                return CarItemWidget(
-                  carName: car.name.orNA(),
-                  status: car.status.orNA(),
-                  importDate: car.createdAt.toString().toVNDate(),
-                  onTap: () {
-                    Get.toNamed(
-                      const CarDetailPage().routeName,
-                      arguments: car,
-                    );
-                  },
-                );
-              },
+              itemBuilder: (car) => CarItemWidget(
+                carName: car.name.orNA(),
+                status: car.status.orNA(),
+                importDate: car.createdAt.toString().toVNDate(),
+                onTap: () {
+                  Get.toNamed(
+                    const CarDetailPage().routeName,
+                    arguments: car,
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -252,14 +199,16 @@ class _ListCarWidget extends GetView<AllCarController> {
   }
 }
 
+/// ----------------------------
+/// FILTER BAR WIDGET
+/// ----------------------------
 class _FilterBarWidget extends StatelessWidget {
   final AllCarController controller;
-  const _FilterBarWidget({
-    required this.controller,
-  });
+  const _FilterBarWidget({required this.controller});
+
   @override
   Widget build(BuildContext context) {
-    final controllerPopup = controller.headerTabSelectedIndex.value == 0
+    final popupCtrl = controller.headerTabSelectedIndex.value == 0
         ? controller.filterCarPopup
         : controller.headerTabSelectedIndex.value == 1
             ? controller.filterCarInShowRoomPopup
@@ -268,12 +217,108 @@ class _FilterBarWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomPopupDropdown(
-          controller: controllerPopup,
-          onSelected: (value) {
-            controller.onFilterChanged();
-          },
+          controller: popupCtrl,
+          onSelected: (_) => controller.onFilterChanged(),
         ),
-        SortToggleWidget(controller: controller.sortController),
+        SortToggleWidget(
+          controller: controller.sortController,
+          onSort: controller.onSort,
+        ),
+      ],
+    );
+  }
+}
+
+/// ----------------------------
+/// TAB CONTENTS
+/// ----------------------------
+class _AllCarTabContent extends StatelessWidget {
+  final AllCarController controller;
+  const _AllCarTabContent({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SearchWidget(
+          onSubmit: (v) {
+            controller.searchText.value = v;
+            controller.refreshCars();
+          },
+          height: 40,
+        ),
+        const SizedBox(height: 12),
+        _FilterBarWidget(controller: controller),
+      ],
+    );
+  }
+}
+
+class _ShowroomTabContent extends StatelessWidget {
+  final AllCarController controller;
+  const _ShowroomTabContent({required this.controller});
+
+  Widget _infoRow(String label, String value) {
+    return TextSpanWidget(
+      text1: "$label: ",
+      text2: value,
+      textColor2: AppColors.accent,
+      fontWeight2: FontWeight.bold,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SearchWidget(
+          onSearch: controller.onSearchShowroomCars,
+          onSubmit: (v) {
+            controller.searchText.value = v;
+            controller.refreshCars();
+          },
+          height: 40,
+        ),
+        const SizedBox(height: 12),
+        _FilterBarWidget(controller: controller),
+        const SizedBox(height: 12),
+        _infoRow("Số lượng", "${controller.cars.length}"),
+        const SizedBox(height: 8),
+        _infoRow("Giá trị kho",
+            "${controller.inventoryValue.value.toString().toCurrency()} VND"),
+      ],
+    );
+  }
+}
+
+class _SoldCarTabContent extends StatelessWidget {
+  final AllCarController controller;
+  const _SoldCarTabContent({required this.controller});
+
+  Widget _infoRow(String label, String value) {
+    return TextSpanWidget(
+      text1: "$label: ",
+      text2: value,
+      textColor2: AppColors.accent,
+      fontWeight2: FontWeight.bold,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 12),
+        // _FilterBarWidget(controller: controller),
+        // const SizedBox(height: 12),
+        _infoRow("Tổng giá trị",
+            "${controller.soldValue.value.toString().toCurrency()} VND"),
+        const SizedBox(height: 8),
+        _infoRow("Tổng lợi nhuận",
+            "${controller.profit.value.toString().toCurrency()} VND"),
       ],
     );
   }

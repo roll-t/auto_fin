@@ -11,16 +11,21 @@ import 'package:get/get.dart';
 import 'sort_controller.dart';
 
 class SortToggleWidget extends StatelessWidget {
+  final VoidCallback? onSort;
   final SortController controller;
   const SortToggleWidget({
     super.key,
     required this.controller,
+    this.onSort,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: controller.toggleSort,
+      onTap: () {
+        onSort?.call();
+        controller.toggleSort.call();
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 8.0,

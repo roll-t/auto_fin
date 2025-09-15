@@ -1,3 +1,4 @@
+import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/result.dart';
 import 'package:auto_find/core/services/network/api_client.dart';
 import 'package:auto_find/core/services/network/api_endpoint.dart';
@@ -12,11 +13,13 @@ class CarApi {
     String? status,
     int? pageSize,
     String? pageToken,
+    SortType? sortType,
   }) {
     final query = {
       if (status != null) 'status': status,
       if (pageSize != null) 'pageSize': pageSize,
       if (pageToken != null) 'pageToken': pageToken,
+      if (sortType != null) 'order': sortType == SortType.newest ? 'asc' : 'desc',
     };
     return _client.get(ApiEndpoint.cars, query: query);
   }

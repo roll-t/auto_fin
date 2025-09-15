@@ -16,11 +16,13 @@ class CarRepository {
     String? status,
     int pageSize = 20,
     String? pageToken,
+    SortType? sortType,
   }) async {
     final result = await _api.getCars(
       status: status,
       pageSize: pageSize,
       pageToken: pageToken,
+      sortType: sortType,
     );
 
     if (result.isSuccess) {

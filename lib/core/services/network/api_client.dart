@@ -117,6 +117,11 @@ class ApiClient extends GetxService {
     Map<String, dynamic>? query,
   }) async {
     if (!isConnected.value) {
+      _showSnackbar(
+        'Không có kết nối',
+        'Vui lòng kiểm tra lại kết nối mạng.',
+        Colors.redAccent,
+      );
       return Result(
         status: Results.error,
         message: 'Không có kết nối internet',

@@ -1,3 +1,4 @@
+import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
@@ -14,11 +15,13 @@ class CarUsecase {
     String? status,
     int pageSize = 20,
     String? pageToken,
+    SortType? sortType,
   }) {
     return _repo.getCars(
       status: status,
       pageSize: pageSize,
       pageToken: pageToken,
+      sortType: sortType,
     );
   }
 
