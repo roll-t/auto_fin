@@ -3,6 +3,8 @@ import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
+import 'package:auto_find/main/showroom/data/model/showroom_cars_model.dart';
+import 'package:auto_find/main/showroom/data/model/sold_cars_model.dart';
 import 'package:auto_find/main/showroom/data/source/car_api.dart';
 import 'package:get/get.dart';
 
@@ -78,29 +80,28 @@ class CarRepository {
   }
 
   /// Danh sách xe đã bán
-  Future<ListModel<CarModel>> getSoldCars({
+  Future<SoldCarsModel> getSoldCars({
     int? pageSize,
     String? pageToken,
   }) async {
     final result =
         await _api.getSoldCars(pageSize: pageSize, pageToken: pageToken);
-    if (result.isSuccess) {
-      return ListModel<CarModel>.fromJson(
-        result.data,
-        (json) => CarModel.fromJson(json),
-      );
-    }
-    throw Exception(result.message);
-  }
 
-  /// Xe trong showroom
-  Future<List<CarModel>> getShowroomCars() async {
-    final result = await _api.getShowroomCars();
     if (result.isSuccess) {
-      return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
+      return SoldCarsModel.fromJson(result.data);
     }
+
     throw Exception(result.message);
   }
+  /// Xe trong showroom
+Future<ShowroomCarsModel> getShowroomCars() async {
+  final result = await _api.getShowroomCars();
+  if (result.isSuccess) {
+    return ShowroomCarsModel.fromJson(result.data);
+  }
+  throw Exception(result.message);
+}
+
 
   /// Tìm kiếm xe
   Future<ListModel<CarModel>> searchCars({

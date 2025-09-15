@@ -39,6 +39,7 @@ class LoadMoreListViewWidget<T> extends StatelessWidget {
     }
 
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 20),
       controller: scrollController,
       itemCount: items.length + (isLoadMore ? 1 : 0),
       itemBuilder: (context, index) {

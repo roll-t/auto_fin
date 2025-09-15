@@ -1,6 +1,8 @@
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
+import 'package:auto_find/main/showroom/data/model/showroom_cars_model.dart';
+import 'package:auto_find/main/showroom/data/model/sold_cars_model.dart';
 import 'package:auto_find/main/showroom/data/repositories/car_repository.dart';
 
 class CarUsecase {
@@ -65,16 +67,19 @@ class CarUsecase {
   }
 
   /// Danh sách xe trong showroom (không phân trang)
-  Future<List<CarModel>> getShowroomCars() {
+  Future<ShowroomCarsModel> getShowroomCars() {
     return _repo.getShowroomCars();
   }
 
-  /// Danh sách xe đã bán (có phân trang)
-  Future<ListModel<CarModel>> getSoldCars({
+  /// Trả về danh sách xe đã bán từ repo
+  Future<SoldCarsModel> call({
     int? pageSize,
     String? pageToken,
   }) {
-    return _repo.getSoldCars(pageSize: pageSize, pageToken: pageToken);
+    return _repo.getSoldCars(
+      pageSize: pageSize,
+      pageToken: pageToken,
+    );
   }
 
   /// Dữ liệu biểu đồ line/bar
