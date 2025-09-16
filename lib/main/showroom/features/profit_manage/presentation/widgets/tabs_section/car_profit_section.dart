@@ -1,8 +1,6 @@
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/ui/styles/app_container_styles.dart';
-import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
-import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/utils.dart';
@@ -15,32 +13,12 @@ class CarProfitSection extends GetView<CarProfitSectionController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 8.0),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(children: [
-            CustomPopupDropdown(controller: controller.filterCarPopup),
-            const SizedBox(width: 50),
-            const Expanded(
-              child: SearchWidget(
-                height: 40,
-                backgroundColor: AppColors.white,
-              ),
-            )
-          ]),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: 10,
-            shrinkWrap: false,
-            itemBuilder: (context, index) {
-              return const ProfitYearCard();
-            },
-          ),
-        ),
-      ],
+    return ListView.builder(
+      itemCount: 10,
+      shrinkWrap: false,
+      itemBuilder: (context, index) {
+        return const ProfitYearCard();
+      },
     );
   }
 }

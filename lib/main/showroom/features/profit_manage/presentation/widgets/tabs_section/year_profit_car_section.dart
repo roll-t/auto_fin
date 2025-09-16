@@ -1,85 +1,61 @@
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/ui/styles/app_container_styles.dart';
-import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
-import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
+import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
+import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/controller/profit_manage_controller.dart';
-import 'package:auto_find/main/showroom/features/profit_manage/presentation/controller/tabs_section/year_profit_car_section_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class YearProfitCarSection extends GetView<YearProfitCarSectionController> {
-  final ProfitManageController profitManageController;
-  const YearProfitCarSection({
-    super.key,
-    required this.profitManageController,
-  });
+class YearProfitCarSection extends StatelessWidget {
+  final ProfitManageController controller;
+  const YearProfitCarSection({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    print(profitManageController.profitMatrix.matrix?.toList()[0].toJson());
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 8.0),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(children: [
-            CustomPopupDropdown(controller: controller.filterCarPopup),
-            const SizedBox(width: 50),
-            const Expanded(
-              child: SearchWidget(
-                height: 40,
-                backgroundColor: AppColors.white,
-              ),
-            )
-          ]),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: 10,
-            shrinkWrap: false,
-            itemBuilder: (context, index) {
-              return const ProfitYearCard();
-            },
-          ),
-        ),
-      ],
+    final List<MonthProfit> listMonthProfit = controller.listMonthProfit;
+    return ListView.builder(
+      itemCount: listMonthProfit.length,
+      itemBuilder: (context, index) {
+        final MonthProfit monthProfit = listMonthProfit[index];
+        return ProfitYearCard(monthProfit: monthProfit);
+      },
     );
   }
 }
 
 class ProfitYearCard extends StatelessWidget {
+  final MonthProfit monthProfit;
   const ProfitYearCard({
     super.key,
+    required this.monthProfit,
   });
 
   @override
   Widget build(BuildContext context) {
+    final displayMonth = monthProfit.month.toString().padLeft(2, '0');
+    final displayYear = monthProfit.year.toString();
+    final displayProfit = "${monthProfit.profit.toStringAsFixed(1)} triệu";
+
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 8,
-      ),
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: AppContainerStyles.card100(),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextWidget(
-            text: "Tháng 01 Năm 2021",
-            fontWeight: FontWeight.bold,
+            text: "Tháng $displayMonth Năm $displayYear",
+            textStyle: AppTextStyle.semiBold14,
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8),
           TextSpanWidget(
-            textColor2: AppColors.accent,
-            textColor1: AppColors.grey,
-            fontWeight2: FontWeight.bold,
             text1: "Lợi nhuận: ",
-            text2: "8,823,900,000 VNĐ",
+            text2: displayProfit,
+            textColor1: AppColors.grey,
+            textColor2: AppColors.accent,
+            fontWeight2: FontWeight.bold,
           ),
         ],
       ),

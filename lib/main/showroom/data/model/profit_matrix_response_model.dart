@@ -29,6 +29,29 @@ class ProfitMatrixResponseModel {
         'sold_list': soldList?.map((e) => e.toJson()).toList(),
         'totals': totals?.toJson(),
       };
+
+  /// Convert toàn bộ dữ liệu matrix thành List<MonthProfit>
+  List<MonthProfit> toListMonthProfit() {
+    final List<MonthProfit> result = [];
+
+    for (final yearItem in matrix ?? []) {
+      final months = yearItem.toMonthList();
+      for (int i = 0; i < months.length; i++) {
+        final profit = months[i];
+        if (profit != null) {
+          result.add(
+            MonthProfit(
+              year: yearItem.year ?? 0,
+              month: i + 1,
+              profit: profit,
+            ),
+          );
+        }
+      }
+    }
+
+    return result;
+  }
 }
 
 /// Ma trận lợi nhuận theo năm
@@ -293,4 +316,16 @@ class YearTotal {
         'sold_value': soldValue,
         'sold_value_million': soldValueMillion,
       };
+}
+
+class MonthProfit {
+  final int year;
+  final int month;
+  final double profit;
+
+  MonthProfit({
+    required this.year,
+    required this.month,
+    required this.profit,
+  });
 }

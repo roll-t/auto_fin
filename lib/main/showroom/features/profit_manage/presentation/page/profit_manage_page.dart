@@ -1,10 +1,12 @@
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/extension/number_extensions.dart';
+import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
+import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
+import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/shimmer/shimmer_widget.dart';
-import 'package:auto_find/core/ui/widgets/tab_bar/custom_tab_bar_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
@@ -26,12 +28,14 @@ class ProfitManagePage extends CustomState {
 
   @override
   String? get title => "Quản lý lợi nhuận";
+
   @override
   Widget buildBody(BuildContext context) => const _BodyBuilder();
 }
 
 class _BodyBuilder extends StatelessWidget {
   const _BodyBuilder();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,30 +43,80 @@ class _BodyBuilder extends StatelessWidget {
         const SizedBox(height: 10),
         const _ProfitAvenueWidget(),
         const SizedBox(height: 20),
-        ///---> [Tab barx]
-        GetBuilder<ProfitManageController>(
-          id: "TAB_BAR_ID",
-          builder: (controller) {
-            return CustomTabBarWidget(
-              label: "Tiêu chí thống kê",
-              controller: controller.tabBarController,
-              tabBodies: [
-                controller.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : YearProfitCarSection(
-                        profitManageController: controller,
+
+        // Tab bar + Tab bar view
+        Expanded(
+          child: GetBuilder<ProfitManageController>(
+            id: "TAB_BAR_ID",
+            builder: (controller) {
+              return DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    WrapBodyWidget(
+                      margin: AppPadding.h16,
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                width: .5,
+                                color: AppColors.accent.withValues(alpha: .5),
+                              ),
+                            ),
+                            child: TabBar(
+                              dividerHeight: 0,
+                              labelColor: Colors.white,
+                              unselectedLabelColor: AppColors.grey,
+                              indicator: BoxDecoration(
+                                color: AppColors.accent,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              tabs: const [
+                                Tab(text: "Thống kê theo năm"),
+                                Tab(text: "Thống kê theo xe"),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              CustomPopupDropdown(
+                                controller: controller.filterCarPopup,
+                                onSelected: controller.onFilterSelected,
+                              ),
+                              const SizedBox(width: 50),
+                              const Expanded(child: SearchWidget(height: 40))
+                            ],
+                          ),
+                        ],
                       ),
-                controller.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : const CarProfitSection(),
-              ],
-            );
-          },
-        )
+                    ),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          controller.isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : YearProfitCarSection(controller: controller),
+                          controller.isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : const CarProfitSection(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
@@ -89,6 +143,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
               leadingIconUrl: AppVectors.icCurrency,
               height: 30,
               hint: "Chọn đơn vị tiền",
+              titleBottomSheet: "Chọn đơn vị tiền tệ",
               controller: controller.currencyUnitController,
               onSelectedItem: controller.onCurrencyUnitChanged,
             ),
@@ -104,6 +159,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                 child: CustomBottomSheetWidget(
                   label: "Năm",
                   hint: "Chọn năm",
+                  titleBottomSheet: "Chọn năm",
                   controller: controller.yearBottomSheetController,
                   onSelectedItem: controller.onYearSelected,
                 ),
@@ -113,6 +169,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                 child: CustomBottomSheetWidget(
                   label: "Tháng",
                   hint: "Chọn tháng",
+                  titleBottomSheet: "Chọn tháng",
                   controller: controller.monthBottomSheetController,
                   onSelectedItem: controller.onMonthSelected,
                 ),
@@ -122,15 +179,10 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
           GetBuilder<ProfitManageController>(
             id: "TOTAL_PROFIT_ID",
             builder: (_) {
-              final String unitTitle =
-                  "${controller.currencyUnitController.itemSelected.value.title}";
               final String totalValue = controller.totalValue
-                      ?.toCurrencyWithUnit(controller.currencyUnitController) ??
-                  "0 $unitTitle";
+                  .toCurrencyWithUnit(controller.currencyUnitController);
               final String totalProfit = controller.totalProfit
-                      ?.toCurrencyWithUnit(controller.currencyUnitController) ??
-                  "0 $unitTitle";
-
+                  .toCurrencyWithUnit(controller.currencyUnitController);
               if (controller.isLoading) {
                 return const Column(
                   children: [
