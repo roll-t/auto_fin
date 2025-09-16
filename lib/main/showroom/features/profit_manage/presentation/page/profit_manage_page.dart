@@ -39,7 +39,6 @@ class _BodyBuilder extends StatelessWidget {
         const SizedBox(height: 10),
         const _ProfitAvenueWidget(),
         const SizedBox(height: 20),
-
         ///---> [Tab barx]
         GetBuilder<ProfitManageController>(
           id: "TAB_BAR_ID",

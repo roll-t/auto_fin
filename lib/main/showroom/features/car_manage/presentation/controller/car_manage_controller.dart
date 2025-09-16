@@ -8,12 +8,12 @@ import 'package:auto_find/main/showroom/data/usecase/car_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AllCarController extends GetxController {
+class CarManageController extends GetxController {
   // ---------------------------------------------------------------------------
   // Dependencies
   // ---------------------------------------------------------------------------
   final CarUsecase _carUsecase;
-  AllCarController(this._carUsecase);
+  CarManageController(this._carUsecase);
 
   // ---------------------------------------------------------------------------
   // State
@@ -162,7 +162,8 @@ class AllCarController extends GetxController {
               status: _getCurrentStatus(),
               pageSize: _pageSize,
               pageToken: loadMore ? _nextPageToken : null,
-              sortType: sortController.isAsc ? SortType.newest : SortType.oldest,
+              sortType:
+                  sortController.isAsc ? SortType.newest : SortType.oldest,
             );
 
       if (loadMore) {
@@ -266,6 +267,7 @@ class AllCarController extends GetxController {
     if (headerTabSelectedIndex.value == index) return;
     headerTabSelectedIndex.value = index;
     searchText.value = '';
+    sortController.resetSort();
     _nextPageToken = null;
 
     switch (index) {
@@ -283,11 +285,13 @@ class AllCarController extends GetxController {
 
   void onSort() {
     if (headerTabSelectedIndex.value == 0) {
+      sortController.toggleSort();
       fetchCars();
       return;
     }
     if (headerTabSelectedIndex.value == 1) {
-      final asc = sortController.isAsc;
+      sortController.toggleSort();
+      final asc = !sortController.isAsc;
       cars.sort((a, b) {
         final aDate = a.importDate ?? DateTime.fromMillisecondsSinceEpoch(0);
         final bDate = b.importDate ?? DateTime.fromMillisecondsSinceEpoch(0);

@@ -18,6 +18,7 @@ class YearProfitCarSection extends GetView<YearProfitCarSectionController> {
 
   @override
   Widget build(BuildContext context) {
+    print(profitManageController.profitMatrix.matrix?.toList()[0].toJson());
     return Column(
       children: [
         Container(

@@ -31,7 +31,10 @@ class ProfitManageController extends GetxController {
       ItemModel(id: "2019", title: "Năm 2019"),
       ItemModel(id: "2018", title: "Năm 2018"),
     ].obs,
-    itemSelected: ItemModel(id: "", title: "Tất cả"),
+    itemSelected: ItemModel(
+      id: "",
+      title: "Tất cả",
+    ),
   );
 
   BottomSheetController currencyUnitController = BottomSheetController(
@@ -40,7 +43,10 @@ class ProfitManageController extends GetxController {
       ItemModel(id: "million", title: "Triệu"),
       ItemModel(id: "billion", title: "Tỷ"),
     ].obs,
-    itemSelected: ItemModel(id: "vnd", title: "VND"),
+    itemSelected: ItemModel(
+      id: "vnd",
+      title: "VND",
+    ),
   );
 
   final BottomSheetController monthBottomSheetController =

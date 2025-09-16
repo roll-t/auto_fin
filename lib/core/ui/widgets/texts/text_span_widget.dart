@@ -7,6 +7,7 @@ class TextSpanWidget extends StatelessWidget {
   final String text2;
   final double size;
   final int maxLine;
+  final double lineHeight;
   final FontWeight fontWeight1;
   final FontWeight fontWeight2;
   final Color textColor2;
@@ -20,6 +21,7 @@ class TextSpanWidget extends StatelessWidget {
     required this.text2,
     this.size = 14,
     this.maxLine = 999,
+    this.lineHeight = 1.2,
     this.fontWeight2 = FontWeight.normal,
     this.fontWeight1 = FontWeight.normal,
     this.textColor2 = AppColors.text700,
@@ -47,6 +49,7 @@ class TextSpanWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               fontWeight: fontWeight1,
               color: textColor1,
+              height: lineHeight,
               fontStyle: fontStyle1,
             ),
           ),
@@ -57,6 +60,7 @@ class TextSpanWidget extends StatelessWidget {
               fontSize: size,
               overflow: TextOverflow.ellipsis,
               fontWeight: fontWeight2,
+              height: lineHeight,
               color: textColor2, // Custom color for the second text
               fontStyle: fontStyle2,
             ),

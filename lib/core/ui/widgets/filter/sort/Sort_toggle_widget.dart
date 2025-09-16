@@ -22,10 +22,7 @@ class SortToggleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        onSort?.call();
-        controller.toggleSort.call();
-      },
+      onTap: onSort ?? controller.toggleSort,
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 8.0,

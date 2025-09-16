@@ -21,7 +21,7 @@ extension StringCurrencyExtension on String? {
     if (value == null) return this!;
     final formatter = NumberFormat.currency(
       locale: 'vi_VN',
-      symbol: withSymbol ? '₫' : '',
+      symbol: withSymbol ? 'VND' : '',
       decimalDigits: 0,
     );
     return formatter.format(value);

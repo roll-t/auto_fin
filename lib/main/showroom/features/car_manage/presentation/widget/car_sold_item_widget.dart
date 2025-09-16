@@ -10,21 +10,21 @@ import 'package:auto_find/core/utils/utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:flutter/material.dart';
 
-class CarItemWidget extends StatelessWidget {
-  final CarModel car;
+class CarSoldItemWidget extends StatelessWidget {
+  final CarModel carModel;
   final VoidCallback? onTap;
 
-  const CarItemWidget({
+  const CarSoldItemWidget({
     super.key,
-    required this.car,
+    required this.carModel,
     this.onTap,
   });
 
-  static const _spaceV6 = SizedBox(height: 6.0);
-  static const _spaceV8 = SizedBox(height: 8.0);
-
   @override
   Widget build(BuildContext context) {
+    final profit = carModel.profit ?? 0;
+    final profitColor = profit >= 0 ? AppColors.green : AppColors.red;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -34,7 +34,7 @@ class CarItemWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Tiêu đề: Tên xe
+            /// Row tiêu đề
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -46,18 +46,22 @@ class CarItemWidget extends StatelessWidget {
                     textColor2: AppColors.palette1,
                     fontWeight2: FontWeight.bold,
                     text1: "Tên xe: ",
-                    text2: car.name.orNA(),
+                    text2: carModel.name.orNA(),
                   ),
                 ),
-                Utils.iconSvg(svgUrl: AppVectors.icArrowRight, size: 14),
+                Utils.iconSvg(
+                  svgUrl: AppVectors.icArrowRight,
+                  size: 14,
+                )
               ],
             ),
 
-            _spaceV8,
+            const SizedBox(height: 8.0),
 
-            /// Trạng thái + Ngày nhập
+            /// Ngày bán
             Row(
               children: [
+                /// Trạng thái
                 Expanded(
                   child: TextSpanWidget(
                     textColor1: AppColors.grey,
@@ -65,57 +69,70 @@ class CarItemWidget extends StatelessWidget {
                     fontWeight2: FontWeight.bold,
                     fontStyle2: FontStyle.italic,
                     text1: 'Trạng thái: ',
-                    text2: car.status.orNA(),
+                    text2: carModel.status.orNA(),
                     size: 12,
                   ),
                 ),
+                const SizedBox(height: 6.0),
                 TextSpanWidget(
                   textColor1: AppColors.grey,
                   textColor2: AppColors.palette1,
                   fontWeight2: FontWeight.bold,
-                  text1: 'Ngày nhập: ',
-                  text2: car.importDate.toString().toVNDate(),
+                  text1: 'Ngày bán: ',
+                  text2: (carModel.soldDate).toString().toVNDate(),
                   size: 12,
                 ),
               ],
             ),
 
-            _spaceV6,
+            const SizedBox(height: 6.0),
 
+            /// Giá nhập
             TextSpanWidget(
               textColor1: AppColors.grey,
               textColor2: AppColors.red,
               fontWeight2: FontWeight.bold,
               text1: 'Giá nhập: ',
-              text2: car.importPrice.toString().toCurrency(withSymbol: true),
+              text2:
+                  carModel.importPrice.toString().toCurrency(withSymbol: true),
               size: 12,
             ),
-            _spaceV6,
 
-            /// Biển số + Năm SX
-            Row(
-              children: [
-                Expanded(
-                  child: TextSpanWidget(
-                    textColor1: AppColors.grey,
-                    textColor2: AppColors.palette1,
-                    fontWeight2: FontWeight.bold,
-                    text1: 'Biển số: ',
-                    text2: car.plate.orNA(),
-                    size: 12,
-                  ),
-                ),
-                if (car.releaseYear?.isNotEmpty ?? false)
-                  TextSpanWidget(
-                    textColor1: AppColors.grey,
-                    textColor2: AppColors.palette1,
-                    fontWeight2: FontWeight.bold,
-                    text1: 'Năm SX: ',
-                    text2: car.releaseYear!,
-                    size: 12,
-                  ),
-              ],
+            const SizedBox(height: 6.0),
+
+            /// Giá bán
+            TextSpanWidget(
+              textColor1: AppColors.grey,
+              textColor2: AppColors.green,
+              fontWeight2: FontWeight.bold,
+              text1: 'Giá bán: ',
+              text2: carModel.soldPrice.toString().toCurrency(withSymbol: true),
+              size: 12,
             ),
+
+            const SizedBox(height: 6.0),
+
+            /// Lợi nhuận
+            TextSpanWidget(
+              textColor1: AppColors.grey,
+              textColor2: profitColor,
+              fontWeight2: FontWeight.bold,
+              text1: 'Lợi nhuận: ',
+              text2: profit.toString().toCurrency(withSymbol: true),
+              size: 12,
+            ),
+
+            if (carModel.soldDes?.isNotEmpty ?? false) ...[
+              const SizedBox(height: 6.0),
+              TextSpanWidget(
+                textColor1: AppColors.grey,
+                textColor2: AppColors.palette1,
+                fontStyle2: FontStyle.italic,
+                text1: 'Ghi chú: ',
+                text2: carModel.soldDes!,
+                size: 12,
+              ),
+            ]
           ],
         ),
       ),

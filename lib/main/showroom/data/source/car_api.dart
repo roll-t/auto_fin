@@ -19,7 +19,7 @@ class CarApi {
       if (status != null) 'status': status,
       if (pageSize != null) 'pageSize': pageSize,
       if (pageToken != null) 'pageToken': pageToken,
-      if (sortType != null) 'order': sortType == SortType.newest ? 'asc' : 'desc',
+      if (sortType != null) 'order': sortType == SortType.newest ? 'desc' : 'asc',
     };
     return _client.get(ApiEndpoint.cars, query: query);
   }

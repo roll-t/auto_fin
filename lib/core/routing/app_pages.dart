@@ -6,7 +6,7 @@ import 'package:auto_find/main/showroom/features/add_car/di/add_car_binding.dart
 import 'package:auto_find/main/showroom/features/add_car/presentation/page/add_car_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/di/all_car_binding.dart';
 import 'package:auto_find/main/showroom/features/car_manage/di/car_detail_binding.dart';
-import 'package:auto_find/main/showroom/features/car_manage/presentation/page/all_car_page.dart';
+import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_manage_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_detail_page.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/di/profit_manage_binding.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/page/profit_manage_page.dart';
@@ -66,8 +66,8 @@ final appPage = [
         AddCarBinding(),
       ]),
   GetPage(
-      name: const AllCarPage().routeName,
-      page: () => const AllCarPage(),
+      name: const CarManagePage().routeName,
+      page: () => const CarManagePage(),
       bindings: [
         ShowroomBinding(),
         AllCarBinding(),

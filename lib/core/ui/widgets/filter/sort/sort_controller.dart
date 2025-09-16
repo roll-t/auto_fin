@@ -6,14 +6,20 @@ class SortController extends GetxController {
 
   /// Đảo trạng thái sort
   void toggleSort() {
-    sortType.value = sortType.value == SortType.newest ? SortType.oldest : SortType.newest;
+    sortType.value =
+        sortType.value == SortType.newest ? SortType.oldest : SortType.newest;
   }
 
   /// Trả về label hiển thị trên UI
-  String get label => sortType.value == SortType.newest ? 'Mới nhất' : 'Cũ nhất';
+  String get label =>
+      sortType.value == SortType.newest ? 'Mới nhất' : 'Cũ nhất';
 
   /// true = tăng dần (cũ -> mới), false = giảm dần (mới -> cũ)
   bool get isAsc => sortType.value == SortType.newest;
+
+  void resetSort() {
+    sortType.value = SortType.newest;
+  }
 
   @override
   void onClose() {

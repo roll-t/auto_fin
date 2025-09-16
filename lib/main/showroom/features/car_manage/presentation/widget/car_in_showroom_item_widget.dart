@@ -9,14 +9,13 @@ import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/utils/utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:flutter/material.dart';
-
-class CarItemWidget extends StatelessWidget {
-  final CarModel car;
+class CarInShowroomItemWidget extends StatelessWidget {
+  final CarModel carModel;
   final VoidCallback? onTap;
 
-  const CarItemWidget({
+  const CarInShowroomItemWidget({
     super.key,
-    required this.car,
+    required this.carModel,
     this.onTap,
   });
 
@@ -34,7 +33,7 @@ class CarItemWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Tiêu đề: Tên xe
+            /// Row tiêu đề
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -46,7 +45,7 @@ class CarItemWidget extends StatelessWidget {
                     textColor2: AppColors.palette1,
                     fontWeight2: FontWeight.bold,
                     text1: "Tên xe: ",
-                    text2: car.name.orNA(),
+                    text2: carModel.name.orNA(),
                   ),
                 ),
                 Utils.iconSvg(svgUrl: AppVectors.icArrowRight, size: 14),
@@ -65,7 +64,7 @@ class CarItemWidget extends StatelessWidget {
                     fontWeight2: FontWeight.bold,
                     fontStyle2: FontStyle.italic,
                     text1: 'Trạng thái: ',
-                    text2: car.status.orNA(),
+                    text2: carModel.status.orNA(),
                     size: 12,
                   ),
                 ),
@@ -74,7 +73,7 @@ class CarItemWidget extends StatelessWidget {
                   textColor2: AppColors.palette1,
                   fontWeight2: FontWeight.bold,
                   text1: 'Ngày nhập: ',
-                  text2: car.importDate.toString().toVNDate(),
+                  text2: carModel.importDate.toString().toVNDate(),
                   size: 12,
                 ),
               ],
@@ -82,14 +81,30 @@ class CarItemWidget extends StatelessWidget {
 
             _spaceV6,
 
+            /// Giá nhập
             TextSpanWidget(
               textColor1: AppColors.grey,
               textColor2: AppColors.red,
               fontWeight2: FontWeight.bold,
               text1: 'Giá nhập: ',
-              text2: car.importPrice.toString().toCurrency(withSymbol: true),
+              text2: carModel.importPrice
+                  .toString()
+                  .toCurrency(withSymbol: true),
               size: 12,
             ),
+
+            _spaceV6,
+
+            /// Giá mong muốn bán
+            TextSpanWidget(
+              textColor1: AppColors.grey,
+              textColor2: AppColors.green,
+              fontWeight2: FontWeight.bold,
+              text1: 'Giá bán dự kiến: ',
+              text2: carModel.price.toString().toCurrency(withSymbol: true),
+              size: 12,
+            ),
+
             _spaceV6,
 
             /// Biển số + Năm SX
@@ -101,19 +116,18 @@ class CarItemWidget extends StatelessWidget {
                     textColor2: AppColors.palette1,
                     fontWeight2: FontWeight.bold,
                     text1: 'Biển số: ',
-                    text2: car.plate.orNA(),
+                    text2: carModel.plate.orNA(),
                     size: 12,
                   ),
                 ),
-                if (car.releaseYear?.isNotEmpty ?? false)
-                  TextSpanWidget(
-                    textColor1: AppColors.grey,
-                    textColor2: AppColors.palette1,
-                    fontWeight2: FontWeight.bold,
-                    text1: 'Năm SX: ',
-                    text2: car.releaseYear!,
-                    size: 12,
-                  ),
+                TextSpanWidget(
+                  textColor1: AppColors.grey,
+                  textColor2: AppColors.palette1,
+                  fontWeight2: FontWeight.bold,
+                  text1: 'Năm SX: ',
+                  text2: carModel.releaseYear.orNA(),
+                  size: 12,
+                ),
               ],
             ),
           ],

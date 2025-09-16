@@ -1,5 +1,4 @@
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
 import 'package:auto_find/core/extension/number_extensions.dart';
 import 'package:auto_find/core/ui/styles/app_container_styles.dart';
@@ -13,17 +12,19 @@ import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
-import 'package:auto_find/main/showroom/features/car_manage/presentation/controller/all_car_controller.dart';
+import 'package:auto_find/main/showroom/features/car_manage/presentation/controller/car_manage_controller.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_detail_page.dart';
+import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_in_showroom_item_widget.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_item_widget.dart';
+import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_sold_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// ----------------------------
 /// MAIN PAGE
 /// ----------------------------
-class AllCarPage extends CustomState {
-  const AllCarPage({super.key});
+class CarManagePage extends CustomState {
+  const CarManagePage({super.key});
 
   @override
   String? get title => "Quản lý xe";
@@ -41,7 +42,7 @@ class AllCarPage extends CustomState {
 /// ----------------------------
 /// BODY BUILDER
 /// ----------------------------
-class _BodyBuilder extends GetView<AllCarController> {
+class _BodyBuilder extends GetView<CarManageController> {
   const _BodyBuilder();
 
   @override
@@ -60,7 +61,7 @@ class _BodyBuilder extends GetView<AllCarController> {
 /// HEADER SECTION (tabs + filter)
 /// ----------------------------
 class _HeaderSection extends StatelessWidget {
-  final AllCarController controller;
+  final CarManageController controller;
   const _HeaderSection({required this.controller});
 
   @override
@@ -74,7 +75,7 @@ class _HeaderSection extends StatelessWidget {
         children: [
           _HeaderTabBar(controller: controller),
           const SizedBox(height: 12),
-          GetBuilder<AllCarController>(
+          GetBuilder<CarManageController>(
             id: "HEADER_MANAGE_CAR_ID",
             builder: (_) {
               switch (controller.headerTabSelectedIndex.value) {
@@ -97,7 +98,7 @@ class _HeaderSection extends StatelessWidget {
 /// TAB BAR
 /// ----------------------------
 class _HeaderTabBar extends StatelessWidget {
-  final AllCarController controller;
+  final CarManageController controller;
   final ScrollController _scrollCtrl = ScrollController();
 
   _HeaderTabBar({required this.controller});
@@ -120,16 +121,17 @@ class _HeaderTabBar extends StatelessWidget {
                 _scrollToCenter(index, context);
               },
               child: Container(
-                margin: const EdgeInsets.only(right: 12),
-                padding: AppPadding.v8h16,
+                padding: AppPadding.h12,
                 decoration: BoxDecoration(
                   color: isActive ? AppColors.accent : AppColors.grey,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: TextWidget(
-                  text: controller.headerTabItem[index].title.orNA(),
-                  color: AppColors.white,
-                  textStyle: AppTextStyle.medium14,
+                child: Center(
+                  child: TextWidget(
+                    text: controller.headerTabItem[index].title.orNA(),
+                    color: AppColors.white,
+                    textStyle: AppTextStyle.medium14,
+                  ),
                 ),
               ),
             );
@@ -160,7 +162,7 @@ class _HeaderTabBar extends StatelessWidget {
 /// ----------------------------
 /// LIST OF CARS
 /// ----------------------------
-class _ListCarWidget extends GetView<AllCarController> {
+class _ListCarWidget extends GetView<CarManageController> {
   const _ListCarWidget();
 
   @override
@@ -169,6 +171,55 @@ class _ListCarWidget extends GetView<AllCarController> {
       child: Obx(() {
         if (controller.isLoading.value && controller.cars.isEmpty) {
           return const Center(child: CircularProgressIndicator());
+        }
+        if (controller.headerTabSelectedIndex.value == 1) {
+          return Padding(
+            padding: AppPadding.h16,
+            child: RefreshIndicator(
+              onRefresh: controller.refreshCars,
+              child: LoadMoreListViewWidget<CarModel>(
+                items: controller.cars,
+                isLoading: controller.isLoading.value,
+                isLoadMore: controller.isLoadMore.value,
+                scrollController: controller.scrollController,
+                dataNullWidget: const TextWidget(text: "Không có dữ liệu"),
+                itemBuilder: (car) => CarInShowroomItemWidget(
+                  carModel: car,
+                  onTap: () {
+                    Get.toNamed(
+                      const CarDetailPage().routeName,
+                      arguments: car,
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (controller.headerTabSelectedIndex.value == 2) {
+          return Padding(
+            padding: AppPadding.h16,
+            child: RefreshIndicator(
+              onRefresh: controller.refreshCars,
+              child: LoadMoreListViewWidget<CarModel>(
+                items: controller.cars,
+                isLoading: controller.isLoading.value,
+                isLoadMore: controller.isLoadMore.value,
+                scrollController: controller.scrollController,
+                dataNullWidget: const TextWidget(text: "Không có dữ liệu"),
+                itemBuilder: (car) => CarSoldItemWidget(
+                  carModel: car,
+                  onTap: () {
+                    Get.toNamed(
+                      const CarDetailPage().routeName,
+                      arguments: car,
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
         }
         return Padding(
           padding: AppPadding.h16,
@@ -181,9 +232,7 @@ class _ListCarWidget extends GetView<AllCarController> {
               scrollController: controller.scrollController,
               dataNullWidget: const TextWidget(text: "Không có dữ liệu"),
               itemBuilder: (car) => CarItemWidget(
-                carName: car.name.orNA(),
-                status: car.status.orNA(),
-                importDate: car.createdAt.toString().toVNDate(),
+                car: car,
                 onTap: () {
                   Get.toNamed(
                     const CarDetailPage().routeName,
@@ -203,7 +252,7 @@ class _ListCarWidget extends GetView<AllCarController> {
 /// FILTER BAR WIDGET
 /// ----------------------------
 class _FilterBarWidget extends StatelessWidget {
-  final AllCarController controller;
+  final CarManageController controller;
   const _FilterBarWidget({required this.controller});
 
   @override
@@ -233,7 +282,7 @@ class _FilterBarWidget extends StatelessWidget {
 /// TAB CONTENTS
 /// ----------------------------
 class _AllCarTabContent extends StatelessWidget {
-  final AllCarController controller;
+  final CarManageController controller;
   const _AllCarTabContent({required this.controller});
 
   @override
@@ -256,7 +305,7 @@ class _AllCarTabContent extends StatelessWidget {
 }
 
 class _ShowroomTabContent extends StatelessWidget {
-  final AllCarController controller;
+  final CarManageController controller;
   const _ShowroomTabContent({required this.controller});
 
   Widget _infoRow(String label, String value) {
@@ -294,7 +343,7 @@ class _ShowroomTabContent extends StatelessWidget {
 }
 
 class _SoldCarTabContent extends StatelessWidget {
-  final AllCarController controller;
+  final CarManageController controller;
   const _SoldCarTabContent({required this.controller});
 
   Widget _infoRow(String label, String value) {
@@ -312,8 +361,6 @@ class _SoldCarTabContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        // _FilterBarWidget(controller: controller),
-        // const SizedBox(height: 12),
         _infoRow("Tổng giá trị",
             "${controller.soldValue.value.toString().toCurrency()} VND"),
         const SizedBox(height: 8),
