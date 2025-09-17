@@ -70,10 +70,12 @@ class CarRepository {
 
   Future<void> updateCar(CarModel car) async {
     final result = await _api.updateCar(car.id ?? 0, car);
-    DialogUtils.showAlert(
-      alertType: result.isSuccess ? AlertType.success : AlertType.error,
-      content: result.message,
-    );
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: result.isSuccess ? AlertType.success : AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
   }
 
   Future<void> deleteCar(int id) async {
@@ -95,15 +97,15 @@ class CarRepository {
 
     throw Exception(result.message);
   }
-  /// Xe trong showroom
-Future<ShowroomCarsModel> getShowroomCars() async {
-  final result = await _api.getShowroomCars();
-  if (result.isSuccess) {
-    return ShowroomCarsModel.fromJson(result.data);
-  }
-  throw Exception(result.message);
-}
 
+  /// Xe trong showroom
+  Future<ShowroomCarsModel> getShowroomCars() async {
+    final result = await _api.getShowroomCars();
+    if (result.isSuccess) {
+      return ShowroomCarsModel.fromJson(result.data);
+    }
+    throw Exception(result.message);
+  }
 
   /// Tìm kiếm xe
   Future<ListModel<CarModel>> searchCars({

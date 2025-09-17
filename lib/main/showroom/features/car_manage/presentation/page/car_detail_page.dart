@@ -136,9 +136,6 @@ class _BuildFormBody extends StatelessWidget {
                           controller: controller.releaseYearController,
                           startYear: 2000,
                           endYear: DateTime.now().year,
-                          onYearSelected: (year) {
-                            print("Năm được chọn: $year");
-                          },
                           height: 45,
                           textSize: 14,
                           type: CustomTextFieldType.yearPicker,
@@ -280,9 +277,6 @@ class _BuildFormBody extends StatelessWidget {
                           type: CustomTextFieldType.datePicker,
                           firstDate: DateTime(2020),
                           lastDate: DateTime.now(),
-                          onDateSelected: (date) {
-                            print("Ngày bán: ${date.toIso8601String()}");
-                          },
                           height: 45,
                           textSize: 14,
                         ),
@@ -302,7 +296,7 @@ class _BuildFormBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
-                    enabled: controller.isEditMode.value,
+                    enabled: false,
                     label: "Lợi nhuận",
                     hintText: "",
                     controller: controller.profitController,

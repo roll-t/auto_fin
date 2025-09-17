@@ -15,3 +15,16 @@ extension FormatDateVN on String {
 extension MonthProfitExt on MonthProfit {
   DateTime get date => DateTime(year, month);
 }
+
+extension VNDateParsing on String {
+  /// Chuyển chuỗi "dd/MM/yyyy" sang "yyyy-MM-ddTHH:mm:ss.sssZ"
+  String? toIsoUtcString() {
+    try {
+      final date = DateFormat("dd/MM/yyyy").parse(this);
+      // Chuyển sang UTC rồi format ra ISO 8601 với hậu tố Z
+      return date.toUtc().toIso8601String();
+    } catch (e) {
+      return null; // Trả về null nếu parse lỗi
+    }
+  }
+}

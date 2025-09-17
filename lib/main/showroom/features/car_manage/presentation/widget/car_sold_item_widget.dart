@@ -67,7 +67,6 @@ class CarSoldItemWidget extends StatelessWidget {
                     textColor1: AppColors.grey,
                     textColor2: AppColors.green,
                     fontWeight2: FontWeight.bold,
-                    fontStyle2: FontStyle.italic,
                     text1: 'Trạng thái: ',
                     text2: carModel.status.orNA(),
                     size: 12,

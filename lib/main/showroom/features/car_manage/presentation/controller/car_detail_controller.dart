@@ -98,7 +98,7 @@ class CarDetailController extends GetxController
           (car.importPrice ?? 0).toString().toCurrency();
       importCostController.text = (car.importCost ?? 0).toString().toCurrency();
 
-      soldDateController.text = (car.soldDate ?? "").toString().toVNDate();
+      soldDateController.text = car.soldDate.toString().toVNDate();
       soldPriceController.text = (car.soldPrice ?? 0).toString().toCurrency();
       soldCostController.text = (car.soldCost ?? 0).toString().toCurrency();
 
@@ -251,24 +251,16 @@ class CarDetailController extends GetxController
     try {
       final currentCar = carDetail.value;
       if (currentCar == null) return;
-
       final updatedCar = currentCar.copyWith(
         importDate: DateTime.tryParse(importDateController.text),
         importPrice: double.tryParse(importPriceController.text),
         importCost: double.tryParse(importCostController.text),
-        soldDate: DateTime.tryParse(soldDateController.text),
+        soldDate: DateTime.tryParse(soldDateController.text.toIsoUtcString().toString()),
         soldPrice: double.tryParse(soldPriceController.text),
         soldCost: double.tryParse(soldCostController.text),
         soldDes: currentCar.soldDes,
-        profit: double.tryParse(profitController.text),
+        profit: profitController.text.toCurrencyDouble(),
       );
-
-      // 🔍 So sánh dữ liệu cũ và mới
-      if (updatedCar.toJson().toString() == currentCar.toJson().toString()) {
-        Fluttertoast.showToast(msg: "Nội dung không có gì thay đổi");
-        return;
-      }
-
       await _carUsecase.updateCar(updatedCar);
       carDetail.value = updatedCar;
       update(["FORM_ID"]);
@@ -280,52 +272,30 @@ class CarDetailController extends GetxController
   /// ---------------- VALIDATION ----------------
   /// ✅ Validate thông tin cơ bản xe
   bool validateCarInfo() {
+    RxString messErrorValidate = "".obs;
     if (nameController.text.isEmpty) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Tên xe không được để trống",
-      );
-      return false;
-    }
-
-    if (plateController.text.isEmpty) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Biển số xe không được để trống",
-      );
-      return false;
-    }
-
-    if (releaseYearController.text.isEmpty ||
+      messErrorValidate.value = "Tên xe không được để trống";
+    } else if (plateController.text.isEmpty) {
+      messErrorValidate.value = "Biển số xe không được để trống";
+    } else if (releaseYearController.text.isEmpty ||
         int.tryParse(releaseYearController.text) == null) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Năm sản xuất không hợp lệ",
-      );
-      return false;
+      messErrorValidate.value = "Năm sản xuất không hợp lệ";
+    } else if (selectedBrand.value.title?.isEmpty ?? true) {
+      messErrorValidate.value = "Vui lòng chọn hãng xe";
+    } else if (selectedTypeCar.value.title?.isEmpty ?? true) {
+      messErrorValidate.value = "Vui lòng chọn loại xe";
+    } else if (colorController.text.isEmpty) {
+      messErrorValidate.value = "Màu xe không được để trống";
+    } else if (modelController.text.isEmpty) {
+      messErrorValidate.value = "Mẫu xe không được để trống";
+    } else if (statusController.text.isEmpty) {
+      messErrorValidate.value = "Trạng thái xe không được để trống";
     }
 
-    if (selectedBrand.value.title?.isEmpty ?? false) {
+    if (messErrorValidate.value.isNotEmpty) {
       DialogUtils.showAlert(
         alertType: AlertType.error,
-        content: "Vui lòng chọn hãng xe",
-      );
-      return false;
-    }
-
-    if (selectedTypeCar.value.title?.isEmpty ?? false) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Vui lòng chọn loại xe",
-      );
-      return false;
-    }
-
-    if (priceController.text.isEmpty ||
-        double.tryParse(priceController.text) == null) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Giá niêm yết không hợp lệ",
+        content: messErrorValidate.value,
       );
       return false;
     }
@@ -335,53 +305,20 @@ class CarDetailController extends GetxController
 
   /// ✅ Validate thông tin mua bán xe
   bool validateTransactionInfo() {
+    RxString messErrorValidate = "".obs;
+
     if (importDateController.text.isEmpty) {
+      messErrorValidate.value = "Ngày mua không được để trống";
+    } else if (importPriceController.text.isEmpty) {
+      messErrorValidate.value = "Giá mua không hợp lệ";
+    }
+    if (messErrorValidate.value.isNotEmpty) {
       DialogUtils.showAlert(
         alertType: AlertType.error,
-        content: "Ngày mua không được để trống",
+        content: messErrorValidate.value,
       );
       return false;
     }
-
-    if (importPriceController.text.isEmpty ||
-        double.tryParse(importPriceController.text) == null) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Giá mua không hợp lệ",
-      );
-      return false;
-    }
-
-    if (importCostController.text.isEmpty ||
-        double.tryParse(importCostController.text) == null) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Chi phí mua không hợp lệ",
-      );
-      return false;
-    }
-
-    // Nếu đã có ngày bán thì validate luôn giá bán & chi phí bán
-    if (soldDateController.text.isNotEmpty) {
-      if (soldPriceController.text.isEmpty ||
-          double.tryParse(soldPriceController.text) == null) {
-        DialogUtils.showAlert(
-          alertType: AlertType.error,
-          content: "Giá bán không hợp lệ",
-        );
-        return false;
-      }
-
-      if (soldCostController.text.isEmpty ||
-          double.tryParse(soldCostController.text) == null) {
-        DialogUtils.showAlert(
-          alertType: AlertType.error,
-          content: "Chi phí bán không hợp lệ",
-        );
-        return false;
-      }
-    }
-
     return true;
   }
 
@@ -400,13 +337,11 @@ class CarDetailController extends GetxController
     soldDateController.dispose();
     soldPriceController.dispose();
     soldCostController.dispose();
-
     brandController.dispose();
     typeCarController.dispose();
     colorController.dispose();
     modelController.dispose();
     statusController.dispose();
-
     super.onClose();
   }
 }
