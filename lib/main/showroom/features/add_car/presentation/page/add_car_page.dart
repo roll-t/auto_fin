@@ -1,11 +1,9 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
-import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/ui/styles/app_container_styles.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
 import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
-import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/controller/add_car_controller.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +30,11 @@ class _BodyBuilder extends GetView<AddCarController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: AppPadding.h16,
-      decoration: AppContainerStyles.card100(),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
         padding: AppPadding.h16,
+        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        decoration: AppContainerStyles.card100(),
         child: Padding(
           padding: const EdgeInsets.only(
             top: 20,
@@ -45,26 +43,6 @@ class _BodyBuilder extends GetView<AddCarController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: AppThemeColors.primary.withValues(alpha: 0.1),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    child: TextWidget(
-                      textAlign: TextAlign.start,
-                      text: "Thông tin cơ bản",
-                      color: AppThemeColors.primary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
               Row(
                 children: [
                   Expanded(
@@ -124,8 +102,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                     child: CustomTextField(
                       label: "Tên xe",
                       hintText: "Nhập tên xe",
-                      controller:
-                          controller.nameController, // 🆕 gắn controller
+                      controller: controller.nameController,
                     ),
                   ),
                 ],

@@ -12,8 +12,8 @@ import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/controller/profit_manage_controller.dart';
-import 'package:auto_find/main/showroom/features/profit_manage/presentation/widgets/tabs_section/car_profit_section.dart';
-import 'package:auto_find/main/showroom/features/profit_manage/presentation/widgets/tabs_section/year_profit_car_section.dart';
+import 'package:auto_find/main/showroom/features/profit_manage/presentation/widgets/car_profit_section.dart';
+import 'package:auto_find/main/showroom/features/profit_manage/presentation/widgets/year_profit_car_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,20 +35,21 @@ class ProfitManagePage extends CustomState {
 
 class _BodyBuilder extends StatelessWidget {
   const _BodyBuilder();
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 10),
         const _ProfitAvenueWidget(),
-        const SizedBox(height: 20),
-
+        const SizedBox(height: 14),
         // Tab bar + Tab bar view
         Expanded(
           child: GetBuilder<ProfitManageController>(
             id: "TAB_BAR_ID",
             builder: (controller) {
+              final popupDropdownController =
+                  controller.currentTabIndex.value == 0
+                      ? controller.filterProfitPopup
+                      : controller.filterCarPopup;
               return DefaultTabController(
                 length: 2,
                 child: Column(
@@ -57,6 +58,14 @@ class _BodyBuilder extends StatelessWidget {
                       margin: AppPadding.h16,
                       child: Column(
                         children: [
+                          const Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextWidget(
+                                text: " Lợi nhuận theo:",
+                                textStyle: AppTextStyle.semiBold14,
+                                textAlign: TextAlign.start,
+                              )),
+                          const SizedBox(height: 8),
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
@@ -66,6 +75,7 @@ class _BodyBuilder extends StatelessWidget {
                               ),
                             ),
                             child: TabBar(
+                              controller: controller.tabController,
                               dividerHeight: 0,
                               labelColor: Colors.white,
                               unselectedLabelColor: AppColors.grey,
@@ -75,8 +85,14 @@ class _BodyBuilder extends StatelessWidget {
                               ),
                               indicatorSize: TabBarIndicatorSize.tab,
                               tabs: const [
-                                Tab(text: "Thống kê theo năm"),
-                                Tab(text: "Thống kê theo xe"),
+                                Tab(
+                                  height: 40,
+                                  text: "Tháng/Năm",
+                                ),
+                                Tab(
+                                  height: 40,
+                                  text: "Xe đã bán",
+                                ),
                               ],
                             ),
                           ),
@@ -84,19 +100,27 @@ class _BodyBuilder extends StatelessWidget {
                           Row(
                             children: [
                               CustomPopupDropdown(
-                                controller: controller.filterCarPopup,
-                                onSelected: controller.onFilterSelected,
+                                controller: popupDropdownController,
+                                onSelected: controller.onFilter,
                               ),
-                              const SizedBox(width: 50),
-                              const Expanded(child: SearchWidget(height: 40))
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: SearchWidget(
+                                  searchController:
+                                      controller.searchController,
+                                  onSearch: controller.onSearch,
+                                  height: 40,
+                                ),
+                              )
                             ],
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     Expanded(
                       child: TabBarView(
+                        controller: controller.tabController,
                         children: [
                           controller.isLoading
                               ? const Center(
@@ -107,7 +131,11 @@ class _BodyBuilder extends StatelessWidget {
                               ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
-                              : const CarProfitSection(),
+                              : CarProfitSection(
+                                  soldCars: controller
+                                          .profitMatrix.value.soldList ??
+                                      [],
+                                ),
                         ],
                       ),
                     ),

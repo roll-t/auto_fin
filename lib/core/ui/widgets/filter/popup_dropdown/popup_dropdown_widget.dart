@@ -4,6 +4,7 @@ import 'package:auto_find/core/model/ui/popup_dropdown_model.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_controller.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
+import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +26,10 @@ class CustomPopupDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _showPopupMenu(popupContext ?? context),
+      onTap: () {
+        KeyboardUtils.hiddenKeyboard();
+        _showPopupMenu(popupContext ?? context);
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 5,

@@ -222,6 +222,7 @@ class CustomTextField extends StatelessWidget {
       style: TextStyle(
         color: textColor ?? AppColors.text700,
         fontSize: textSize ?? 14,
+        fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         filled: true,
@@ -230,9 +231,9 @@ class CustomTextField extends StatelessWidget {
             : AppColors.neutralColor6,
         hintText: hintText,
         hintStyle: TextStyle(
-          color: hintColor ?? AppColors.palette2,
-          fontSize: 14,
-        ),
+            color: hintColor ?? AppColors.grey,
+            fontSize: 14,
+            fontWeight: FontWeight.w400),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         errorText: errorText,
@@ -297,15 +298,16 @@ class CustomTextField extends StatelessWidget {
       style: TextStyle(
         color: textColor ?? Colors.black,
         fontSize: textSize ?? 14,
+        fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         filled: true,
-        fillColor:
-            enabled ? backgroundColor ?? Colors.white : AppColors.neutralColor6,
+        fillColor: enabled ? backgroundColor ?? Colors.white : AppColors.neutralColor6,
         hintText: hintText,
         hintStyle: TextStyle(
           color: hintColor ?? Colors.grey,
           fontSize: 14,
+          fontWeight: FontWeight.w400,
         ),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon ??

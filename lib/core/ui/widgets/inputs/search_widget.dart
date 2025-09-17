@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class SearchWidget extends StatelessWidget {
   final Function(String value)? onSearch;
   final Function(String value)? onSubmit;
+  final TextEditingController ? searchController;
   final double height;
   final String hint;
   final Color? backgroundColor;
@@ -18,11 +19,13 @@ class SearchWidget extends StatelessWidget {
     this.onSubmit,
     this.height = 45,
     this.backgroundColor,
+    this.searchController,
   });
 
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
+      controller: searchController,
       onSubmit: onSubmit,
       onChanged: onSearch,
       enableBorder: true,

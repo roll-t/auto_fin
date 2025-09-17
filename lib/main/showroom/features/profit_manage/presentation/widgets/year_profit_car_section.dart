@@ -15,6 +15,7 @@ class YearProfitCarSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<MonthProfit> listMonthProfit = controller.listMonthProfit;
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 40),
       itemCount: listMonthProfit.length,
       itemBuilder: (context, index) {
         final MonthProfit monthProfit = listMonthProfit[index];
@@ -36,7 +37,6 @@ class ProfitYearCard extends StatelessWidget {
     final displayMonth = monthProfit.month.toString().padLeft(2, '0');
     final displayYear = monthProfit.year.toString();
     final displayProfit = "${monthProfit.profit.toStringAsFixed(1)} triệu";
-
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

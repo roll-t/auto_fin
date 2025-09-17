@@ -297,7 +297,7 @@ class _BuildFormBody extends StatelessWidget {
                     backgroundColor: AppColors.white,
                     height: 45,
                     textSize: 14,
-                    type: CustomTextFieldType.text,
+                    type: CustomTextFieldType.money,
                     controller: controller.priceController,
                   ),
                   const SizedBox(height: 10),
@@ -308,7 +308,7 @@ class _BuildFormBody extends StatelessWidget {
                     controller: controller.profitController,
                     height: 45,
                     textSize: 14,
-                    type: CustomTextFieldType.text,
+                    type: CustomTextFieldType.money,
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(

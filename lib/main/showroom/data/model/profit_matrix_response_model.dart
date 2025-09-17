@@ -1,7 +1,9 @@
+import 'package:auto_find/main/showroom/data/model/car_model.dart';
+
 /// Root model
 class ProfitMatrixResponseModel {
   final List<ProfitMatrixYear>? matrix;
-  final List<SoldCar>? soldList;
+  List<CarModel>? soldList;
   final Totals? totals;
 
   ProfitMatrixResponseModel({
@@ -16,7 +18,7 @@ class ProfitMatrixResponseModel {
           ?.map((e) => ProfitMatrixYear.fromJson(e as Map<String, dynamic>))
           .toList(),
       soldList: (json['sold_list'] as List<dynamic>?)
-          ?.map((e) => SoldCar.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => CarModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       totals: json['totals'] != null
           ? Totals.fromJson(json['totals'] as Map<String, dynamic>)
@@ -145,109 +147,6 @@ class ProfitMatrixYear {
       };
 }
 
-/// Thông tin xe đã bán
-class SoldCar {
-  final int? id;
-  final String? brand;
-  final String? color;
-  final String? name;
-  final String? product;
-  final String? type;
-  final String? plate;
-  final String? des;
-  final String? status;
-  final String? releaseYear;
-  final double? importPrice;
-  final double? price;
-  final double? profit;
-  final double? soldPrice;
-  final double? soldCost;
-  final double? importCost;
-  final DateTime? importDate;
-  final DateTime? soldDate;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
-  SoldCar({
-    this.id,
-    this.brand,
-    this.color,
-    this.name,
-    this.product,
-    this.type,
-    this.plate,
-    this.des,
-    this.status,
-    this.releaseYear,
-    this.importPrice,
-    this.price,
-    this.profit,
-    this.soldPrice,
-    this.soldCost,
-    this.importCost,
-    this.importDate,
-    this.soldDate,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory SoldCar.fromJson(Map<String, dynamic> json) {
-    double? toDouble(dynamic value) =>
-        value == null ? null : (value as num).toDouble();
-
-    DateTime? toDate(String? value) =>
-        value == null ? null : DateTime.tryParse(value);
-
-    return SoldCar(
-      id: json['id'] is String
-          ? int.tryParse(json['id'])
-          : (json['id'] as int?),
-      brand: json['brand'],
-      color: json['color'],
-      name: json['name'],
-      product: json['product'],
-      type: json['type'],
-      plate: json['plate'],
-      des: json['des'],
-      status: json['status'],
-      releaseYear: json['release_year']?.toString(),
-      importPrice: toDouble(json['import_price']),
-      price: toDouble(json['price']),
-      profit: toDouble(json['profit']),
-      soldPrice: toDouble(json['sold_price']),
-      soldCost: toDouble(json['sold_cost']),
-      importCost: toDouble(json['import_cost']),
-      importDate: toDate(json['import_date']),
-      soldDate: toDate(json['sold_date']),
-      createdAt: toDate(json['createdAt']),
-      updatedAt: toDate(json['updatedAt']),
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'brand': brand,
-        'color': color,
-        'name': name,
-        'product': product,
-        'type': type,
-        'plate': plate,
-        'des': des,
-        'status': status,
-        'release_year': releaseYear,
-        'import_price': importPrice,
-        'price': price,
-        'profit': profit,
-        'sold_price': soldPrice,
-        'sold_cost': soldCost,
-        'import_cost': importCost,
-        'import_date': importDate?.toIso8601String(),
-        'sold_date': soldDate?.toIso8601String(),
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
-      };
-}
-
 /// Tổng lợi nhuận + giá trị
 class Totals {
   final Map<String, YearTotal>? byYear;
@@ -328,4 +227,12 @@ class MonthProfit {
     required this.month,
     required this.profit,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'year': year,
+      'month': month,
+      'profit': profit,
+    };
+  }
 }

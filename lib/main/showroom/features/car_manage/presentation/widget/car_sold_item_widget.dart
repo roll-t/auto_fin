@@ -103,7 +103,7 @@ class CarSoldItemWidget extends StatelessWidget {
             /// Giá bán
             TextSpanWidget(
               textColor1: AppColors.grey,
-              textColor2: AppColors.green,
+              textColor2: AppColors.blue,
               fontWeight2: FontWeight.bold,
               text1: 'Giá bán: ',
               text2: carModel.soldPrice.toString().toCurrency(withSymbol: true),
@@ -122,6 +122,32 @@ class CarSoldItemWidget extends StatelessWidget {
               size: 12,
             ),
 
+            const SizedBox(height: 6.0),
+
+            /// Biển số + Năm SX
+            Row(
+              children: [
+                Expanded(
+                  child: TextSpanWidget(
+                    textColor1: AppColors.grey,
+                    textColor2: AppColors.palette1,
+                    fontWeight2: FontWeight.bold,
+                    text1: 'Biển số: ',
+                    text2: carModel.plate.orNA(),
+                    size: 12,
+                  ),
+                ),
+                TextSpanWidget(
+                  textColor1: AppColors.grey,
+                  textColor2: AppColors.palette1,
+                  fontWeight2: FontWeight.bold,
+                  text1: 'Năm SX: ',
+                  text2: carModel.releaseYear.orNA(),
+                  size: 12,
+                ),
+              ],
+            ),
+
             if (carModel.soldDes?.isNotEmpty ?? false) ...[
               const SizedBox(height: 6.0),
               TextSpanWidget(
@@ -132,7 +158,7 @@ class CarSoldItemWidget extends StatelessWidget {
                 text2: carModel.soldDes!,
                 size: 12,
               ),
-            ]
+            ],
           ],
         ),
       ),

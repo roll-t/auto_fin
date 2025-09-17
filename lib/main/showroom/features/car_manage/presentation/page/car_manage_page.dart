@@ -333,7 +333,7 @@ class _ShowroomTabContent extends StatelessWidget {
         const SizedBox(height: 12),
         _FilterBarWidget(controller: controller),
         const SizedBox(height: 12),
-        _infoRow("Số lượng", "${controller.cars.length}"),
+        _infoRow("Số lượng kho", "${controller.cars.length}"),
         const SizedBox(height: 8),
         _infoRow("Giá trị kho",
             "${controller.inventoryValue.value.toString().toCurrency()} VND"),
