@@ -69,7 +69,9 @@ class CarRepository {
   }
 
   Future<void> updateCar(CarModel car) async {
+    DialogUtils.showProgressDialog();
     final result = await _api.updateCar(car.id ?? 0, car);
+    Get.back();
     if (result.data is Map<String, dynamic>) {
       DialogUtils.showAlert(
         alertType: result.isSuccess ? AlertType.success : AlertType.error,

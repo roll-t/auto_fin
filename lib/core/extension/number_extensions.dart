@@ -1,38 +1,40 @@
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:intl/intl.dart';
 
-// extension NumCurrencyExtension on num? {
-//   String toCurrency({bool withSymbol = false}) {
-//     final formatter = NumberFormat.currency(
-//       locale: 'vi_VN',
-//       symbol: withSymbol ? '₫' : '',
-//       decimalDigits: 0,
-//     );
-//     return formatter.format(this ?? 0);
-//   }
-// }
-
-/// 👉 Extension cho String: format lại và convert về double
 extension StringCurrencyExtension on String? {
-  /// Format thành tiền tệ (dùng khi hiển thị)
   String toCurrency({bool withSymbol = false}) {
-    if (this == null || this!.isEmpty) return '';
-    final value = num.tryParse(this!.replaceAll('.', '').replaceAll(',', ''));
+    if (this == null || this!.trim().isEmpty) return '';
+
+    final raw = this!.trim();
+
+    final normalized = raw.replaceAll(',', '.');
+
+    final value = num.tryParse(normalized);
     if (value == null) return this!;
+
     final formatter = NumberFormat.currency(
       locale: 'vi_VN',
-      symbol: withSymbol ? 'VND' : '',
+      symbol: withSymbol ? ' VND' : '',
       decimalDigits: 0,
     );
+
     return formatter.format(value);
   }
 
-  /// Convert về double để gửi lên API
-  double toCurrencyDouble() {
-    if (this == null || this!.isEmpty) return 0;
-    return double.tryParse(this!.replaceAll('.', '').replaceAll(',', '')) ?? 0;
+  num toCurrencyNum() {
+    if (this == null || this!.trim().isEmpty) return 0;
+
+    var cleaned = this!.replaceAll(RegExp(r'[^0-9,]'), '');
+
+    if (cleaned.contains(',')) {
+      var parts = cleaned.split(',');
+      cleaned = '${parts[0]}.${parts[1]}';
+      return double.tryParse(cleaned) ?? 0;
+    }
+    return int.tryParse(cleaned) ?? 0;
   }
 }
+
 extension CurrencyFormatter on String {
   String toCurrencyWithUnit(BottomSheetController currencyUnitController) {
     if (trim().isEmpty) return "0";
@@ -66,7 +68,8 @@ extension CurrencyFormatter on String {
     // Đổi dấu phân cách nghìn thành khoảng trắng
     if (formatted.contains(',')) {
       final parts = formatted.split(',');
-      formatted = '${parts[0].replaceAll('.', '.')}${unitId == "million" || unitId == "billion" ? ',${parts[1]}' : ''}';
+      formatted =
+          '${parts[0].replaceAll('.', '.')}${unitId == "million" || unitId == "billion" ? ',${parts[1]}' : ''}';
     } else {
       formatted = formatted.replaceAll('.', '.');
     }

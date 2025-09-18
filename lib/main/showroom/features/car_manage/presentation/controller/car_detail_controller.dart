@@ -94,11 +94,10 @@ class CarDetailController extends GetxController
       profitController.text = (car.profit ?? 0).toString().toCurrency();
 
       importDateController.text = car.importDate.toString().toVNDate();
-      importPriceController.text =
-          (car.importPrice ?? 0).toString().toCurrency();
+      importPriceController.text =(car.importPrice ?? 0).toString().toCurrency();
       importCostController.text = (car.importCost ?? 0).toString().toCurrency();
 
-      soldDateController.text = car.soldDate.toString().toVNDate();
+      soldDateController.text = (car.soldDate ?? "").toString().toVNDate();
       soldPriceController.text = (car.soldPrice ?? 0).toString().toCurrency();
       soldCostController.text = (car.soldCost ?? 0).toString().toCurrency();
 
@@ -139,6 +138,7 @@ class CarDetailController extends GetxController
     update([
       "EDIT_ICON_ID",
       "FORM_ID",
+      "BOTTOM_BAR_ID",
     ]);
   }
 
@@ -164,11 +164,9 @@ class CarDetailController extends GetxController
         },
       );
 
-  /// BottomSheet chọn loại xe
   void showTypeCarBottomSheet() => showSelectBottomSheet(
         title: "Chọn loại xe",
-        list: _dropdownDataCarFeatureController
-            .typeCarList, // 🔹 dùng list từ API
+        list: _dropdownDataCarFeatureController.typeCarList,
         onSelected: (item) {
           selectedTypeCar.value = item;
           typeCarController.text = (selectedTypeCar.value.title).orNA();
@@ -203,17 +201,19 @@ class CarDetailController extends GetxController
       );
 
   /// Cập nhật thông tin cơ bản của xe
-  Future<void> updateCarInfo() async {
+  /// Cập nhật thông tin xe (gồm cả thông tin cơ bản & giao dịch)
+  Future<void> updateCar() async {
     KeyboardUtils.hiddenKeyboard();
 
-    // ✅ Thêm validate trước khi xử lý
-    if (!validateCarInfo()) return;
+    // Validate theo option
+    if (!validateCar()) return;
 
     try {
       final currentCar = carDetail.value;
       if (currentCar == null) return;
 
       final updatedCar = currentCar.copyWith(
+        // --- Thông tin cơ bản ---
         name: nameController.text,
         plate: plateController.text,
         releaseYear: releaseYearController.text,
@@ -222,57 +222,33 @@ class CarDetailController extends GetxController
         color: selectedColor.value.title,
         product: selectedModel.value,
         status: selectedStatus.value,
-        price: double.tryParse(priceController.text),
-        profit: double.tryParse(profitController.text),
+        price: priceController.text.toCurrencyNum().toDouble(),
         des: currentCar.des,
-      );
-
-      // 🔍 So sánh dữ liệu cũ và mới
-      if (updatedCar.toJson().toString() == currentCar.toJson().toString()) {
-        Fluttertoast.showToast(msg: "Nội dung không có gì thay đổi");
-        return;
-      }
-
-      await _carUsecase.updateCar(updatedCar);
-      carDetail.value = updatedCar;
-      update(["FORM_ID"]);
-    } catch (e) {
-      AppLogger.e("❌ updateCarInfo error: $e");
-    }
-  }
-
-  /// Cập nhật thông tin mua bán xe
-  Future<void> updateTransactionInfo() async {
-    KeyboardUtils.hiddenKeyboard();
-
-    // ✅ Thêm validate trước khi xử lý
-    if (!validateTransactionInfo()) return;
-
-    try {
-      final currentCar = carDetail.value;
-      if (currentCar == null) return;
-      final updatedCar = currentCar.copyWith(
-        importDate: DateTime.tryParse(importDateController.text),
-        importPrice: double.tryParse(importPriceController.text),
-        importCost: double.tryParse(importCostController.text),
-        soldDate: DateTime.tryParse(soldDateController.text.toIsoUtcString().toString()),
-        soldPrice: double.tryParse(soldPriceController.text),
-        soldCost: double.tryParse(soldCostController.text),
+        // --- Thông tin giao dịch ---
+        importDate: importDateController.text.toIsoUtcDateTime(),
+        importPrice: importPriceController.text.toCurrencyNum().toDouble(),
+        importCost: importCostController.text.toCurrencyNum().toDouble(),
+        soldDate: soldDateController.text.toIsoUtcDateTime(),
+        soldPrice: soldPriceController.text.toCurrencyNum().toDouble(),
+        soldCost: soldCostController.text.toCurrencyNum().toDouble(),
         soldDes: currentCar.soldDes,
-        profit: profitController.text.toCurrencyDouble(),
       );
+
       await _carUsecase.updateCar(updatedCar);
       carDetail.value = updatedCar;
       update(["FORM_ID"]);
     } catch (e) {
-      AppLogger.e("❌ updateTransactionInfo error: $e");
+      AppLogger.e("❌ updateCar error: $e");
     }
   }
 
   /// ---------------- VALIDATION ----------------
   /// ✅ Validate thông tin cơ bản xe
-  bool validateCarInfo() {
+  /// Validate thông tin xe
+  bool validateCar() {
     RxString messErrorValidate = "".obs;
+
+    // --- Validate thông tin cơ bản ---
     if (nameController.text.isEmpty) {
       messErrorValidate.value = "Tên xe không được để trống";
     } else if (plateController.text.isEmpty) {
@@ -284,34 +260,16 @@ class CarDetailController extends GetxController
       messErrorValidate.value = "Vui lòng chọn hãng xe";
     } else if (selectedTypeCar.value.title?.isEmpty ?? true) {
       messErrorValidate.value = "Vui lòng chọn loại xe";
-    } else if (colorController.text.isEmpty) {
-      messErrorValidate.value = "Màu xe không được để trống";
-    } else if (modelController.text.isEmpty) {
-      messErrorValidate.value = "Mẫu xe không được để trống";
     } else if (statusController.text.isEmpty) {
       messErrorValidate.value = "Trạng thái xe không được để trống";
     }
-
-    if (messErrorValidate.value.isNotEmpty) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: messErrorValidate.value,
-      );
-      return false;
-    }
-
-    return true;
-  }
-
-  /// ✅ Validate thông tin mua bán xe
-  bool validateTransactionInfo() {
-    RxString messErrorValidate = "".obs;
-
+    // --- Validate thông tin giao dịch ---
     if (importDateController.text.isEmpty) {
       messErrorValidate.value = "Ngày mua không được để trống";
     } else if (importPriceController.text.isEmpty) {
       messErrorValidate.value = "Giá mua không hợp lệ";
     }
+
     if (messErrorValidate.value.isNotEmpty) {
       DialogUtils.showAlert(
         alertType: AlertType.error,
@@ -319,6 +277,7 @@ class CarDetailController extends GetxController
       );
       return false;
     }
+
     return true;
   }
 

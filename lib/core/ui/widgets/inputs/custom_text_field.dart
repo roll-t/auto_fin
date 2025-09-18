@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/formatters/money_input_enums.dart';
 import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
+import 'package:intl/intl.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? label;
@@ -264,10 +265,10 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(color: color, width: borderWidth),
           );
 
-    final moneyFormatter = MoneyInputFormatter(
-      thousandSeparator: ThousandSeparator.Period,
-      mantissaLength: 0,
-    );
+    // final moneyFormatter = MoneyInputFormatter(
+    //   thousandSeparator: ThousandSeparator.Period,
+    //   mantissaLength: 0,
+    // );
 
     return TextField(
       controller: controller,
@@ -277,22 +278,29 @@ class CustomTextField extends StatelessWidget {
       textInputAction: TextInputAction.done,
       inputFormatters: [
         TextInputFormatter.withFunction((oldValue, newValue) {
+          // Nếu xoá hết dữ liệu -> trả về "0"
           if (newValue.text.isEmpty) {
             return const TextEditingValue(
-              text: '',
-              selection: TextSelection.collapsed(offset: 0),
+              text: '0',
+              selection:
+                  TextSelection.collapsed(offset: 1), // con trỏ ngay sau số 0
             );
           }
 
+          // Parse số (bỏ dấu '.')
           final numericValue =
               int.tryParse(newValue.text.replaceAll('.', '')) ?? 0;
+
           if (numericValue > 999999999999) {
-            // Giữ giá trị cũ nếu vượt quá 999.999.999.999
             return oldValue;
           }
 
-          // Format theo VND
-          return moneyFormatter.formatEditUpdate(oldValue, newValue);
+          final formatted = NumberFormat("#,###", "vi_VN").format(numericValue);
+
+          return TextEditingValue(
+            text: formatted,
+            selection: TextSelection.collapsed(offset: formatted.length),
+          );
         }),
       ],
       style: TextStyle(
@@ -302,7 +310,8 @@ class CustomTextField extends StatelessWidget {
       ),
       decoration: InputDecoration(
         filled: true,
-        fillColor: enabled ? backgroundColor ?? Colors.white : AppColors.neutralColor6,
+        fillColor:
+            enabled ? backgroundColor ?? Colors.white : AppColors.neutralColor6,
         hintText: hintText,
         hintStyle: TextStyle(
           color: hintColor ?? Colors.grey,
@@ -317,7 +326,10 @@ class CustomTextField extends StatelessWidget {
               child: Center(
                 child: Text(
                   "VND",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
             ),

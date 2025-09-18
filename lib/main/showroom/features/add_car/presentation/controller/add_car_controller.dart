@@ -24,7 +24,8 @@ class AddCarController extends GetxController {
   final nameController = TextEditingController();
   final plateController = TextEditingController();
   final yearController = TextEditingController();
-  final buyDateController = TextEditingController(text: DateTime.now().toString().toVNDate());
+  final buyDateController =
+      TextEditingController(text: DateTime.now().toString().toVNDate());
   final buyPriceController = TextEditingController();
   final buyCostController = TextEditingController();
   final sellPriceController = TextEditingController();
@@ -145,7 +146,7 @@ class AddCarController extends GetxController {
     // 9️⃣ Giá niêm yết bán (không bắt buộc → bỏ qua nếu rỗng)
 
     // 🔟 Giá mua
-    final buyPrice = buyPriceController.text.toCurrencyDouble();
+    final buyPrice = buyPriceController.text.toCurrencyNum();
     if (buyPriceController.text.trim().isEmpty || buyPrice <= 0) {
       DialogUtils.showAlert(
         alertType: AlertType.error,
@@ -181,13 +182,13 @@ class AddCarController extends GetxController {
         color: selectedColor.value?.title ?? "",
         status: selectedStatus.value?.title ?? "",
         // Giá & chi phí
-        importPrice: buyPriceController.text.toCurrencyDouble(),
-        importCost: buyCostController.text.toCurrencyDouble(),
-        price:sellPriceController.text.toCurrencyDouble(), // nếu rỗng sẽ là 0.0
+        importPrice: buyPriceController.text.toCurrencyNum().toDouble(),
+        importCost: buyCostController.text.toCurrencyNum().toDouble(),
+        price: sellPriceController.text.toCurrencyNum().toDouble(),
 
         // Optional
         product: selectedModel.value?.title ?? "",
-        des: "", // bạn có thể thêm TextController mô tả xe
+        des: "",
         profit: 0,
         soldCost: 0,
         soldDate: null,
