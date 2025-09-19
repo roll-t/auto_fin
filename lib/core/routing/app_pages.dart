@@ -10,6 +10,8 @@ import 'package:auto_find/main/showroom/features/car_manage/presentation/page/ca
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_detail_page.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/di/profit_manage_binding.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/page/profit_manage_page.dart';
+import 'package:auto_find/main/showroom/features/statistic/di/statistic_vehicle_binding.dart';
+import 'package:auto_find/main/showroom/features/statistic/presentation/page/statistic_vehicle_page.dart';
 import 'package:auto_find/main/splash/di/splash_binding.dart';
 import 'package:auto_find/main/splash/presentation/page/splash_page.dart';
 import 'package:auto_find/main/user/features/auth/login/di/login_binding.dart';
@@ -76,5 +78,13 @@ final appPage = [
     name: const CarDetailPage().routeName,
     page: () => const CarDetailPage(),
     binding: CarDetailBinding(),
+  ),
+  GetPage(
+    name: const StatisticVehiclePage().routeName,
+    page: () => const StatisticVehiclePage(),
+    bindings: [
+      StatisticVehicleBinding(),
+      ShowroomBinding(),
+    ],
   ),
 ];

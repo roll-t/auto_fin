@@ -1,4 +1,5 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
+import 'package:auto_find/main/showroom/data/model/car_chart_model.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
@@ -86,7 +87,7 @@ class CarUsecase {
   }
 
   /// Dữ liệu biểu đồ line/bar
-  Future<Map<String, dynamic>> getCharts(int year) {
+  Future<CarChartsModel> getCharts(int year) {
     return _repo.getCharts(year: year);
   }
 

@@ -1,5 +1,6 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
+import 'package:auto_find/main/showroom/data/model/car_chart_model.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
@@ -49,7 +50,9 @@ class CarRepository {
   }
 
   Future<CarModel> getCarDetail(int id) async {
+    DialogUtils.showProgressDialog();
     final result = await _api.getCarDetail(id);
+    Get.back();
     if (result.isSuccess) {
       return CarModel.fromJson(result.data);
     }
@@ -136,11 +139,21 @@ class CarRepository {
   }
 
   /// Biểu đồ line/bar
-  Future<Map<String, dynamic>> getCharts({required int year}) async {
-    final result = await _api.getCharts(year: year);
-    if (result.isSuccess) return result.data;
-    throw Exception(result.message);
+/// Biểu đồ line/bar
+Future<CarChartsModel> getCharts({required int year}) async {
+  final result = await _api.getCharts(year: year);
+
+  if (result.isSuccess) {
+    final data = result.data;
+    if (data is Map<String, dynamic>) {
+      return CarChartsModel.fromJson(data);
+    } else {
+      throw Exception("Invalid data format from API");
+    }
+  } else {
+    throw Exception(result.message ?? "Unknown error");
   }
+}
 
   /// Ma trận lợi nhuận
   Future<ProfitMatrixResponseModel> getProfitMatrix(

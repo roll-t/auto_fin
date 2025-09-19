@@ -188,12 +188,16 @@ class ProfitManageController extends GetxController
   void onYearSelected(ItemModel item) {
     yearSelected = item;
     monthSelected = ItemModel(id: "", title: "Tất cả");
+    filterProfitPopup.selectedItem.value = const PopupDropdownModel(id: 'all', label: 'Tất cả');
+    filterCarPopup.selectedItem.value = const PopupDropdownModel(id: 'all', label: 'Tất cả');
     monthBottomSheetController.itemSelected.value = monthSelected!;
     fetchProfitMatrix();
   }
 
   void onMonthSelected(ItemModel item) {
     monthSelected = item;
+    filterProfitPopup.selectedItem.value = const PopupDropdownModel(id: 'all', label: 'Tất cả');
+    filterCarPopup.selectedItem.value = const PopupDropdownModel(id: 'all', label: 'Tất cả');
     fetchProfitMatrix();
   }
 

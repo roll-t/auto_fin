@@ -57,8 +57,8 @@ class CarDetailController extends GetxController
   Rx<ItemModel> selectedTypeCar = ItemModel().obs;
   Rx<ItemModel> selectedColor = ItemModel().obs;
 
-  RxString selectedModel = ''.obs;
-  RxString selectedStatus = ''.obs;
+  Rx<ItemModel> selectedModel = ItemModel().obs;
+  Rx<ItemModel> selectedStatus = ItemModel().obs;
 
   // 🔽 Thêm controller cho dropdown
   final brandController = TextEditingController();
@@ -94,7 +94,8 @@ class CarDetailController extends GetxController
       profitController.text = (car.profit ?? 0).toString().toCurrency();
 
       importDateController.text = car.importDate.toString().toVNDate();
-      importPriceController.text =(car.importPrice ?? 0).toString().toCurrency();
+      importPriceController.text =
+          (car.importPrice ?? 0).toString().toCurrency();
       importCostController.text = (car.importCost ?? 0).toString().toCurrency();
 
       soldDateController.text = (car.soldDate ?? "").toString().toVNDate();
@@ -111,11 +112,11 @@ class CarDetailController extends GetxController
       selectedTypeCar.value = ItemModel(title: car.type.orNA());
       typeCarController.text = (selectedTypeCar.value.title).orNA();
 
-      selectedModel.value = car.product.orNA();
-      modelController.text = selectedModel.value;
+      selectedModel.value = ItemModel(title: car.product.orNA());
+      modelController.text = (selectedModel.value.title).orNA();
 
-      selectedStatus.value = car.status.orNA();
-      statusController.text = selectedStatus.value;
+      selectedStatus.value = ItemModel(title: car.status.orNA());
+      statusController.text = (selectedStatus.value.title).orNA();
     } catch (e) {
       AppLogger.e("❌ Lỗi khi fetchCarDetail: $e");
       Get.snackbar("Lỗi", "Không thể lấy thông tin xe");
@@ -186,8 +187,8 @@ class CarDetailController extends GetxController
         title: "Chọn mẫu xe",
         list: _dropdownDataCarFeatureController.modelList,
         onSelected: (item) {
-          selectedModel.value = item.title.orNA();
-          modelController.text = selectedModel.value;
+          selectedModel.value = item;
+          modelController.text = selectedModel.value.title.orEmpty();
         },
       );
 
@@ -195,8 +196,14 @@ class CarDetailController extends GetxController
         title: "Chọn trạng thái xe",
         list: _dropdownDataCarFeatureController.statusList,
         onSelected: (item) {
-          selectedStatus.value = item.title.orNA();
-          statusController.text = selectedStatus.value;
+          selectedStatus.value = item;
+          statusController.text = selectedStatus.value.title.orEmpty();
+          if (selectedStatus.value.id == "sold") {
+            soldDateController.text = DateTime.now().toString().toVNDate();
+          } else {
+            soldDateController.text = "";
+          }
+          update(["SALES_INFO_ID"]);
         },
       );
 
@@ -212,22 +219,37 @@ class CarDetailController extends GetxController
       final currentCar = carDetail.value;
       if (currentCar == null) return;
 
+      if (selectedStatus.value.id != "sold" &&
+          selectedStatus.value.title?.trim() != "Xe đã bán") {
+        soldDateController.text = "";
+        soldPriceController.text = "0";
+        soldCostController.text = "0";
+        print("CHECK ${selectedStatus.value.title}");
+      }
+
       final updatedCar = currentCar.copyWith(
         // --- Thông tin cơ bản ---
         name: nameController.text,
-        plate: plateController.text,
+        plate: plateController.text, // Biển số xe
         releaseYear: releaseYearController.text,
-        brand: selectedBrand.value.title,
-        type: selectedTypeCar.value.title,
+        brand: selectedBrand.value.title, // Hãng xe
+        type: selectedTypeCar.value.title, // Loại xe
         color: selectedColor.value.title,
-        product: selectedModel.value,
-        status: selectedStatus.value,
-        price: priceController.text.toCurrencyNum().toDouble(),
+        product: selectedModel.value.title, // Mẫu xe
+        status: selectedStatus.value.title, // Trạng thái
+        price: priceController.text.toCurrencyNum().toDouble(), // Giá nêm yết
         des: currentCar.des,
+
         // --- Thông tin giao dịch ---
+        // --- Thông tin mua ---
         importDate: importDateController.text.toIsoUtcDateTime(),
         importPrice: importPriceController.text.toCurrencyNum().toDouble(),
         importCost: importCostController.text.toCurrencyNum().toDouble(),
+
+        // --- Thông tin bán ---
+        /**
+         * Nếu trạng thái xe khác "Xe đã bán" thì dữ liệu các trường này tự reset về rỗng
+         * **/
         soldDate: soldDateController.text.toIsoUtcDateTime(),
         soldPrice: soldPriceController.text.toCurrencyNum().toDouble(),
         soldCost: soldCostController.text.toCurrencyNum().toDouble(),
@@ -237,6 +259,7 @@ class CarDetailController extends GetxController
       await _carUsecase.updateCar(updatedCar);
       carDetail.value = updatedCar;
       update(["FORM_ID"]);
+      refreshData();
     } catch (e) {
       AppLogger.e("❌ updateCar error: $e");
     }
@@ -247,12 +270,9 @@ class CarDetailController extends GetxController
   /// Validate thông tin xe
   bool validateCar() {
     RxString messErrorValidate = "".obs;
-
     // --- Validate thông tin cơ bản ---
     if (nameController.text.isEmpty) {
       messErrorValidate.value = "Tên xe không được để trống";
-    } else if (plateController.text.isEmpty) {
-      messErrorValidate.value = "Biển số xe không được để trống";
     } else if (releaseYearController.text.isEmpty ||
         int.tryParse(releaseYearController.text) == null) {
       messErrorValidate.value = "Năm sản xuất không hợp lệ";
@@ -263,11 +283,30 @@ class CarDetailController extends GetxController
     } else if (statusController.text.isEmpty) {
       messErrorValidate.value = "Trạng thái xe không được để trống";
     }
+
     // --- Validate thông tin giao dịch ---
     if (importDateController.text.isEmpty) {
       messErrorValidate.value = "Ngày mua không được để trống";
     } else if (importPriceController.text.isEmpty) {
       messErrorValidate.value = "Giá mua không hợp lệ";
+    }
+
+    if (selectedStatus.value.id == "sold") {
+      if (soldDateController.text.isEmpty) {
+        messErrorValidate.value = "Không được bỏ trống ngày bán";
+      }
+      final soldPrice = double.tryParse(
+            soldPriceController.text
+                .toCurrencyNum()
+                .toString()
+                .replaceAll(",", "")
+                .trim(),
+          ) ??
+          0;
+
+      if (soldPrice <= 0) {
+        messErrorValidate.value = "Giá bán không hợp lệ";
+      }
     }
 
     if (messErrorValidate.value.isNotEmpty) {
@@ -279,6 +318,68 @@ class CarDetailController extends GetxController
     }
 
     return true;
+  }
+
+  /// Refresh lại dữ liệu chi tiết xe
+  Future<void> refreshData() async {
+    final id = argsData?.id;
+    if (id == null || id == 0) {
+      AppLogger.e("❌ refreshData: Không tìm thấy id xe");
+      return;
+    }
+    try {
+      isLoading.value = true;
+      update(["FORM_ID"]);
+
+      final car = await _carUsecase.getCarDetail(id);
+      carDetail.value = car;
+
+      // Gọi fill lại dữ liệu vào controller
+      _fillDataToControllers(car);
+
+      Fluttertoast.showToast(msg: "Dữ liệu đã được làm mới");
+    } catch (e) {
+      AppLogger.e("❌ Lỗi khi refreshData: $e");
+      Get.snackbar("Lỗi", "Không thể làm mới dữ liệu xe");
+    } finally {
+      isLoading.value = false;
+      update(["FORM_ID"]);
+    }
+  }
+
+  /// Đoạn fill dữ liệu mình tách riêng ra để dùng chung
+  void _fillDataToControllers(CarModel car) {
+    // ---- Fill dữ liệu vào controller ----
+    nameController.text = car.name.orEmpty();
+    plateController.text = car.plate.orEmpty();
+    releaseYearController.text = car.releaseYear.toString();
+
+    priceController.text = (car.price ?? 0).toString().toCurrency();
+    profitController.text = (car.profit ?? 0).toString().toCurrency();
+
+    importDateController.text = car.importDate.toString().toVNDate();
+    importPriceController.text = (car.importPrice ?? 0).toString().toCurrency();
+    importCostController.text = (car.importCost ?? 0).toString().toCurrency();
+
+    soldDateController.text = (car.soldDate ?? "").toString().toVNDate();
+    soldPriceController.text = (car.soldPrice ?? 0).toString().toCurrency();
+    soldCostController.text = (car.soldCost ?? 0).toString().toCurrency();
+
+    // ---- Fill dropdown ----
+    selectedBrand.value = ItemModel(title: car.brand);
+    brandController.text = (selectedBrand.value.title).orEmpty();
+
+    selectedColor.value = ItemModel(title: car.color);
+    colorController.text = (selectedColor.value.title).orNA();
+
+    selectedTypeCar.value = ItemModel(title: car.type.orNA());
+    typeCarController.text = (selectedTypeCar.value.title).orNA();
+
+    selectedModel.value = ItemModel(title: car.product.orNA());
+    modelController.text = (selectedModel.value.title).orNA();
+
+    selectedStatus.value = ItemModel(title: car.status.orNA());
+    statusController.text = (selectedStatus.value.title).orNA();
   }
 
   @override

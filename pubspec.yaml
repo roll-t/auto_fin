@@ -48,6 +48,7 @@ dependencies:
   flutter_widget_from_html: ^0.16.1
   mask_text_input_formatter: ^2.9.0
   flutter_multi_formatter: ^2.13.10
+  syncfusion_flutter_charts: ^31.1.19
 
 dev_dependencies:
   flutter_test:
