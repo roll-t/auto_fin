@@ -5,6 +5,7 @@ import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
 import 'package:auto_find/main/showroom/data/model/showroom_cars_model.dart';
 import 'package:auto_find/main/showroom/data/model/sold_cars_model.dart';
+import 'package:auto_find/main/showroom/data/model/top_model.dart';
 import 'package:auto_find/main/showroom/data/repositories/car_repository.dart';
 
 class CarUsecase {
@@ -97,27 +98,27 @@ class CarUsecase {
   }
 
   /// Top 5 thương hiệu lợi nhuận cao nhất
-  Future<List<dynamic>> getTopBrands() {
+  Future<List<TopModel>> getTopBrands() {
     return _repo.getTopBrands();
   }
 
   /// Top 5 sản phẩm lợi nhuận cao nhất
-  Future<List<dynamic>> getTopProducts() {
+  Future<List<TopModel>> getTopProducts() {
     return _repo.getTopProducts();
   }
 
   /// Top 5 xe lợi nhuận cao nhất
-  Future<List<dynamic>> getTopProfit() {
+  Future<List<CarModel>> getTopProfit() {
     return _repo.getTopProfit();
   }
 
   /// Top 5 xe có giá trị cao nhất
-  Future<List<dynamic>> getTopValue() {
+  Future<List<CarModel>> getTopValue() {
     return _repo.getTopValue();
   }
 
   /// Top 5 xe bán gần đây
-  Future<List<dynamic>> getTopRecent() {
+  Future<List<CarModel>> getTopRecent() {
     return _repo.getTopRecent();
   }
 }
