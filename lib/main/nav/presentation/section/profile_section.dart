@@ -7,8 +7,8 @@ import 'package:auto_find/main/user/features/profile/presentation/widgets/info_p
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TabProfile extends CustomState {
-  const TabProfile({super.key});
+class ProfileSection extends CustomState {
+  const ProfileSection({super.key});
 
   @override
   Widget buildBody(BuildContext context) => const _ThemeBuilder();

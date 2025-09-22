@@ -1,12 +1,12 @@
 import 'package:auto_find/core/config/const/app_icons.dart';
-import 'package:auto_find/main/navigation/model/item_menu_feature_model.dart';
+import 'package:auto_find/main/nav/model/item_menu_feature_model.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/page/add_car_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_manage_page.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/page/profit_manage_page.dart';
 import 'package:auto_find/main/showroom/features/statistic/presentation/page/statistic_vehicle_page.dart';
 import 'package:get/get.dart';
 
-class TabManageController extends GetxController {
+class ManageController extends GetxController {
   final List<ItemMenuFeatureModel> listShowroomFeature = [
     ItemMenuFeatureModel(
       title: "Thống kê\nshowroom",

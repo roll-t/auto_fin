@@ -1,8 +1,7 @@
-import 'package:auto_find/main/navigation/di/tab_manage_binding.dart';
-import 'package:auto_find/main/navigation/di/tab_profile_binding%20.dart';
-import 'package:auto_find/main/navigation/presentation/page/tabs/tab_dashboard.dart';
-import 'package:auto_find/main/navigation/presentation/page/tabs/tab_manage.dart';
-import 'package:auto_find/main/navigation/presentation/page/tabs/tab_profile.dart';
+import 'package:auto_find/main/nav/di/manage_section_binding.dart';
+import 'package:auto_find/main/nav/di/profile_section_binding%20.dart';
+import 'package:auto_find/main/nav/presentation/section/manage_section.dart';
+import 'package:auto_find/main/nav/presentation/section/profile_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -11,31 +10,24 @@ class NavigationController extends GetxController {
   final RxInt currentPage = 1.obs;
 
   List<String> routeNames = [
-    const TabDashboard().routeName,
     const TabManage().routeName,
-    const TabProfile().routeName,
+    const ProfileSection().routeName,
   ];
 
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/tab-dashboard':
-        return GetPageRoute(
-          settings: settings,
-          page: () => const TabDashboard(),
-          transition: Transition.fadeIn,
-        );
       case '/tab-manage':
         return GetPageRoute(
           settings: settings,
           page: () => const TabManage(),
           transition: Transition.fadeIn,
-          binding: TabManageBinding(),
+          binding: ManageSectionBinding(),
         );
       case '/tab-profile':
         return GetPageRoute(
           settings: settings,
-          page: () => const TabProfile(),
-          binding: TabProfileBinding(),
+          page: () => const ProfileSection(),
+          binding: ProfileSectionBinding(),
           transition: Transition.fadeIn,
         );
     }

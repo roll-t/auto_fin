@@ -1,4 +1,3 @@
-import 'package:auto_find/core/config/const/app_content.dart';
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/theme/app_color_scheme.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
@@ -21,7 +20,7 @@ class SelectPrimaryThemeWidget extends GetView<ThemeController> {
           return DropdownMenuItem(
             value: theme.index,
             child: TextWidget(
-              text: "${AppContent.theme.tr} ${theme.index + 1}",
+              text: "Chủ đề  ${theme.index + 1}",
               transform: TextTransformType.capitalizeWords,
               color: AppThemeColors.text,
             ),
@@ -34,7 +33,7 @@ class SelectPrimaryThemeWidget extends GetView<ThemeController> {
           }
         },
         hint: TextWidget(
-          text: AppContent.selectThem,
+          text: "Chọn chủ đề",
           color: AppThemeColors.text,
         ),
         isExpanded: width != null,

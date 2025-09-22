@@ -139,21 +139,17 @@ class CarRepository {
   }
 
   /// Biểu đồ line/bar
-/// Biểu đồ line/bar
-Future<CarChartsModel> getCharts({required int year}) async {
-  final result = await _api.getCharts(year: year);
+  Future<CarChartsModel?> getCharts({required int year}) async {
+    final result = await _api.getCharts(year: year);
 
-  if (result.isSuccess) {
-    final data = result.data;
-    if (data is Map<String, dynamic>) {
-      return CarChartsModel.fromJson(data);
-    } else {
-      throw Exception("Invalid data format from API");
+    if (result.isSuccess) {
+      final data = result.data;
+      if (data is Map<String, dynamic>) {
+        return CarChartsModel.fromJson(data);
+      }
     }
-  } else {
-    throw Exception(result.message ?? "Unknown error");
+    return null;
   }
-}
 
   /// Ma trận lợi nhuận
   Future<ProfitMatrixResponseModel> getProfitMatrix(

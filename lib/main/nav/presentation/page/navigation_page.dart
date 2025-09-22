@@ -2,9 +2,9 @@ import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/extension/rx_extension.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
-import 'package:auto_find/main/navigation/presentation/controller/navigation_controller.dart';
-import 'package:auto_find/main/navigation/presentation/page/tabs/tab_manage.dart';
-import 'package:auto_find/main/navigation/presentation/widgets/bottom_navigation_bar_widget.dart';
+import 'package:auto_find/main/nav/presentation/controller/navigation_controller.dart';
+import 'package:auto_find/main/nav/presentation/section/manage_section.dart';
+import 'package:auto_find/main/nav/presentation/widgets/bottom_navigation_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

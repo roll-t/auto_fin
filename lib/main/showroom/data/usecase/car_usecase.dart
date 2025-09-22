@@ -87,7 +87,7 @@ class CarUsecase {
   }
 
   /// Dữ liệu biểu đồ line/bar
-  Future<CarChartsModel> getCharts(int year) {
+  Future<CarChartsModel?> getCharts(int year) {
     return _repo.getCharts(year: year);
   }
 

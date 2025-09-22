@@ -1,6 +1,6 @@
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:auto_find/core/utils/validation_utils.dart';
-import 'package:auto_find/main/navigation/presentation/page/navigation_page.dart';
+import 'package:auto_find/main/nav/presentation/page/navigation_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 

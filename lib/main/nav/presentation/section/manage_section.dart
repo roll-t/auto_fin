@@ -4,9 +4,9 @@ import 'package:auto_find/core/ui/widgets/standard_layout_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
-import 'package:auto_find/main/navigation/model/item_menu_feature_model.dart';
-import 'package:auto_find/main/navigation/presentation/controller/tab_manage_controller.dart';
-import 'package:auto_find/main/navigation/presentation/widgets/item_menu_feature_widget.dart';
+import 'package:auto_find/main/nav/model/item_menu_feature_model.dart';
+import 'package:auto_find/main/nav/presentation/controller/manage_controller.dart';
+import 'package:auto_find/main/nav/presentation/widgets/item_menu_feature_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +18,7 @@ class TabManage extends CustomState {
   Widget buildBody(BuildContext context) => const _BodyBuilder();
 }
 
-class _BodyBuilder extends GetView<TabManageController> {
+class _BodyBuilder extends GetView<ManageController> {
   const _BodyBuilder();
 
   @override

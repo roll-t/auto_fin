@@ -1,7 +1,7 @@
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:auto_find/core/utils/utils.dart';
 import 'package:auto_find/core/utils/validation_utils.dart';
-import 'package:auto_find/main/navigation/presentation/page/navigation_page.dart';
+import 'package:auto_find/main/nav/presentation/page/navigation_page.dart';
 import 'package:auto_find/main/user/domain/usecase/user_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

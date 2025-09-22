@@ -1,5 +1,5 @@
-import 'package:auto_find/main/navigation/di/navigation_binding.dart';
-import 'package:auto_find/main/navigation/presentation/page/navigation_page.dart';
+import 'package:auto_find/main/nav/di/navigation_binding.dart';
+import 'package:auto_find/main/nav/presentation/page/navigation_page.dart';
 import 'package:auto_find/core/ui/widgets/notFound/not_found_page.dart';
 import 'package:auto_find/main/showroom/di/showroom_binding.dart';
 import 'package:auto_find/main/showroom/features/add_car/di/add_car_binding.dart';

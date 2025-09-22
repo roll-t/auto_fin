@@ -1,4 +1,3 @@
-import 'package:auto_find/core/config/const/app_content.dart';
 import 'package:auto_find/core/config/feature_configs.dart';
 import 'package:auto_find/main/setting/presentation/controller/setting_controller.dart';
 import 'package:auto_find/main/setting/presentation/widget/select_language_widget.dart';
@@ -40,7 +39,7 @@ class _BodyBuilder extends GetView<SettingController> {
       addSetting(
         GetBuilder<ThemeController>(builder: (themeController) {
           return SettingItemWidget(
-            titleKey: AppContent.dark,
+            titleKey: "Ban đêm",
             trailing: Switch(
               value: themeController.themeMode.value == ThemeMode.dark,
               onChanged: (_) => themeController.toggleTheme(),
@@ -50,7 +49,7 @@ class _BodyBuilder extends GetView<SettingController> {
       );
       addSetting(
         SettingItemWidget(
-          titleKey: AppContent.theme,
+          titleKey: "Chủ đề",
           trailing: SelectPrimaryThemeWidget(width: 30.w),
         ),
       );
@@ -59,7 +58,7 @@ class _BodyBuilder extends GetView<SettingController> {
     if (FeatureConfigs.isSwitchLanguageEnabled) {
       addSetting(
         SettingItemWidget(
-          titleKey: AppContent.language,
+          titleKey: "Ngôn ngữ",
           trailing: SelectLanguageWidget(
             controller: controller,
             width: 30.w,
