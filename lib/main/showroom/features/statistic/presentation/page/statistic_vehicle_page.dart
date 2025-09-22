@@ -8,6 +8,8 @@ import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/core/utils/utils.dart';
+import 'package:auto_find/main/showroom/data/model/car_model.dart';
+import 'package:auto_find/main/showroom/data/model/top_model.dart';
 import 'package:auto_find/main/showroom/features/statistic/presentation/controller/statistic_vehicle_controller.dart';
 import 'package:auto_find/main/showroom/features/statistic/presentation/widget/menu_item.dart';
 import 'package:flutter/material.dart';
@@ -127,10 +129,84 @@ class _BodyBuilder extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
+              WrapBodyWidget(
+                child: CustomBottomSheetWidget(
+                  label: "TOP thống kê",
+                  hint: "Top thống kê",
+                  titleBottomSheet: "Top thống kê",
+                  controller: controller.topStatisticBottomSheetController,
+                  onSelectedItem: controller.onTopStatisticSelected,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              GetBuilder<StatisticVehicleController>(
+                id: "TOP_ID",
+                builder: (c) {
+                  final selected = c.topStatisticSelected?.id;
+                  if (selected == null) {
+                    return const TextWidget(text: "Chưa có dữ liệu");
+                  }
+
+                  switch (selected) {
+                    case "recent":
+                      return _buildCarList(c.topRecent, "Xe bán gần đây");
+                    case "profit":
+                      return _buildCarList(
+                          c.topProfit, "Xe có lợi nhuận cao nhất");
+                    case "value":
+                      return _buildCarList(
+                          c.topValue, "Xe có giá trị cao nhất");
+                    case "brand":
+                      return _buildTopModelList(
+                          c.topBrands, "Hãng xe bán chạy nhất");
+                    case "product":
+                      return _buildTopModelList(
+                          c.topProducts, "Mẫu xe bán chạy nhất");
+                    default:
+                      return const SizedBox.shrink();
+                  }
+                },
+              )
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCarList(List<CarModel> cars, String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextWidget(
+          text: title,
+          textStyle: AppTextStyle.semiBold14,
+        ),
+        const SizedBox(height: 8),
+        ...cars.map((e) => ListTile(
+              title: Text(e.name ?? ''),
+              subtitle: Text("Lợi nhuận: ${e.profit ?? 0}"),
+            )),
+      ],
+    );
+  }
+
+  Widget _buildTopModelList(List<TopModel> items, String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextWidget(
+          text: title,
+          textStyle: AppTextStyle.semiBold14,
+        ),
+        const SizedBox(height: 8),
+        ...items.map((e) => ListTile(
+              title: Text(e.brand ?? e.brand ?? ''),
+              subtitle: Text("Tổng LN: ${e.totalProfit ?? 0}"),
+            )),
+      ],
     );
   }
 }
@@ -155,7 +231,7 @@ class _ButtonShowOrderStatistic extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.all(14),
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
@@ -201,23 +277,23 @@ class _ButtonShowOrderStatistic extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         MenuItem(
-                          title: "Số lượng xe bán ra /Năm",
-                          urlIc: AppVectors.icFinance,
+                          title: "Số lượng xe\nbán ra",
+                          urlIc: AppVectors.icCar,
                           onTap: () {
                             Get.back();
                           },
                           isActive: true,
                         ),
                         MenuItem(
-                          urlIc: AppVectors.icCar,
-                          title: "Showroom",
+                          title: "Doanh thu\nnăm 2025",
+                          urlIc: AppVectors.icFinance,
                           onTap: () {
                             Get.back();
                           },
                         ),
                         MenuItem(
                           urlIc: AppVectors.icCash,
-                          title: "Dòng tiền",
+                          title: "Giá Trị Xe Nhập\nNăm 2025",
                           onTap: () {
                             Get.back();
                           },
@@ -254,143 +330,6 @@ class _ButtonShowOrderStatistic extends StatelessWidget {
               text: "Thống kê khác",
               color: AppThemeColors.primary,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DashboardActionWidget extends StatelessWidget {
-  const DashboardActionWidget({
-    super.key,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Get.dialog(
-          Center(
-            child: Container(
-              width: Get.width * .95,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      color: AppColors.primary1_500,
-                    ),
-                    child: Row(
-                      children: [
-                        Utils.iconSvg(
-                          svgUrl: AppVectors.icChart,
-                          size: 20,
-                          color: AppColors.white,
-                        ),
-                        const SizedBox(width: 5),
-                        const Expanded(
-                          child: TextWidget(
-                            text: "Báo cáo khác",
-                            textAlign: TextAlign.start,
-                            textStyle: AppTextStyle.regular16,
-                            color: AppColors.white,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: const Icon(
-                            Icons.close,
-                            color: AppColors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 20,
-                    ),
-                    child: GridView.count(
-                      crossAxisCount: 4,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        MenuItem(
-                          title: "Tài chính",
-                          urlIc: AppVectors.icFinance,
-                          onTap: () {
-                            Get.back();
-                          },
-                          isActive: true,
-                        ),
-                        MenuItem(
-                          urlIc: AppVectors.icCar,
-                          title: "Showroom",
-                          onTap: () {
-                            Get.back();
-                          },
-                        ),
-                        MenuItem(
-                          urlIc: AppVectors.icCash,
-                          title: "Dòng tiền",
-                          onTap: () {
-                            Get.back();
-                          },
-                        ),
-                        MenuItem(
-                          urlIc: AppVectors.icPerson,
-                          title: "Nhân sự",
-                          onTap: () {
-                            Get.back();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          barrierDismissible: true,
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.primary2_200,
-          borderRadius: BorderRadius.circular(50),
-          border: Border.all(
-            width: 1,
-            color: AppColors.white,
-          ),
-        ),
-        child: Row(
-          children: [
-            Utils.iconSvg(
-              svgUrl: AppVectors.icChart,
-              color: AppColors.primary1_500,
-            ),
-            const SizedBox(width: 5),
-            const TextWidget(
-              text: "Báo cáo khác",
-              textStyle: AppTextStyle.regular12,
-              color: AppColors.primary1_500,
-            )
           ],
         ),
       ),

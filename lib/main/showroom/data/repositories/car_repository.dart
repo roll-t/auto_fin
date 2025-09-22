@@ -6,6 +6,7 @@ import 'package:auto_find/main/showroom/data/model/list_model.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
 import 'package:auto_find/main/showroom/data/model/showroom_cars_model.dart';
 import 'package:auto_find/main/showroom/data/model/sold_cars_model.dart';
+import 'package:auto_find/main/showroom/data/model/top_model.dart';
 import 'package:auto_find/main/showroom/data/source/car_api.dart';
 import 'package:get/get.dart';
 
@@ -139,16 +140,20 @@ class CarRepository {
   }
 
   /// Biểu đồ line/bar
-  Future<CarChartsModel?> getCharts({required int year}) async {
+  /// Biểu đồ line/bar
+  Future<CarChartsModel> getCharts({required int year}) async {
     final result = await _api.getCharts(year: year);
 
     if (result.isSuccess) {
       final data = result.data;
       if (data is Map<String, dynamic>) {
         return CarChartsModel.fromJson(data);
+      } else {
+        throw Exception("Invalid data format from API");
       }
+    } else {
+      throw Exception(result.message ?? "Unknown error");
     }
-    return null;
   }
 
   /// Ma trận lợi nhuận
@@ -169,33 +174,47 @@ class CarRepository {
   }
 
   /// Top 5 thương hiệu lợi nhuận cao
-  Future<List<dynamic>> getTopBrands() async {
+  Future<List<TopModel>> getTopBrands() async {
     final result = await _api.getTopBrands();
-    if (result.isSuccess) return result.data as List;
+    if (result.isSuccess) {
+      return (result.data as List)
+          .map((e) => TopModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
     throw Exception(result.message);
   }
 
-  Future<List<dynamic>> getTopProducts() async {
+  Future<List<TopModel>> getTopProducts() async {
     final result = await _api.getTopProducts();
-    if (result.isSuccess) return result.data as List;
+    if (result.isSuccess) {
+      return (result.data as List)
+          .map((e) => TopModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
     throw Exception(result.message);
   }
 
-  Future<List<dynamic>> getTopProfit() async {
+  Future<List<CarModel>> getTopProfit() async {
     final result = await _api.getTopProfit();
-    if (result.isSuccess) return result.data as List;
+    if (result.isSuccess) {
+      return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
+    }
     throw Exception(result.message);
   }
 
-  Future<List<dynamic>> getTopValue() async {
+  Future<List<CarModel>> getTopValue() async {
     final result = await _api.getTopValue();
-    if (result.isSuccess) return result.data as List;
+       if (result.isSuccess) {
+      return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
+    }
     throw Exception(result.message);
   }
 
-  Future<List<dynamic>> getTopRecent() async {
+  Future<List<CarModel>> getTopRecent() async {
     final result = await _api.getTopRecent();
-    if (result.isSuccess) return result.data as List;
+    if (result.isSuccess) {
+      return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
+    }
     throw Exception(result.message);
   }
 }
