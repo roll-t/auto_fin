@@ -37,6 +37,8 @@ class ProfitYearCard extends StatelessWidget {
     final displayMonth = monthProfit.month.toString().padLeft(2, '0');
     final displayYear = monthProfit.year.toString();
     final displayProfit = "${monthProfit.profit.toStringAsFixed(1)} triệu";
+    final Color colorTextProfit =
+        monthProfit.profit > 0 ? AppColors.green : AppColors.red;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -54,7 +56,7 @@ class ProfitYearCard extends StatelessWidget {
             text1: "Lợi nhuận: ",
             text2: displayProfit,
             textColor1: AppColors.grey,
-            textColor2: AppColors.accent,
+            textColor2: colorTextProfit,
             fontWeight2: FontWeight.bold,
           ),
         ],

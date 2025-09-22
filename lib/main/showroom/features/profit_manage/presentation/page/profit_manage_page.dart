@@ -234,7 +234,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                   TextSpanWidget(
                     maxLine: 1,
                     fontWeight2: FontWeight.bold,
-                    textColor2: AppColors.accent,
+                    textColor2: AppColors.blue,
                     text1: "Tổng giá trị bán: ",
                     text2: totalValue,
                   ),
@@ -242,7 +242,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                   TextSpanWidget(
                     maxLine: 1,
                     fontWeight2: FontWeight.bold,
-                    textColor2: AppColors.accent,
+                    textColor2: AppColors.green,
                     text1: "Tổng lợi nhuận: ",
                     text2: totalProfit,
                   ),
