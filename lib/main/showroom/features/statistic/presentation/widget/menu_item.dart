@@ -53,6 +53,7 @@ class MenuItem extends StatelessWidget {
             TextWidget(
               text: title.orNA(),
               textAlign: TextAlign.center,
+              size: 12,
               textStyle: AppTextStyle.regular14,
             )
           ],

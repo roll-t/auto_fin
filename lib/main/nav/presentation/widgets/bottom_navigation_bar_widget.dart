@@ -25,7 +25,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
       selectedItemColor: selectedItemColor,
       showUnselectedLabels: true,
       items: [
-        buildNavItem(label: 'Dashboard', iconPath: AppVectors.icDashboard),
         buildNavItem(label: 'Quản lý', iconPath: AppVectors.icManage),
         buildNavItem(label: 'Cá nhân', iconPath: AppVectors.icPerson),
       ],

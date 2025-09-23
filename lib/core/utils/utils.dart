@@ -28,5 +28,13 @@ class Utils {
       }
     }
   }
-}
 
+  static String getCurrentYear() {
+    return DateTime.now().year.toString();
+  }
+
+  static bool isCurrentYear(String? year) {
+    if (year == null) return false;
+    return year == getCurrentYear();
+  }
+}

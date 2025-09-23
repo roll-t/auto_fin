@@ -59,7 +59,7 @@ class BodyBuilder extends GetView<NavigationController> {
   Widget build(BuildContext context) {
     return Navigator(
       key: Get.nestedKey(10),
-      initialRoute: const TabManage().routeName,
+      initialRoute: const ManageSection().routeName,
       onGenerateRoute: (settings) => controller.onGenerateRoute(settings),
     );
   }

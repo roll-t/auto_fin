@@ -10,20 +10,20 @@ class NavigationController extends GetxController {
   final RxInt currentPage = 1.obs;
 
   List<String> routeNames = [
-    const TabManage().routeName,
+    const ManageSection().routeName,
     const ProfileSection().routeName,
   ];
 
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/tab-manage':
+      case '/manage-section':
         return GetPageRoute(
           settings: settings,
-          page: () => const TabManage(),
+          page: () => const ManageSection(),
           transition: Transition.fadeIn,
           binding: ManageSectionBinding(),
         );
-      case '/tab-profile':
+      case '/profile-section':
         return GetPageRoute(
           settings: settings,
           page: () => const ProfileSection(),

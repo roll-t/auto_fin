@@ -14,6 +14,10 @@ class StatisticVehicleController extends GetxController {
 
   CarChartsModel? charts;
   final headerTabSelectedIndex = 0.obs;
+  bool isLoadingTopCategory = false;
+  bool isLoadingChart = false;
+
+  String selectedChart = "sold"; // mặc định: số lượng xe bán ra
 
   List<TopModel> topBrands = [];
   List<TopModel> topProducts = [];
@@ -54,27 +58,26 @@ class StatisticVehicleController extends GetxController {
     yearSelected = _yearItems()[0];
     topStatisticSelected = topStatisticBottomSheetController.itemSelected.value;
     fetchChart(year: firstYear);
+    fetchTopStatistic(ItemModel(id: "recent"));
   }
 
   Future<void> fetchChart({required int year}) async {
-    final results = await Future.wait([
-      _carUsecase.getCharts(year),
-      _carUsecase.getTopRecent(),
-    ]);
-
-    charts = results[0] as CarChartsModel;
-    topRecent = results[1] as List<CarModel>;
-
-    update(["CHART_ID", "TOP_ID"]);
+    isLoadingChart = true;
+    update(["CHART_ID"]);
+    final results = await _carUsecase.getCharts(year);
+    charts = results as CarChartsModel;
+    isLoadingChart = false;
+    update(["CHART_ID"]);
   }
 
   Future<void> fetchTopStatistic(ItemModel selected) async {
+    isLoadingTopCategory = true;
+    update(["TOP_ID"]);
     topBrands = [];
     topProducts = [];
     topProfit = [];
     topValue = [];
     topRecent = [];
-
     switch (selected.id) {
       case 'recent':
         topRecent = await _carUsecase.getTopRecent();
@@ -93,7 +96,13 @@ class StatisticVehicleController extends GetxController {
         break;
     }
     topStatisticSelected = selected;
+    isLoadingTopCategory = false;
     update(['TOP_ID']);
+  }
+
+  void selectChart(String chartId) {
+    selectedChart = chartId;
+    update(["CHART_ID"]);
   }
 
   void onYearSelected(ItemModel item) {

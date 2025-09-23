@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // NAV Manage
-class TabManage extends CustomState {
-  const TabManage({super.key});
+class ManageSection extends CustomState {
+  const ManageSection({super.key});
 
   @override
   Widget buildBody(BuildContext context) => const _BodyBuilder();
