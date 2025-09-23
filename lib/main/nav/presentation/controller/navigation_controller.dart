@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class NavigationController extends GetxController {
-  final RxInt currentPage = 1.obs;
+  final RxInt currentPage = 0.obs;
 
   List<String> routeNames = [
     const ManageSection().routeName,
