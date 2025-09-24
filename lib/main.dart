@@ -6,3 +6,4 @@ Future<void> main() async {
   await configs();
   runApp(const App());
 }
+
