@@ -238,7 +238,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                     text1: "Tổng giá trị bán: ",
                     text2: totalValue,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8.0),
                   TextSpanWidget(
                     maxLine: 1,
                     fontWeight2: FontWeight.bold,
