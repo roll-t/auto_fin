@@ -65,9 +65,11 @@ class StatisticVehicleController extends GetxController {
     isLoadingChart = true;
     update(["CHART_ID"]);
     final results = await _carUsecase.getCharts(year);
-    charts = results as CarChartsModel;
-    isLoadingChart = false;
-    update(["CHART_ID"]);
+    if (results != null) {
+      charts = results as CarChartsModel;
+      isLoadingChart = false;
+      update(["CHART_ID"]);
+    }
   }
 
   Future<void> fetchTopStatistic(ItemModel selected) async {

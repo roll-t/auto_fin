@@ -34,7 +34,7 @@ class ItemMenuFeatureWidget extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppThemeColors.primary.withValues(alpha: .05),
+                  color: AppThemeColors.primary.withOpacity(.05),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: AssetImageWidget(

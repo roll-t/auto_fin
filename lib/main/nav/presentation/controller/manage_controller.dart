@@ -1,4 +1,7 @@
+import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/const/app_icons.dart';
+import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
+import 'package:auto_find/core/utils/internet_utils.dart';
 import 'package:auto_find/main/nav/model/item_menu_feature_model.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/page/add_car_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_manage_page.dart';
@@ -7,6 +10,28 @@ import 'package:auto_find/main/showroom/features/statistic/presentation/page/sta
 import 'package:get/get.dart';
 
 class ManageController extends GetxController {
+  @override
+  void onInit() async {
+    super.onInit();
+    bool isOnline = await InternetUtils.checkInternet();
+    if (!isOnline) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        title: "Lỗi kết nối Internet",
+        content: "Vui lòng kết nối internet để tiếp tục",
+        confirmText: "Thử lại",
+        onConfirm: () async {
+          DialogUtils.showProgressDialog();
+          bool check = await InternetUtils.checkInternet();
+          if (check) {
+            Get.back();
+          }
+          Get.back();
+        },
+      );
+    }
+  }
+
   final List<ItemMenuFeatureModel> listShowroomFeature = [
     ItemMenuFeatureModel(
       title: "Thống kê\nshowroom",

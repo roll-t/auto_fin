@@ -40,7 +40,7 @@ class SearchWidget extends StatelessWidget {
           bottom: 8.0,
         ),
         child: Utils.iconSvg(
-          color: AppColors.grey.withValues(alpha: .5),
+          color: AppColors.grey.withOpacity(.5),
           svgUrl: AppVectors.icSearch,
           size: 20,
         ),

@@ -1,6 +1,6 @@
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/extension/number_extensions.dart';
+import 'package:auto_find/core/extension/currency_extensions.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
@@ -19,7 +19,6 @@ import 'package:get/get.dart';
 
 class ProfitManagePage extends CustomState {
   const ProfitManagePage({super.key});
-
   @override
   bool get backgroundImage => true;
 
@@ -71,7 +70,7 @@ class _BodyBuilder extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
                                 width: .5,
-                                color: AppColors.accent.withValues(alpha: .5),
+                                color: AppColors.accent.withOpacity(.5),
                               ),
                             ),
                             child: TabBar(
@@ -106,8 +105,7 @@ class _BodyBuilder extends StatelessWidget {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: SearchWidget(
-                                  searchController:
-                                      controller.searchController,
+                                  searchController: controller.searchController,
                                   onSearch: controller.onSearch,
                                   height: 40,
                                 ),
@@ -132,9 +130,9 @@ class _BodyBuilder extends StatelessWidget {
                                   child: CircularProgressIndicator(),
                                 )
                               : CarProfitSection(
-                                  soldCars: controller
-                                          .profitMatrix.value.soldList ??
-                                      [],
+                                  soldCars:
+                                      controller.profitMatrix.value.soldList ??
+                                          [],
                                 ),
                         ],
                       ),

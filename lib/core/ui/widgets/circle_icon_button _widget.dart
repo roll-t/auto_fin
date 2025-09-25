@@ -33,7 +33,7 @@ class CircleIconButton extends StatelessWidget {
           shape: BoxShape.circle,
           color: backgroundColor ??
               (!isActive
-                  ? AppThemeColors.light100.withValues(alpha: 0.5)
+                  ? AppThemeColors.light100.withOpacity(0.5)
                   : AppThemeColors.light100),
         ),
         child: Center(

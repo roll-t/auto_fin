@@ -6,6 +6,12 @@ class AppColors {
   static const Color red = Color(0xFFeb2f06);
   static const Color yellow = Color(0xFFe58e26);
 
+  static const Color transparent = Color.fromARGB(0, 8, 19, 17);
+  static const Color warning = Color(0xFFfa983a);
+  static const Color error = Color(0xFFeb2f06);
+  static const Color success = Color(0xFF2ed573);
+  static const Color grey = Color(0xFF8890A6);
+
   // Shadow
   static const Color shadow700 = Color(0xFF173531);
 
@@ -68,13 +74,6 @@ class AppColors {
   static const text300 = Color(0xFFBDBDBD);
   static const text200 = Color(0xFFE0E0E0);
   static const text100 = Color(0xFFF5F5F5);
-
-  static const Color transparent = Color.fromARGB(0, 8, 19, 17);
-  static const Color warning = Color(0xFFfa983a);
-  static const Color error = Color(0xFFeb2f06);
-  static const Color success = Color(0xFF2ed573);
-
-  static const Color grey = Color(0xFF8890A6);
 
   static const neutralColor1 = Color(0xFF3C4143);
   static const neutralColor2 = Color(0xFF3C4143);

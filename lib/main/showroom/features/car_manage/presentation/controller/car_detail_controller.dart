@@ -2,7 +2,7 @@ import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/const/app_logger.dart';
 import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/number_extensions.dart';
+import 'package:auto_find/core/extension/currency_extensions.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/select_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';

@@ -69,11 +69,11 @@ class CustomTabBarWidget extends StatelessWidget {
                       final BoxDecoration decorationActive = BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         color: isSelected
-                            ? AppThemeColors.primary.withValues(alpha: .1)
+                            ? AppThemeColors.primary.withOpacity(.1)
                             : AppColors.white,
                         border: Border.all(
                           color: isSelected
-                              ? AppThemeColors.primary.withValues(alpha: .5)
+                              ? AppThemeColors.primary.withOpacity(.5)
                               : AppColors.white,
                           width: .5,
                         ),

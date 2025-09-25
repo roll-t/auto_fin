@@ -1,4 +1,5 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
+import 'package:auto_find/core/config/const/app_logger.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_chart_model.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
@@ -140,8 +141,7 @@ class CarRepository {
   }
 
   /// Biểu đồ line/bar
-  /// Biểu đồ line/bar
-  Future<CarChartsModel> getCharts({required int year}) async {
+  Future<CarChartsModel?> getCharts({required int year}) async {
     final result = await _api.getCharts(year: year);
 
     if (result.isSuccess) {
@@ -149,10 +149,12 @@ class CarRepository {
       if (data is Map<String, dynamic>) {
         return CarChartsModel.fromJson(data);
       } else {
-        throw Exception("Invalid data format from API");
+        AppLogger.e("Invalid data format from API");
+        return null;
       }
     } else {
-      throw Exception(result.message ?? "Unknown error");
+      AppLogger.e(result.message);
+      return null;
     }
   }
 
@@ -204,7 +206,7 @@ class CarRepository {
 
   Future<List<CarModel>> getTopValue() async {
     final result = await _api.getTopValue();
-       if (result.isSuccess) {
+    if (result.isSuccess) {
       return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
     }
     throw Exception(result.message);
@@ -215,6 +217,7 @@ class CarRepository {
     if (result.isSuccess) {
       return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
     }
-    throw Exception(result.message);
+    AppLogger.e(result.message);
+    return [];
   }
 }

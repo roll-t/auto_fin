@@ -76,7 +76,7 @@ class _BodyBuilder extends StatelessWidget {
               color: AppColors.white,
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.dark300.withValues(alpha: .1),
+                  color: AppColors.dark300.withOpacity(.1),
                   offset: const Offset(0, -1),
                   blurRadius: 6,
                   spreadRadius: 1,

@@ -11,7 +11,7 @@ class AppContainerStyles {
           offset: const Offset(1, 1),
           blurRadius: 4,
           spreadRadius: 2,
-          color: AppColors.neutralColor2.withValues(alpha: .1),
+          color: AppColors.neutralColor2.withOpacity(.1),
         ),
       ],
     );
@@ -37,13 +37,13 @@ class AppContainerStyles {
         offset: const Offset(1, 1),
         blurRadius: 4,
         spreadRadius: 1,
-        color: AppColors.shadow700.withValues(alpha: .08),
+        color: AppColors.shadow700.withOpacity(.08),
       ),
       BoxShadow(
         offset: const Offset(0, 0),
         blurRadius: 2,
         spreadRadius: 0,
-        color: AppColors.shadow700.withValues(alpha: .1),
+        color: AppColors.shadow700.withOpacity(.1),
       ),
     ];
   }

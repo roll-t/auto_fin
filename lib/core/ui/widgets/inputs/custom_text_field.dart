@@ -7,8 +7,6 @@ import 'package:auto_find/core/ui/widgets/inputs/year_picker_text_field_widget.d
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_multi_formatter/formatters/money_input_enums.dart';
-import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
 import 'package:intl/intl.dart';
 
 class CustomTextField extends StatelessWidget {

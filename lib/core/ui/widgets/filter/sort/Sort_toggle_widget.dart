@@ -30,7 +30,7 @@ class SortToggleWidget extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6.0),
-          color: AppColors.white.withValues(alpha: .8),
+          color: AppColors.white.withOpacity( .8),
           border: Border.all(
             width: .5,
             color: AppColors.text400,

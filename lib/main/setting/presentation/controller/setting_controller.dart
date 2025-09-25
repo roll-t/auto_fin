@@ -11,8 +11,8 @@ class SettingController extends GetxController with LanguageMixinController {
   void toggleNotification(bool value) {
     if (isNotificationEnabled.value == value) return;
     isNotificationEnabled.value = value;
-    LoadingUtils.showOverlayLoading(
-      asyncFunction: () => NotificationService().toggleNotification(value),
-    );
+    // LoadingUtils.showOverlayLoading(
+    //   asyncFunction: () => NotificationService().toggleNotification(value),
+    // );
   }
 }

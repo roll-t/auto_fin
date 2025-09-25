@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/result.dart';
 import 'package:auto_find/core/local_storage/app_get_storage.dart';
 import 'package:auto_find/core/services/network/api_intercepter.dart';
+import 'package:auto_find/core/utils/internet_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -87,9 +87,8 @@ class ApiClient extends GetxService {
 
   Future<bool> _checkNetwork() async {
     try {
-      final result = await InternetAddress.lookup('google.com');
-      return result.isNotEmpty && result.first.rawAddress.isNotEmpty;
-    } on SocketException {
+      return await InternetUtils.checkInternet();
+    } catch (_) {
       return false;
     }
   }
@@ -233,7 +232,6 @@ class ApiClient extends GetxService {
   }
 
   String _handleError(DioException e) {
-    print(">>> RUN $e");
     if (e.type == DioExceptionType.connectionTimeout) {
       return 'Kết nối server quá thời gian cho phép';
     } else if (e.type == DioExceptionType.receiveTimeout) {

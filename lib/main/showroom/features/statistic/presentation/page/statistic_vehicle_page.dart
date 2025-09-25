@@ -3,7 +3,7 @@ import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/number_extensions.dart';
+import 'package:auto_find/core/extension/currency_extensions.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
@@ -50,9 +50,11 @@ class _BodyBuilder extends StatelessWidget {
         }
 
         final months = List.generate(12, (i) => "T${i + 1}");
-        final soldNow = List.generate(12, (i) => chartsData.lineSoldCount?.seriesYear?[i] ?? 0);
-        final soldPrev = List.generate(12, (i) => chartsData.lineSoldCount?.seriesPrev?[i] ?? 0);
-        
+        final soldNow = List.generate(
+            12, (i) => chartsData.lineSoldCount?.seriesYear?[i] ?? 0);
+        final soldPrev = List.generate(
+            12, (i) => chartsData.lineSoldCount?.seriesPrev?[i] ?? 0);
+
         return SingleChildScrollView(
           padding: AppPadding.h16,
           child: Column(
@@ -71,7 +73,7 @@ class _BodyBuilder extends StatelessWidget {
                         child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: AppColors.white.withValues(alpha: .5),
+                        color: AppColors.white.withOpacity(.5),
                       ),
                       child: Center(
                         child: LoadingAnimationWidget.threeRotatingDots(
@@ -754,10 +756,10 @@ class _ButtonShowOrderStatistic extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             width: 1,
-            color: AppThemeColors.primary.withValues(alpha: .5),
+            color: AppThemeColors.primary.withOpacity(.5),
           ),
           borderRadius: BorderRadius.circular(10),
-          color: AppThemeColors.primary.withValues(alpha: .2),
+          color: AppThemeColors.primary.withOpacity(.2),
         ),
         child: Row(
           children: [

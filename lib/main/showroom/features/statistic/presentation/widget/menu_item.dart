@@ -39,7 +39,7 @@ class MenuItem extends StatelessWidget {
                   ),
                 Container(
                   decoration: BoxDecoration(
-                      color: AppThemeColors.primary.withValues(alpha: .2),
+                      color: AppThemeColors.primary.withOpacity(.2),
                       borderRadius: BorderRadius.circular(5)),
                   padding: const EdgeInsets.all(8),
                   margin: const EdgeInsets.all(8),

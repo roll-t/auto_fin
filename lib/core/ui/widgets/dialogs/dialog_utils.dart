@@ -107,7 +107,7 @@ class DialogUtils {
             mainAxisSize: MainAxisSize.min,
             children: [
               CircleAvatar(
-                backgroundColor: config.bgColor.withValues(alpha: .2),
+                backgroundColor: config.bgColor.withOpacity(.2),
                 radius: 24,
                 child: Icon(
                   config.icon,
@@ -172,7 +172,7 @@ class DialogUtils {
             mainAxisSize: MainAxisSize.min,
             children: [
               CircleAvatar(
-                backgroundColor: config.bgColor.withValues(alpha: .2),
+                backgroundColor: config.bgColor.withOpacity(.2),
                 radius: 24,
                 child: Icon(
                   config.icon,
