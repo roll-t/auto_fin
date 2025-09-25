@@ -116,24 +116,6 @@ class AddCarController extends GetxController {
       return false;
     }
 
-    // 6️⃣ Biển số
-    if (plateController.text.trim().isEmpty) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Vui lòng nhập biển số",
-      );
-      return false;
-    }
-
-    // 7️⃣ Màu xe (nếu bắt buộc)
-    if (selectedColor.value == null) {
-      DialogUtils.showAlert(
-        alertType: AlertType.error,
-        content: "Vui lòng chọn màu xe",
-      );
-      return false;
-    }
-
     // 8️⃣ Trạng thái xe (nếu bắt buộc)
     if (selectedStatus.value == null) {
       DialogUtils.showAlert(
@@ -160,6 +142,22 @@ class AddCarController extends GetxController {
     return true;
   }
 
+  void onRecommendNameCar() {
+    final parts = <String>[
+      selectedBrand.value?.title ?? '',
+      selectedModel.value?.title ?? '',
+      yearController.text,
+      "test"
+    ];
+
+    // Lọc bỏ chuỗi rỗng rồi join lại
+    final nameCar = parts.where((e) => e.isNotEmpty).join(' ');
+
+    if (nameCar.isNotEmpty) {
+      nameController.text = nameCar;
+    }
+  }
+
   /// 🏷 Thêm xe
   Future<void> addCar() async {
     KeyboardUtils.hiddenKeyboard();
@@ -170,9 +168,7 @@ class AddCarController extends GetxController {
         name: nameController.text.trim(),
         plate: plateController.text.trim(),
         releaseYear: yearController.text,
-        importDate: buyDateController.text.isNotEmpty
-            ? DateTime.tryParse(buyDateController.text)
-            : DateTime.now(),
+        importDate: buyDateController.text.toIsoUtcDateTime(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         deletedAt: null,
@@ -181,6 +177,7 @@ class AddCarController extends GetxController {
         type: selectedType.value?.title ?? "",
         color: selectedColor.value?.title ?? "",
         status: selectedStatus.value?.title ?? "",
+        
         // Giá & chi phí
         importPrice: buyPriceController.text.toCurrencyNum().toDouble(),
         importCost: buyCostController.text.toCurrencyNum().toDouble(),

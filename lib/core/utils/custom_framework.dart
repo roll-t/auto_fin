@@ -10,7 +10,6 @@ import 'package:recase/recase.dart';
 /// ✅ Base class cho các màn hình Stateless sử dụng GetX
 abstract class CustomState extends StatelessWidget {
   const CustomState({super.key});
-
   String get routeName => '/${ReCase(runtimeType.toString()).paramCase}';
 
   String? get title => null;
@@ -21,10 +20,12 @@ abstract class CustomState extends StatelessWidget {
   Color? get backgroundColor => AppThemeColors.background300;
 
   Widget? get appBar => null;
+  List<Widget>? get actionAppBar => null;
   Widget? get drawer => null;
   Widget? get floatingActionButton => null;
   Widget? get bottomNavigationBar => null;
-  EdgeInsets? get bodyPadding => const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 15);
+  EdgeInsets? get bodyPadding =>
+      const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 15);
 
   Transition get transition => Transition.fadeIn;
   Bindings? get binding => null;
@@ -34,9 +35,9 @@ abstract class CustomState extends StatelessWidget {
 
   PreferredSizeWidget buildDefaultAppBar(BuildContext context) {
     return CustomAppBar(
-      
       showBackButton: showBack,
       title: title,
+      actions: actionAppBar,
     );
   }
 
@@ -71,7 +72,8 @@ abstract class CustomState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final body = size.width > 800 ? buildTabletBody(context) : buildBody(context);
+    final body =
+        size.width > 800 ? buildTabletBody(context) : buildBody(context);
 
     return GestureDetector(
       onTap: dismissKeyboard ? KeyboardUtils.hiddenKeyboard : null,
@@ -98,3 +100,4 @@ abstract class CustomState extends StatelessWidget {
     );
   }
 }
+
