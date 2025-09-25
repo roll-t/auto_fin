@@ -3,7 +3,7 @@ import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/number_extensions.dart';
+import 'package:auto_find/core/extension/currency_extensions.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';

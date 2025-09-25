@@ -1,6 +1,4 @@
 import 'package:auto_find/core/local_storage/app_get_storage.dart';
-import 'package:auto_find/core/services/notification/notification_service.dart';
-import 'package:auto_find/core/ui/widgets/loadings/loading_utils.dart';
 import 'package:auto_find/core/utils/mixin_controller/language_mixin_controller.dart';
 import 'package:get/get.dart';
 
@@ -11,8 +9,8 @@ class SettingController extends GetxController with LanguageMixinController {
   void toggleNotification(bool value) {
     if (isNotificationEnabled.value == value) return;
     isNotificationEnabled.value = value;
-    LoadingUtils.showOverlayLoading(
-      asyncFunction: () => NotificationService().toggleNotification(value),
-    );
+    // LoadingUtils.showOverlayLoading(
+    //   asyncFunction: () => NotificationService().toggleNotification(value),
+    // );
   }
 }

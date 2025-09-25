@@ -2,7 +2,7 @@ import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/extension/datetime.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/number_extensions.dart';
+import 'package:auto_find/core/extension/currency_extensions.dart';
 import 'package:auto_find/core/ui/styles/app_container_styles.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
