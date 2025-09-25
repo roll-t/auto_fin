@@ -239,6 +239,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                     text2: totalValue,
                   ),
                   const SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   TextSpanWidget(
                     maxLine: 1,
                     fontWeight2: FontWeight.bold,
