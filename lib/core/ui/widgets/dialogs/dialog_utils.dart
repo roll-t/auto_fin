@@ -90,7 +90,6 @@ class DialogUtils {
     String? title,
     String? content,
     VoidCallback? onConfirm,
-    VoidCallback? onCancel,
     String confirmText = 'Đồng ý',
   }) {
     final config = _getAlertConfig(alertType);

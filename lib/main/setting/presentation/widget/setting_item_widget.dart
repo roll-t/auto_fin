@@ -23,7 +23,7 @@ class SettingItemWidget extends StatelessWidget {
         horizontal: 16,
       ),
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppThemeColors.background200,
+        color: backgroundColor ?? AppThemeColors.background100,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(

@@ -224,7 +224,6 @@ class CarDetailController extends GetxController
         soldDateController.text = "";
         soldPriceController.text = "0";
         soldCostController.text = "0";
-        print("CHECK ${selectedStatus.value.title}");
       }
 
       final updatedCar = currentCar.copyWith(
@@ -262,6 +261,18 @@ class CarDetailController extends GetxController
       refreshData();
     } catch (e) {
       AppLogger.e("❌ updateCar error: $e");
+    }
+  }
+
+  void onDeleteCar() async {
+    try {
+      bool isSuccess = await _carUsecase.deleteCar(carDetail.value?.id ?? -1);
+      if (isSuccess) {
+        Get.back(result: true);
+      }
+    } catch (e) {
+      AppLogger.e(e);
+      Get.back(result: false);
     }
   }
 

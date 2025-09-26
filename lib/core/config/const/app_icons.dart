@@ -29,4 +29,5 @@ class AppIcons {
   static final String icSalary = _icon("ic_salary");
   static final String icAttendance = _icon("ic_attendance");
   static final String icRose = _icon("ic_rose");
+  static final String icNoData = _icon("ic_no_data");
 }

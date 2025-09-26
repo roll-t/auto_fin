@@ -170,6 +170,28 @@ class CarModel {
     };
   }
 
+  /// JSON chuẩn cho việc Add (theo initialFormData)
+  Map<String, dynamic> toAdd() {
+    return {
+      "brand": brand ?? "",
+      "color": color ?? "",
+      "des": des ?? "",
+      "import_cost": importCost ?? "",
+      "import_date": importDate?.toIso8601String() ?? "",
+      "import_price": importPrice ?? "",
+      "name": name ?? "",
+      "plate": plate ?? "",
+      "price": price ?? "",
+      "product": product ?? "",
+      "release_year": releaseYear ?? "",
+      "status": status ?? "",
+      "type": type ?? "",
+      "sold_cost": soldCost ?? "",
+      "sold_price": soldPrice ?? "",
+      "sold_des": soldDes ?? "",
+    };
+  }
+
   @override
   String toString() {
     return 'CarModel(id: $id, brand: $brand, name: $name, price: $price)';

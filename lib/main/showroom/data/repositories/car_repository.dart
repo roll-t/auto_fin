@@ -84,9 +84,10 @@ class CarRepository {
     }
   }
 
-  Future<void> deleteCar(int id) async {
+  Future<bool> deleteCar(int id) async {
     final result = await _api.deleteCar(id);
-    if (!result.isSuccess) throw Exception(result.message);
+    if (!result.isSuccess) return false;
+    return true;
   }
 
   /// Danh sách xe đã bán
@@ -204,7 +205,7 @@ class CarRepository {
 
   Future<List<CarModel>> getTopValue() async {
     final result = await _api.getTopValue();
-       if (result.isSuccess) {
+    if (result.isSuccess) {
       return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
     }
     throw Exception(result.message);

@@ -48,7 +48,7 @@ class CarUsecase {
   }
 
   /// Xoá mềm xe
-  Future<void> deleteCar(int id) {
+  Future<bool> deleteCar(int id) {
     return _repo.deleteCar(id);
   }
 

@@ -4,6 +4,7 @@ enum CustomTextFieldType {
   datePicker,
   dropdown,
   money,
+  textArea,
 }
 
 enum AlertType {

@@ -1,3 +1,4 @@
+import 'package:auto_find/core/config/const/app_images.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
@@ -31,18 +32,25 @@ class _BodyBuilder extends GetView<ProfileController> {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          color: AppThemeColors.background200,
+          color: AppThemeColors.background100,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Column(
           children: [
             Container(
+              padding: const EdgeInsets.only(top: 10),
               width: 30.w,
               height: 30.w,
               decoration: BoxDecoration(
                 border: Border.all(width: 1, color: AppColors.light300),
                 color: AppColors.cardBackground2,
                 shape: BoxShape.circle,
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  AppImages.iAvatar,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 16),

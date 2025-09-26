@@ -3,12 +3,10 @@ import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
-import 'package:auto_find/core/ui/widgets/app_bar/custom_appbar.dart';
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
 import 'package:auto_find/core/ui/widgets/circle_icon_button%20_widget.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
-import 'package:auto_find/core/ui/widgets/standard_layout_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
@@ -22,76 +20,104 @@ class CarDetailPage extends CustomState {
 
   @override
   Widget buildBody(BuildContext context) => const _BodyBuilder();
+
+  @override
+  String? get title => "Chi tiết xe";
+
+  @override
+  bool get backgroundImage => true;
+
+  @override
+  bool get dismissKeyboard => true;
+
+  @override
+  List<Widget>? get actionAppBar => actions();
+
+  @override
+  Widget? get bottomNavigationBar => const _BuildBottomBar();
+
+  List<Widget> actions() {
+    return [
+      GetBuilder<CarDetailController>(
+        id: "EDIT_ICON_ID",
+        builder: (controller) {
+          return CircleIconButton(
+            isActive: controller.isEditMode.value,
+            svgUrl: AppVectors.icEditing,
+            onTap: controller.toggleEditMode,
+          );
+        },
+      ),
+      const SizedBox(width: 16),
+      GetBuilder<CarDetailController>(
+        builder: (controller) {
+          return CircleIconButton(
+            svgUrl: AppVectors.icDelete,
+            onTap: () {
+              DialogUtils.showConfirm(
+                content: "Bạn có muốn xóa xe này!",
+                alertType: AlertType.warning,
+                onConfirm: () {
+                  Get.back();
+                  controller.onDeleteCar();
+                },
+                onCancel: () {
+                  Get.back();
+                },
+              );
+            },
+          );
+        },
+      ),
+      const SizedBox(width: 16),
+    ];
+  }
+}
+
+class _BuildBottomBar extends StatelessWidget {
+  const _BuildBottomBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<CarDetailController>(
+      id: "BOTTOM_BAR_ID",
+      builder: (controller) {
+        if (!controller.isEditMode.value) return const SizedBox.shrink();
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.dark300.withValues(alpha: .1),
+                offset: const Offset(0, -1),
+                blurRadius: 6,
+                spreadRadius: 1,
+              )
+            ],
+          ),
+          padding: AppPadding.v16h20,
+          child: PrimaryButton(
+            isMaxParent: true,
+            text: "Cập nhật thông tin xe",
+            onPressed: controller.updateCar,
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _BodyBuilder extends StatelessWidget {
   const _BodyBuilder();
   @override
   Widget build(BuildContext context) {
-    return StandardLayoutWidget(
-      padding: AppPadding.h16,
-      appBar: CustomAppBar(
-        title: "Chi tiết xe",
-        actions: [
-          GetBuilder<CarDetailController>(
-            id: "EDIT_ICON_ID",
-            builder: (controller) {
-              return CircleIconButton(
-                isActive: controller.isEditMode.value,
-                svgUrl: AppVectors.icEditing,
-                onTap: controller.toggleEditMode,
-              );
-            },
-          ),
-          const SizedBox(width: 16),
-          CircleIconButton(
-            svgUrl: AppVectors.icDelete,
-            onTap: () {
-              DialogUtils.showAlert(
-                content: "Bạn có muốn xóa xe này!",
-                alertType: AlertType.warning,
-              );
-            },
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      bodyBuilder: GetBuilder<CarDetailController>(
-        id: "FORM_ID",
-        builder: (controller) {
-          return RefreshIndicator(
-            onRefresh: controller.refreshData,
-            child: _BuildFormBody(
-              controller: controller,
-            ),
-          );
-        },
-      ),
-      navigationBar: GetBuilder<CarDetailController>(
-        id: "BOTTOM_BAR_ID",
-        builder: (controller) {
-          if (!controller.isEditMode.value) return const SizedBox.shrink();
-          return Container(
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.dark300.withValues(alpha: .1),
-                  offset: const Offset(0, -1),
-                  blurRadius: 6,
-                  spreadRadius: 1,
-                )
-              ],
-            ),
-            padding: AppPadding.v16h20,
-            child: PrimaryButton(
-              isMaxParent: true,
-              text: "Cập nhật thông tin xe",
-              onPressed: controller.updateCar,
-            ),
-          );
-        },
-      ),
+    return GetBuilder<CarDetailController>(
+      id: "FORM_ID",
+      builder: (controller) {
+        return _BuildFormBody(
+          controller: controller,
+        );
+      },
     );
   }
 }
@@ -105,6 +131,7 @@ class _BuildFormBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: AppPadding.h16,
       child: Column(
         children: [
           WrapBodyWidget(

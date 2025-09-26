@@ -1,7 +1,9 @@
 import 'package:auto_find/core/config/const/app_vectors.dart';
+import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/main/nav/presentation/widgets/item_navigation_bar_widget.dart';
+import 'package:auto_find/core/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
@@ -17,16 +19,25 @@ class BottomNavigationBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      backgroundColor: AppThemeColors.background100,
-      currentIndex: currentIndex,
+    return CurvedNavigationBar(
+      index: currentIndex,
       onTap: onChange,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: selectedItemColor,
-      showUnselectedLabels: true,
+      backgroundColor: AppThemeColors.background300,
+      color: AppThemeColors.primary,
+      buttonBackgroundColor: selectedItemColor,
+      height: 60,
+      animationDuration: const Duration(milliseconds: 200),
       items: [
-        buildNavItem(label: 'Quản lý', iconPath: AppVectors.icManage),
-        buildNavItem(label: 'Cá nhân', iconPath: AppVectors.icPerson),
+        Utils.iconSvg(
+          svgUrl: AppVectors.icManage,
+          size: 25,
+          color: AppColors.white,
+        ),
+        Utils.iconSvg(
+          svgUrl: AppVectors.icPerson,
+          size: 25,
+          color: AppColors.white,
+        ),
       ],
     );
   }

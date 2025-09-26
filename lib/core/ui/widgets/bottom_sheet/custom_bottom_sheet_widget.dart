@@ -4,8 +4,8 @@ import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/extension/empty_extension.dart';
 import 'package:auto_find/core/extension/rx_extension.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
+import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:auto_find/core/utils/utils.dart';
@@ -24,6 +24,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
   final Function(ItemModel) onSelectedItem;
   final bool isMaxParent;
   final String? leadingIconUrl;
+  final bool isRequired;
   const CustomBottomSheetWidget({
     super.key,
     required this.onSelectedItem,
@@ -36,6 +37,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
     this.height = 35,
     this.padding = const EdgeInsets.only(left: 6, right: 5),
     this.hint = "",
+    this.isRequired = false,
     this.label,
     this.titleBottomSheet,
   });
@@ -46,12 +48,15 @@ class CustomBottomSheetWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null) ...[
-          TextWidget(
-            text: label.orNA(),
-            textStyle: AppTextStyle.bold14,
-            color: AppColors.text700,
-          ),
-          const SizedBox(height: 6.0)
+          TextSpanWidget(
+              size: 14,
+              fontWeight1: FontWeight.w600,
+              fontWeight2: FontWeight.w600,
+              textColor1: AppThemeColors.text,
+              textColor2: AppColors.red,
+              text1: label.orNA(),
+              text2: isRequired ? "*" : ""),
+          const SizedBox(height: 6),
         ],
         GestureDetector(
           onTap: () {

@@ -19,7 +19,8 @@ class CarApi {
       if (status != null) 'status': status,
       if (pageSize != null) 'pageSize': pageSize,
       if (pageToken != null) 'pageToken': pageToken,
-      if (sortType != null) 'order': sortType == SortType.newest ? 'desc' : 'asc',
+      if (sortType != null)
+        'order': sortType == SortType.newest ? 'desc' : 'asc',
     };
     return _client.get(ApiEndpoint.cars, query: query);
   }
@@ -39,7 +40,7 @@ class CarApi {
   Future<Result> createCar(CarModel car) {
     return _client.post(
       ApiEndpoint.cars,
-      data: car.toJson(),
+      data: car.toAdd(),
     );
   }
 
@@ -98,7 +99,6 @@ class CarApi {
       query: {'year': year},
     );
   }
-  
 
   /// Bảng lợi nhuận dạng ma trận
   Future<Result> getProfitMatrix({int? year, int? month}) {

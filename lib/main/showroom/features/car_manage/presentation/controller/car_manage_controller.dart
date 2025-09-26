@@ -5,6 +5,7 @@ import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_c
 import 'package:auto_find/core/ui/widgets/filter/sort/sort_controller.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/usecase/car_usecase.dart';
+import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -77,6 +78,7 @@ class CarManageController extends GetxController {
   // ---------------------------------------------------------------------------
   // Lifecycle
   // ---------------------------------------------------------------------------
+
   @override
   void onReady() {
     super.onReady();
@@ -260,6 +262,16 @@ class CarManageController extends GetxController {
         break;
       default:
         await fetchCars();
+    }
+  }
+
+  Future<void> onToDetailCar(CarModel arguments) async {
+    bool result = await Get.toNamed(
+      const CarDetailPage().routeName,
+      arguments: arguments,
+    );
+    if (result) {
+      refreshCars();
     }
   }
 

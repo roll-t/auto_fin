@@ -1,3 +1,4 @@
+import 'package:auto_find/core/config/const/app_images.dart';
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
@@ -7,6 +8,7 @@ import 'package:auto_find/core/extension/currency_extensions.dart';
 import 'package:auto_find/core/ui/styles/app_padding.dart';
 import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
+import 'package:auto_find/core/ui/widgets/images/asset_image_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
@@ -45,14 +47,34 @@ class _BodyBuilder extends StatelessWidget {
       id: "CHART_ID",
       builder: (controller) {
         final chartsData = controller.charts;
+
         if (chartsData == null) {
-          return const Center(child: CircularProgressIndicator());
+          return Container(
+            decoration: BoxDecoration(color: AppThemeColors.background300),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const AssetImageWidget(
+                    assetPath: AppImages.iLogo,
+                  ),
+                  const SizedBox(height: 8),
+                  LoadingAnimationWidget.horizontalRotatingDots(
+                    color: AppThemeColors.primary,
+                    size: 30,
+                  )
+                ],
+              ),
+            ),
+          );
         }
 
         final months = List.generate(12, (i) => "T${i + 1}");
-        final soldNow = List.generate(12, (i) => chartsData.lineSoldCount?.seriesYear?[i] ?? 0);
-        final soldPrev = List.generate(12, (i) => chartsData.lineSoldCount?.seriesPrev?[i] ?? 0);
-        
+        final soldNow = List.generate(
+            12, (i) => chartsData.lineSoldCount?.seriesYear?[i] ?? 0);
+        final soldPrev = List.generate(
+            12, (i) => chartsData.lineSoldCount?.seriesPrev?[i] ?? 0);
+
         return SingleChildScrollView(
           padding: AppPadding.h16,
           child: Column(

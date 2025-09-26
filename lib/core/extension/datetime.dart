@@ -31,8 +31,8 @@ extension VNDateParsing on String {
   /// Chuyển "dd/MM/yyyy" → DateTime UTC (ISO 8601)
   DateTime? toIsoUtcDateTime() {
     try {
-      final date = DateFormat("dd/MM/yyyy").parse(this);
-      return date.toUtc(); // DateTime UTC chuẩn ISO
+      final date = DateFormat("dd/MM/yyyy").parseUtc(this);
+      return date;
     } catch (e) {
       return null;
     }

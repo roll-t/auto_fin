@@ -182,14 +182,10 @@ class _ListCarWidget extends GetView<CarManageController> {
                 isLoading: controller.isLoading.value,
                 isLoadMore: controller.isLoadMore.value,
                 scrollController: controller.scrollController,
-                dataNullWidget: const TextWidget(text: "Không có dữ liệu"),
                 itemBuilder: (car) => CarInShowroomItemWidget(
                   carModel: car,
                   onTap: () {
-                    Get.toNamed(
-                      const CarDetailPage().routeName,
-                      arguments: car,
-                    );
+                    controller.onToDetailCar(car);
                   },
                 ),
               ),
@@ -207,14 +203,10 @@ class _ListCarWidget extends GetView<CarManageController> {
                 isLoading: controller.isLoading.value,
                 isLoadMore: controller.isLoadMore.value,
                 scrollController: controller.scrollController,
-                dataNullWidget: const TextWidget(text: "Không có dữ liệu"),
                 itemBuilder: (car) => CarSoldItemWidget(
                   carModel: car,
                   onTap: () {
-                    Get.toNamed(
-                      const CarDetailPage().routeName,
-                      arguments: car,
-                    );
+                    controller.onToDetailCar(car);
                   },
                 ),
               ),
@@ -230,14 +222,10 @@ class _ListCarWidget extends GetView<CarManageController> {
               isLoading: controller.isLoading.value,
               isLoadMore: controller.isLoadMore.value,
               scrollController: controller.scrollController,
-              dataNullWidget: const TextWidget(text: "Không có dữ liệu"),
               itemBuilder: (car) => CarItemWidget(
                 car: car,
                 onTap: () {
-                  Get.toNamed(
-                    const CarDetailPage().routeName,
-                    arguments: car,
-                  );
+                  controller.onToDetailCar(car);
                 },
               ),
             ),
@@ -308,11 +296,11 @@ class _ShowroomTabContent extends StatelessWidget {
   final CarManageController controller;
   const _ShowroomTabContent({required this.controller});
 
-  Widget _infoRow(String label, String value) {
+  Widget _infoRow(String label, String value, {Color? textColor}) {
     return TextSpanWidget(
       text1: "$label: ",
       text2: value,
-      textColor2: AppColors.accent,
+      textColor2: textColor ?? AppColors.accent,
       fontWeight2: FontWeight.bold,
     );
   }
@@ -335,8 +323,13 @@ class _ShowroomTabContent extends StatelessWidget {
         const SizedBox(height: 12),
         _infoRow("Số lượng kho", "${controller.cars.length}"),
         const SizedBox(height: 8),
-        _infoRow("Giá trị kho",
-            "${controller.inventoryValue.value.toString().toCurrency()} VND"),
+        _infoRow(
+          "Giá trị kho",
+          controller.inventoryValue.value
+              .toString()
+              .toCurrency(withSymbol: true),
+          textColor: AppColors.blue,
+        ),
       ],
     );
   }
@@ -346,11 +339,11 @@ class _SoldCarTabContent extends StatelessWidget {
   final CarManageController controller;
   const _SoldCarTabContent({required this.controller});
 
-  Widget _infoRow(String label, String value) {
+  Widget _infoRow(String label, String value, {Color? textColor}) {
     return TextSpanWidget(
       text1: "$label: ",
       text2: value,
-      textColor2: AppColors.accent,
+      textColor2: textColor ?? AppColors.green,
       fontWeight2: FontWeight.bold,
     );
   }
@@ -361,11 +354,18 @@ class _SoldCarTabContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        _infoRow("Tổng giá trị",
-            "${controller.soldValue.value.toString().toCurrency()} VND"),
+        _infoRow(
+          "Tổng giá trị",
+          controller.soldValue.value.toString().toCurrency(withSymbol: true),
+          textColor: AppColors.blue,
+        ),
         const SizedBox(height: 8),
-        _infoRow("Tổng lợi nhuận",
-            "${controller.profit.value.toString().toCurrency()} VND"),
+        _infoRow(
+          "Tổng lợi nhuận",
+          controller.profit.value.toString().toCurrency(withSymbol: true),
+          textColor:
+              controller.profit.value > 0 ? AppColors.green : AppColors.red,
+        ),
       ],
     );
   }

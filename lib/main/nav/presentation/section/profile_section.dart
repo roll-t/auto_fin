@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
-import 'package:auto_find/core/config/theme/app_theme_colors.dart';
+import 'package:auto_find/core/ui/widgets/app_bar/main_appbar.dart';
+import 'package:auto_find/core/ui/widgets/standard_layout_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/setting/presentation/page/setting_page.dart';
 import 'package:auto_find/core/config/theme/theme_controller.dart';
@@ -34,13 +35,13 @@ class _BodyBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: AppThemeColors.background300,
-      child: ListView(
+    return StandardLayoutWidget(
+      appBar: const MainAppBar(title: "Cá nhân"),
+      padding: EdgeInsets.zero,
+      bodyBuilder: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
-          const SizedBox(height: 80),
-
+          const SizedBox(height: 16),
           ///[Not set const to update the status]
           // ignore: prefer_const_constructors
           InfoProfileWidget(),

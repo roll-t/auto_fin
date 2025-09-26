@@ -24,8 +24,7 @@ abstract class CustomState extends StatelessWidget {
   Widget? get drawer => null;
   Widget? get floatingActionButton => null;
   Widget? get bottomNavigationBar => null;
-  EdgeInsets? get bodyPadding =>
-      const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 15);
+  EdgeInsets? get bodyPadding =>const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 15);
 
   Transition get transition => Transition.fadeIn;
   Bindings? get binding => null;
@@ -72,9 +71,7 @@ abstract class CustomState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final body =
-        size.width > 800 ? buildTabletBody(context) : buildBody(context);
-
+    final body = size.width > 800 ? buildTabletBody(context) : buildBody(context);
     return GestureDetector(
       onTap: dismissKeyboard ? KeyboardUtils.hiddenKeyboard : null,
       child: Container(

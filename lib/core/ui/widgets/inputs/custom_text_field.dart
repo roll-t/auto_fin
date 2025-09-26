@@ -1,14 +1,14 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
+import 'package:auto_find/core/extension/empty_extension.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_find/core/ui/widgets/inputs/date_time_picker_text_field_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/year_picker_text_field_widget.dart';
+import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_multi_formatter/formatters/money_input_enums.dart';
-import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
 import 'package:intl/intl.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -41,6 +41,7 @@ class CustomTextField extends StatelessWidget {
   final double borderWidth;
   final bool enableBorder;
   final EdgeInsets? scrollPadding;
+  final bool isRequired;
 
   final double? height;
   final List<BoxShadow>? boxShadow;
@@ -82,6 +83,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.enableBorder = true,
     this.backgroundColor,
+    this.isRequired = false,
     this.textColor,
     this.hintColor,
     this.labelColor,
@@ -151,6 +153,9 @@ class CustomTextField extends StatelessWidget {
               : AppColors.neutralColor6,
         );
         break;
+      case CustomTextFieldType.textArea: // 🆕 thêm mới
+        inputChild = _buildTextAreaField();
+        break;
     }
 
     if (leading != null) {
@@ -181,14 +186,14 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null) ...[
-          Text(
-            label!,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: labelColor ?? AppThemeColors.text,
-            ),
-          ),
+          TextSpanWidget(
+              size: 14,
+              fontWeight1: FontWeight.w600,
+              fontWeight2: FontWeight.w600,
+              textColor1: labelColor ?? AppThemeColors.text,
+              textColor2: AppColors.red,
+              text1: label.orNA(),
+              text2: isRequired ? "*" : ""),
           const SizedBox(height: 6),
         ],
         decorated,
@@ -251,6 +256,56 @@ class CustomTextField extends StatelessWidget {
     );
   }
 
+  Widget _buildTextAreaField() {
+    InputBorder buildBorder(Color color) => !enableBorder
+        ? OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide:
+                const BorderSide(color: AppColors.transparent, width: 0),
+          )
+        : OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: BorderSide(color: color, width: borderWidth),
+          );
+
+    return TextField(
+      controller: controller,
+      scrollPadding: scrollPadding ?? EdgeInsets.zero,
+      keyboardType: TextInputType.multiline,
+      maxLines: maxLines > 1 ? maxLines : 5, // mặc định textarea = 5 dòng
+      minLines: minLines > 1 ? minLines : 3, // mặc định min 3 dòng
+      enabled: enabled,
+      onChanged: onChanged,
+      onSubmitted: onSubmit,
+      style: TextStyle(
+        color: textColor ?? AppColors.text700,
+        fontSize: textSize ?? 14,
+        fontWeight: FontWeight.w500,
+      ),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: enabled
+            ? backgroundColor ?? AppColors.white
+            : AppColors.neutralColor6,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: hintColor ?? AppColors.grey,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+        ),
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        errorText: errorText,
+        enabledBorder: buildBorder(borderColor),
+        focusedBorder: buildBorder(focusedBorderColor),
+        disabledBorder: buildBorder(disabledBorderColor),
+        errorBorder: buildBorder(errorBorderColor),
+        focusedErrorBorder: buildBorder(errorBorderColor),
+        contentPadding: const EdgeInsets.all(12),
+      ),
+    );
+  }
+
   Widget _buildMoneyField() {
     InputBorder buildBorder(Color color) => !enableBorder
         ? OutlineInputBorder(
@@ -264,12 +319,6 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
             borderSide: BorderSide(color: color, width: borderWidth),
           );
-
-    // final moneyFormatter = MoneyInputFormatter(
-    //   thousandSeparator: ThousandSeparator.Period,
-    //   mantissaLength: 0,
-    // );
-
     return TextField(
       controller: controller,
       scrollPadding: scrollPadding ?? EdgeInsets.zero,

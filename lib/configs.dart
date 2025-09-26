@@ -11,8 +11,6 @@ Future<void> configs() async {
   AppLogger.init();
   AppBinding().dependencies(); 
   await storageConfigs();
-  // await firebaseConfigs();
-  // await notificationConfigs();
   await languageConfigs();
 }
 

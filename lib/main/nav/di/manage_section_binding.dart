@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 class ManageSectionBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ManageController());
+    Get.put(ManageController(), permanent: true);
   }
 }

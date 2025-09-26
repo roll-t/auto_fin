@@ -1,4 +1,5 @@
 import 'package:auto_find/core/config/theme/app_colors.dart';
+import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class WrapBodyWidget extends StatelessWidget {
@@ -26,7 +27,7 @@ class WrapBodyWidget extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: backgroundColor,
+        color: AppThemeColors.background100,
       ),
       child: Column(
         mainAxisSize: isMaxHeight ? MainAxisSize.max : MainAxisSize.min,
@@ -35,7 +36,7 @@ class WrapBodyWidget extends StatelessWidget {
           if (header != null) ...[
             Container(
               decoration: BoxDecoration(
-                  color: backgroundHeader,
+                  color: AppThemeColors.background100,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),

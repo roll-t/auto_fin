@@ -15,35 +15,30 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
-
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        Rx<AppColorScheme> colorScheme = themeController.appColorScheme;
-        return Obx(
-          () {
-            return GetMaterialApp(
-              debugShowCheckedModeBanner: false,
+        AppColorScheme colorScheme = themeController.appColorScheme.value;
+        
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          ///---> [Localization service]
+          translations: LocalizationService(),
+          locale: LocalizationService.locale,
+          fallbackLocale: LocalizationService.fallbackLocale,
+          supportedLocales: LocalizationService.locales,
+          localizationsDelegates: LocalizationService.delegates,
 
-              ///---> [Localization service]
-              translations: LocalizationService(),
-              locale: LocalizationService.locale,
-              fallbackLocale: LocalizationService.fallbackLocale,
-              supportedLocales: LocalizationService.locales,
-              localizationsDelegates: LocalizationService.delegates,
+          ///---> [Page config]
+          getPages: appPage,
+          initialRoute: "/splash",
+          initialBinding: AppBinding(),
+          home: const SplashPage(),
+          unknownRoute: notFoundPage,
 
-              ///---> [Page config]
-              getPages: appPage,
-              initialRoute: "/splash",
-              initialBinding: AppBinding(),
-              home: const SplashPage(),
-              unknownRoute: notFoundPage,
-
-              ///---> [Theme config]
-              theme: AppTheme.light(colorScheme.value),
-              darkTheme: AppTheme.dark(colorScheme.value),
-              themeMode: themeController.themeMode.value,
-            );
-          },
+          ///---> [Theme config]
+          theme: AppTheme.light(colorScheme),
+          darkTheme: AppTheme.dark(colorScheme),
+          themeMode: themeController.themeMode.value,
         );
       },
     );

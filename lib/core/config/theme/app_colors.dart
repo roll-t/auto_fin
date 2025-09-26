@@ -16,7 +16,7 @@ class AppColors {
 
   static const light300 = Color.fromARGB(255, 218, 216, 216);
   static const light200 = Color.fromARGB(255, 238, 238, 238);
-  static const light100 = Color(0xFFF5F5F5);
+  static const light100 = Color.fromARGB(255, 255, 255, 255);
 
   // Primary Colors
   static const Color black = Color(0xFF000000);

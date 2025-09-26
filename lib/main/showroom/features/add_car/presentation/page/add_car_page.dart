@@ -8,14 +8,13 @@ import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widge
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
 import 'package:auto_find/core/ui/widgets/circle_icon_button%20_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
+import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/controller/add_car_controller.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_manage_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class AddCarPage extends CustomState {
@@ -109,6 +108,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                     children: [
                       Expanded(
                         child: CustomBottomSheetWidget(
+                          isRequired: true,
                           height: 45,
                           label: "Hãng xe",
                           titleBottomSheet: "Hãng xe",
@@ -121,6 +121,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: CustomBottomSheetWidget(
+                          isRequired: true,
                           height: 45,
                           label: "Mẫu xe",
                           titleBottomSheet: "Mẫu xe",
@@ -137,6 +138,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                     children: [
                       Expanded(
                         child: CustomTextField(
+                          isRequired: true,
                           type: CustomTextFieldType.yearPicker,
                           label: "Năm sản xuất",
                           hintText: "Chọn năm sản xuất",
@@ -166,11 +168,14 @@ class _BodyBuilder extends GetView<AddCarController> {
                           children: [
                             Row(
                               children: [
-                                TextWidget(
-                                  text: "Tên xe",
+                                TextSpanWidget(
+                                  text1: "Tên xe",
+                                  text2: "*",
                                   size: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppThemeColors.text,
+                                  fontWeight1: FontWeight.w600,
+                                  fontWeight2: FontWeight.w600,
+                                  textColor1: AppThemeColors.text,
+                                  textColor2: AppColors.red,
                                 ),
                                 const SizedBox(width: 10),
                                 Container(
@@ -231,7 +236,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                           label: "Màu xe",
                           titleBottomSheet: "Màu xe",
                           hint: "Chọn màu xe",
-                          controller: controller.colorController, // 🆕
+                          controller: controller.colorController,
                           onSelectedItem: (item) =>
                               controller.selectedColor.value = item,
                         ),
@@ -240,18 +245,89 @@ class _BodyBuilder extends GetView<AddCarController> {
                   ),
                   const SizedBox(height: 14),
                   CustomBottomSheetWidget(
+                    isRequired: true,
                     height: 45,
                     label: "Trạng thái xe",
                     hint: "Chọn trạng thái xe",
-                    controller: controller.statusController, // 🆕
-                    onSelectedItem: (item) =>
-                        controller.selectedStatus.value = item,
+                    controller: controller.statusController,
+                    onSelectedItem: controller.onSelectedStatus,
+                  ),
+                  const SizedBox(height: 14),
+                  CustomTextField(
+                    height: 80,
+                    type: CustomTextFieldType.textArea,
+                    label: "Mô tả",
+                    hintText: "Nhập mô tả xe",
+                    controller: controller.desController,
+                    maxLines: 6,
+                    minLines: 3,
                   ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 14),
+            GetBuilder<AddCarController>(
+              id: "SALES_INFO_ID",
+              builder: (_) {
+                if (controller.selectedStatus.value?.title != "Xe đã bán") {
+                  return const SizedBox(height: 14);
+                }
+                return WrapBodyWidget(
+                  margin: const EdgeInsets.only(
+                    bottom: 14,
+                    top: 14,
+                  ),
+                  header: const TextWidget(
+                    text: "Thông tin bán",
+                    textStyle: AppTextStyle.semiBold14,
+                  ),
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        isRequired: true,
+                        label: "Ngày bán",
+                        controller: controller.soldDateController,
+                        type: CustomTextFieldType.datePicker,
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime.now(),
+                        height: 45,
+                        textSize: 14,
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        isRequired: true,
+                        label: "Giá bán",
+                        hintText: "Nhập giá bán",
+                        backgroundColor: AppColors.white,
+                        height: 45,
+                        textSize: 14,
+                        type: CustomTextFieldType.money,
+                        controller: controller.soldPriceController,
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        label: "Chi phí bán",
+                        hintText: "Chi phí bán",
+                        backgroundColor: AppColors.white,
+                        height: 45,
+                        textSize: 14,
+                        type: CustomTextFieldType.money,
+                        controller: controller.soldCostController,
+                      ),
+                      const SizedBox(height: 14),
+                      CustomTextField(
+                        height: 80,
+                        type: CustomTextFieldType.textArea,
+                        label: "Mô tả bán",
+                        hintText: "Nhập mô tả xe",
+                        controller: controller.soldDesController,
+                        maxLines: 6, // Cho phép nhập 6 dòng
+                        minLines: 3, // Ít nhất 3 dòng
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
 
             WrapBodyWidget(
               header: const TextWidget(
@@ -261,6 +337,7 @@ class _BodyBuilder extends GetView<AddCarController> {
               child: Column(
                 children: [
                   CustomTextField(
+                    isRequired: true,
                     type: CustomTextFieldType.datePicker,
                     label: "Ngày mua",
                     hintText: "Chọn ngày mua",
@@ -268,6 +345,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                   ),
                   const SizedBox(height: 14),
                   CustomTextField(
+                    isRequired: true,
                     type: CustomTextFieldType.money,
                     label: "Giá nêm yết bán",
                     hintText: "Nhập giá nêm yết bán",
@@ -275,6 +353,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                   ),
                   const SizedBox(height: 14),
                   CustomTextField(
+                    isRequired: true,
                     type: CustomTextFieldType.money,
                     label: "Giá mua",
                     hintText: "Nhập giá mua",
@@ -291,7 +370,7 @@ class _BodyBuilder extends GetView<AddCarController> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
           ],
         ),
       ),

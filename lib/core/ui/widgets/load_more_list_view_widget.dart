@@ -1,3 +1,4 @@
+import 'package:auto_find/core/ui/widgets/data_null_widget.dart';
 import 'package:auto_find/core/ui/widgets/shimmer/shimmer_loading_list.dart';
 import 'package:flutter/material.dart';
 
@@ -32,10 +33,15 @@ class LoadMoreListViewWidget<T> extends StatelessWidget {
       );
     }
 
-    if (items.isEmpty && dataNullWidget != null) {
-      return Center(
-        child: dataNullWidget,
-      );
+    if (items.isEmpty) {
+      if (dataNullWidget == null) {
+        return const DataNullWidget();
+      }
+      if (dataNullWidget != null) {
+        return Center(
+          child: dataNullWidget,
+        );
+      }
     }
 
     return ListView.builder(

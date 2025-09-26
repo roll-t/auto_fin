@@ -1,4 +1,5 @@
 import 'package:auto_find/core/config/feature_configs.dart';
+import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/main/setting/presentation/controller/setting_controller.dart';
 import 'package:auto_find/main/setting/presentation/widget/select_language_widget.dart';
 import 'package:auto_find/main/setting/presentation/widget/select_primary_theme_widget.dart';
@@ -41,6 +42,7 @@ class _BodyBuilder extends GetView<SettingController> {
           return SettingItemWidget(
             titleKey: "Ban đêm",
             trailing: Switch(
+              activeColor:AppThemeColors.primary,
               value: themeController.themeMode.value == ThemeMode.dark,
               onChanged: (_) => themeController.toggleTheme(),
             ),
