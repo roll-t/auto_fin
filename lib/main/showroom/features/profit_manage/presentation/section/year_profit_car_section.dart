@@ -1,6 +1,6 @@
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/ui/styles/app_container_styles.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/const/app_container_styles.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/main/showroom/data/model/profit_matrix_response_model.dart';
@@ -37,8 +37,7 @@ class ProfitYearCard extends StatelessWidget {
     final displayMonth = monthProfit.month.toString().padLeft(2, '0');
     final displayYear = monthProfit.year.toString();
     final displayProfit = "${monthProfit.profit.toStringAsFixed(1)} triệu";
-    final Color colorTextProfit =
-        monthProfit.profit > 0 ? AppColors.green : AppColors.red;
+    final Color colorTextProfit = monthProfit.profit > 0 ? AppColors.green : AppColors.red;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

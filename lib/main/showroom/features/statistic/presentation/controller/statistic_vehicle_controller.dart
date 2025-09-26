@@ -1,4 +1,4 @@
-import 'package:auto_find/core/extension/empty_extension.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_find/main/showroom/data/model/car_chart_model.dart';
@@ -65,7 +65,7 @@ class StatisticVehicleController extends GetxController {
     isLoadingChart = true;
     update(["CHART_ID"]);
     final results = await _carUsecase.getCharts(year);
-    charts = results as CarChartsModel;
+    charts = results;
     isLoadingChart = false;
     update(["CHART_ID"]);
   }

@@ -2,8 +2,8 @@ import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/ui/styles/app_padding.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/const/app_padding.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
 import 'package:auto_find/core/ui/widgets/circle_icon_button%20_widget.dart';
@@ -59,7 +59,7 @@ class _BuildBottomNavigation extends StatelessWidget {
       builder: (controller) {
         return Container(
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: AppThemeColors.background100,
             boxShadow: [
               BoxShadow(
                 color: AppColors.dark300.withOpacity(.1),

@@ -131,7 +131,7 @@ class ProfitManageController extends GetxController
 
       final result =
           await _carUsecase.getProfitMatrix(year: year, month: month);
-      profitMatrix.value = result;
+      profitMatrix.value = result!;
 
       // Month profit lists
       final data = profitMatrix.value.toListMonthProfit();

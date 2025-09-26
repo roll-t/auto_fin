@@ -1,5 +1,5 @@
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/images/asset_image_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:flutter/material.dart';

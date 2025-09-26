@@ -33,7 +33,7 @@ class CarUsecase {
   }
 
   /// Lấy chi tiết xe
-  Future<CarModel> getCarDetail(int id) {
+  Future<CarModel?> getCarDetail(int id) {
     return _repo.getCarDetail(id);
   }
 
@@ -72,12 +72,12 @@ class CarUsecase {
   }
 
   /// Danh sách xe trong showroom (không phân trang)
-  Future<ShowroomCarsModel> getShowroomCars() {
+  Future<ShowroomCarsModel?> getShowroomCars() {
     return _repo.getShowroomCars();
   }
 
   /// Trả về danh sách xe đã bán từ repo
-  Future<SoldCarsModel> call({
+  Future<SoldCarsModel?> call({
     int? pageSize,
     String? pageToken,
   }) {
@@ -93,7 +93,7 @@ class CarUsecase {
   }
 
   /// Ma trận lợi nhuận
-  Future<ProfitMatrixResponseModel> getProfitMatrix({int? year, int? month}) {
+  Future<ProfitMatrixResponseModel?> getProfitMatrix({int? year, int? month}) {
     return _repo.getProfitMatrix(year: year, month: month);
   }
 

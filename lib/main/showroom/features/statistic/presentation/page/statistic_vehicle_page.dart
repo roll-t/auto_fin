@@ -2,11 +2,11 @@ import 'package:auto_find/core/config/const/app_images.dart';
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/extension/datetime.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/currency_extensions.dart';
-import 'package:auto_find/core/ui/styles/app_padding.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/extension/core/date_extensions.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
+import 'package:auto_find/core/extension/core/currency_extensions.dart';
+import 'package:auto_find/core/config/const/app_padding.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/images/asset_image_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
@@ -653,7 +653,7 @@ class _CarListWidget extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: AppThemeColors.background100,
               borderRadius: BorderRadius.circular(10),
             ),
             child: ListTile(
@@ -694,7 +694,7 @@ class _CarListWidget extends StatelessWidget {
                     const SizedBox(height: 6.0),
                     TextSpanWidget(
                       textColor1: AppColors.grey,
-                      textColor2: AppColors.black,
+                      textColor2: AppThemeColors.text100,
                       fontWeight2: FontWeight.w500,
                       text1: "Ngày bán: ",
                       text2: e.soldDate.toString().toVNDate(),
@@ -802,7 +802,7 @@ class _ButtonShowOrderStatistic extends StatelessWidget {
         child: Container(
           width: Get.width * .95,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppThemeColors.background100,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(

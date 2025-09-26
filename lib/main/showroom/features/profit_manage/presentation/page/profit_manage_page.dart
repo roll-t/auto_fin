@@ -1,8 +1,9 @@
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/extension/currency_extensions.dart';
-import 'package:auto_find/core/ui/styles/app_padding.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/theme/app_theme_colors.dart';
+import 'package:auto_find/core/extension/core/currency_extensions.dart';
+import 'package:auto_find/core/config/const/app_padding.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
@@ -234,6 +235,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                   TextSpanWidget(
                     maxLine: 1,
                     fontWeight2: FontWeight.bold,
+                    textColor1: AppThemeColors.text300,
                     textColor2: AppColors.blue,
                     text1: "Tổng giá trị bán: ",
                     text2: totalValue,
@@ -243,6 +245,7 @@ class _ProfitAvenueWidget extends GetView<ProfitManageController> {
                   TextSpanWidget(
                     maxLine: 1,
                     fontWeight2: FontWeight.bold,
+                    textColor1: AppThemeColors.text300,
                     textColor2: AppColors.green,
                     text1: "Tổng lợi nhuận: ",
                     text2: totalProfit,

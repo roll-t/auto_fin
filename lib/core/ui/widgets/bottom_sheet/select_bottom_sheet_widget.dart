@@ -1,6 +1,6 @@
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';

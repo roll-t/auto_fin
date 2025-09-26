@@ -1,10 +1,11 @@
 import 'package:auto_find/core/config/theme/app_colors.dart';
+import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:flutter/widgets.dart';
 
 class AppContainerStyles {
   static BoxDecoration cardStyle() {
     return BoxDecoration(
-      color: AppColors.white,
+      color: AppThemeColors.background100,
       borderRadius: BorderRadius.circular(6.0),
       boxShadow: [
         BoxShadow(
@@ -19,14 +20,14 @@ class AppContainerStyles {
 
   static BoxDecoration card100() {
     return BoxDecoration(
-      color: AppColors.white,
+      color: AppThemeColors.background100,
       borderRadius: BorderRadius.circular(6.0),
     );
   }
 
   static BoxDecoration card200() {
     return BoxDecoration(
-      color: AppColors.white,
+      color: AppThemeColors.background100,
       borderRadius: BorderRadius.circular(10.0),
     );
   }

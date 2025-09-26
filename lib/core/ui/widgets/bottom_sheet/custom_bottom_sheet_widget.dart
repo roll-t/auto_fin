@@ -2,8 +2,8 @@ import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/rx_extension.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
+import 'package:auto_find/core/extension/core/rx_extensions.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
@@ -71,7 +71,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
             height: height,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColors.white,
+              color: AppThemeColors.background100,
               border: Border.all(
                 width: .5,
                 color: const Color.fromRGBO(189, 189, 189, 1),
@@ -108,6 +108,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
                     const SizedBox(width: 6),
                     Utils.iconSvg(
                       svgUrl: AppVectors.icArrowDown,
+                      color: AppThemeColors.text100,
                       size: 18,
                     )
                   ],

@@ -1,8 +1,9 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/ui/styles/app_padding.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/const/app_padding.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
+import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
 import 'package:auto_find/core/ui/widgets/circle_icon_button%20_widget.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
@@ -10,6 +11,7 @@ import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
+import 'package:auto_find/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,12 +33,17 @@ class CarDetailPage extends CustomState {
   bool get dismissKeyboard => true;
 
   @override
-  List<Widget>? get actionAppBar => actions();
+  List<Widget>? get actionAppBar => _UtilsPage.actions();
+
+  @override
+  Widget? get leadingIconAppBar => const _BuildLeadingIconBack();
 
   @override
   Widget? get bottomNavigationBar => const _BuildBottomBar();
+}
 
-  List<Widget> actions() {
+class _UtilsPage {
+  static List<Widget> actions() {
     return [
       GetBuilder<CarDetailController>(
         id: "EDIT_ICON_ID",
@@ -74,6 +81,27 @@ class CarDetailPage extends CustomState {
   }
 }
 
+class _BuildLeadingIconBack extends StatelessWidget {
+  const _BuildLeadingIconBack();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<CarDetailController>(
+      builder: (controller) {
+        return GestureDetector(
+          onTap: () {
+            Get.back(result: controller.isUpdated);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Utils.iconSvg(svgUrl: AppVectors.icArrowBack),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class _BuildBottomBar extends StatelessWidget {
   const _BuildBottomBar();
 
@@ -85,7 +113,7 @@ class _BuildBottomBar extends StatelessWidget {
         if (!controller.isEditMode.value) return const SizedBox.shrink();
         return Container(
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: AppThemeColors.background100,
             boxShadow: [
               BoxShadow(
                 color: AppColors.dark300.withValues(alpha: .1),
@@ -158,7 +186,6 @@ class _BuildFormBody extends StatelessWidget {
                         enabled: controller.isEditMode.value,
                         label: "Biển số xe",
                         hintText: "Nhập biển số xe",
-                        backgroundColor: AppColors.white,
                         height: 45,
                         textSize: 14,
                         type: CustomTextFieldType.text,
@@ -192,7 +219,6 @@ class _BuildFormBody extends StatelessWidget {
                         hintText: "Chọn hãng xe",
                         controller: controller.brandController,
                         suffixIcon: const Icon(Icons.arrow_drop_down),
-                        backgroundColor: AppColors.white,
                         height: 45,
                         textSize: 14,
                         type: CustomTextFieldType.dropdown,
@@ -207,7 +233,6 @@ class _BuildFormBody extends StatelessWidget {
                         hintText: "Chọn loại xe",
                         controller: controller.typeCarController,
                         suffixIcon: const Icon(Icons.arrow_drop_down),
-                        backgroundColor: AppColors.white,
                         height: 45,
                         textSize: 14,
                         type: CustomTextFieldType.dropdown,
@@ -228,7 +253,6 @@ class _BuildFormBody extends StatelessWidget {
                         hintText: "Chọn màu xe",
                         controller: controller.colorController,
                         suffixIcon: const Icon(Icons.arrow_drop_down),
-                        backgroundColor: AppColors.white,
                         height: 45,
                         textSize: 14,
                         type: CustomTextFieldType.dropdown,
@@ -243,7 +267,6 @@ class _BuildFormBody extends StatelessWidget {
                         hintText: "Chọn mẫu xe",
                         controller: controller.modelController,
                         suffixIcon: const Icon(Icons.arrow_drop_down),
-                        backgroundColor: AppColors.white,
                         height: 45,
                         textSize: 14,
                         type: CustomTextFieldType.dropdown,
@@ -261,7 +284,6 @@ class _BuildFormBody extends StatelessWidget {
                   hintText: "Chọn trạng thái xe",
                   controller: controller.statusController,
                   suffixIcon: const Icon(Icons.arrow_drop_down),
-                  backgroundColor: AppColors.white,
                   height: 45,
                   textSize: 14,
                   type: CustomTextFieldType.dropdown,
@@ -272,7 +294,6 @@ class _BuildFormBody extends StatelessWidget {
                   enabled: controller.isEditMode.value,
                   label: "Giá nêm yết bán",
                   hintText: "Giá nêm yết bán",
-                  backgroundColor: AppColors.white,
                   height: 45,
                   textSize: 14,
                   type: CustomTextFieldType.money,
@@ -324,7 +345,6 @@ class _BuildFormBody extends StatelessWidget {
                       enabled: controller.isEditMode.value,
                       label: "Giá bán",
                       hintText: "Nhập giá bán",
-                      backgroundColor: AppColors.white,
                       height: 45,
                       textSize: 14,
                       type: CustomTextFieldType.money,
@@ -369,7 +389,6 @@ class _BuildFormBody extends StatelessWidget {
                   enabled: controller.isEditMode.value,
                   label: "Giá mua",
                   hintText: "Giá mua",
-                  backgroundColor: AppColors.white,
                   height: 45,
                   textSize: 14,
                   type: CustomTextFieldType.money,
@@ -380,7 +399,6 @@ class _BuildFormBody extends StatelessWidget {
                   enabled: controller.isEditMode.value,
                   label: "Chi phí mua",
                   hintText: "Chi phí mua",
-                  backgroundColor: AppColors.white,
                   height: 45,
                   textSize: 14,
                   type: CustomTextFieldType.money,

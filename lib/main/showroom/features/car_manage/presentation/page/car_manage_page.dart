@@ -1,9 +1,10 @@
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/currency_extensions.dart';
-import 'package:auto_find/core/ui/styles/app_container_styles.dart';
-import 'package:auto_find/core/ui/styles/app_padding.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/theme/app_theme_colors.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
+import 'package:auto_find/core/extension/core/currency_extensions.dart';
+import 'package:auto_find/core/config/const/app_container_styles.dart';
+import 'package:auto_find/core/config/const/app_padding.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_widget.dart';
 import 'package:auto_find/core/ui/widgets/filter/sort/sort_toggle_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
@@ -13,7 +14,6 @@ import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/controller/car_manage_controller.dart';
-import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_detail_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_in_showroom_item_widget.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_item_widget.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_sold_item_widget.dart';
@@ -300,6 +300,7 @@ class _ShowroomTabContent extends StatelessWidget {
     return TextSpanWidget(
       text1: "$label: ",
       text2: value,
+      textColor1: AppThemeColors.text300,
       textColor2: textColor ?? AppColors.accent,
       fontWeight2: FontWeight.bold,
     );
@@ -343,6 +344,7 @@ class _SoldCarTabContent extends StatelessWidget {
     return TextSpanWidget(
       text1: "$label: ",
       text2: value,
+      textColor1: AppThemeColors.text300,
       textColor2: textColor ?? AppColors.green,
       fontWeight2: FontWeight.bold,
     );

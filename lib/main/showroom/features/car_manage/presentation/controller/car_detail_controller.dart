@@ -1,8 +1,8 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/const/app_logger.dart';
-import 'package:auto_find/core/extension/datetime.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/currency_extensions.dart';
+import 'package:auto_find/core/extension/core/date_extensions.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
+import 'package:auto_find/core/extension/core/currency_extensions.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/select_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
@@ -30,6 +30,7 @@ class CarDetailController extends GetxController
   Rxn<CarModel> carDetail = Rxn<CarModel>();
   RxBool isLoading = true.obs;
   RxBool isEditMode = false.obs;
+  bool isUpdated = false;
 
   /// UI expand controllers
   final expandInformation = ExpandController();
@@ -86,36 +87,36 @@ class CarDetailController extends GetxController
       carDetail.value = car;
 
       /// ---- Fill dữ liệu vào controller ----
-      nameController.text = car.name.orEmpty();
-      plateController.text = car.plate.orEmpty();
-      releaseYearController.text = car.releaseYear.toString();
+      nameController.text = (car?.name).orEmpty();
+      plateController.text = (car?.plate).orEmpty();
+      releaseYearController.text = (car?.releaseYear).toString();
 
-      priceController.text = (car.price ?? 0).toString().toCurrency();
-      profitController.text = (car.profit ?? 0).toString().toCurrency();
+      priceController.text = (car?.price ?? 0).toString().toCurrency();
+      profitController.text = (car?.profit ?? 0).toString().toCurrency();
 
-      importDateController.text = car.importDate.toString().toVNDate();
+      importDateController.text = (car?.importDate).toString().toVNDate();
       importPriceController.text =
-          (car.importPrice ?? 0).toString().toCurrency();
-      importCostController.text = (car.importCost ?? 0).toString().toCurrency();
+          (car?.importPrice ?? 0).toString().toCurrency();
+      importCostController.text = (car?.importCost ?? 0).toString().toCurrency();
 
-      soldDateController.text = (car.soldDate ?? "").toString().toVNDate();
-      soldPriceController.text = (car.soldPrice ?? 0).toString().toCurrency();
-      soldCostController.text = (car.soldCost ?? 0).toString().toCurrency();
+      soldDateController.text = (car?.soldDate ?? "").toString().toVNDate();
+      soldPriceController.text = (car?.soldPrice ?? 0).toString().toCurrency();
+      soldCostController.text = (car?.soldCost ?? 0).toString().toCurrency();
 
       // ---- Fill dropdown ----
-      selectedBrand.value = ItemModel(title: car.brand);
+      selectedBrand.value = ItemModel(title: car?.brand);
       brandController.text = (selectedBrand.value.title).orEmpty();
 
-      selectedColor.value = ItemModel(title: car.color);
+      selectedColor.value = ItemModel(title: car?.color);
       colorController.text = (selectedColor.value.title).orNA();
 
-      selectedTypeCar.value = ItemModel(title: car.type.orNA());
+      selectedTypeCar.value = ItemModel(title: car?.type.orNA());
       typeCarController.text = (selectedTypeCar.value.title).orNA();
 
-      selectedModel.value = ItemModel(title: car.product.orNA());
+      selectedModel.value = ItemModel(title: car?.product.orNA());
       modelController.text = (selectedModel.value.title).orNA();
 
-      selectedStatus.value = ItemModel(title: car.status.orNA());
+      selectedStatus.value = ItemModel(title: car?.status.orNA());
       statusController.text = (selectedStatus.value.title).orNA();
     } catch (e) {
       AppLogger.e("❌ Lỗi khi fetchCarDetail: $e");
@@ -207,8 +208,6 @@ class CarDetailController extends GetxController
         },
       );
 
-  /// Cập nhật thông tin cơ bản của xe
-  /// Cập nhật thông tin xe (gồm cả thông tin cơ bản & giao dịch)
   Future<void> updateCar() async {
     KeyboardUtils.hiddenKeyboard();
 
@@ -240,23 +239,19 @@ class CarDetailController extends GetxController
         des: currentCar.des,
 
         // --- Thông tin giao dịch ---
-        // --- Thông tin mua ---
         importDate: importDateController.text.toIsoUtcDateTime(),
         importPrice: importPriceController.text.toCurrencyNum().toDouble(),
         importCost: importCostController.text.toCurrencyNum().toDouble(),
 
-        // --- Thông tin bán ---
-        /**
-         * Nếu trạng thái xe khác "Xe đã bán" thì dữ liệu các trường này tự reset về rỗng
-         * **/
         soldDate: soldDateController.text.toIsoUtcDateTime(),
         soldPrice: soldPriceController.text.toCurrencyNum().toDouble(),
         soldCost: soldCostController.text.toCurrencyNum().toDouble(),
         soldDes: currentCar.soldDes,
       );
-
+      
       await _carUsecase.updateCar(updatedCar);
       carDetail.value = updatedCar;
+      isUpdated= true;
       update(["FORM_ID"]);
       refreshData();
     } catch (e) {
@@ -266,9 +261,9 @@ class CarDetailController extends GetxController
 
   void onDeleteCar() async {
     try {
-      bool isSuccess = await _carUsecase.deleteCar(carDetail.value?.id ?? -1);
+      bool? isSuccess = await _carUsecase.deleteCar(carDetail.value?.id ?? -1);
       if (isSuccess) {
-        Get.back(result: true);
+        Get.back(result: isSuccess);
       }
     } catch (e) {
       AppLogger.e(e);
@@ -278,7 +273,6 @@ class CarDetailController extends GetxController
 
   /// ---------------- VALIDATION ----------------
   /// ✅ Validate thông tin cơ bản xe
-  /// Validate thông tin xe
   bool validateCar() {
     RxString messErrorValidate = "".obs;
     // --- Validate thông tin cơ bản ---
@@ -346,9 +340,8 @@ class CarDetailController extends GetxController
       carDetail.value = car;
 
       // Gọi fill lại dữ liệu vào controller
-      _fillDataToControllers(car);
+      _fillDataToControllers(car!);
 
-      Fluttertoast.showToast(msg: "Dữ liệu đã được làm mới");
     } catch (e) {
       AppLogger.e("❌ Lỗi khi refreshData: $e");
       Get.snackbar("Lỗi", "Không thể làm mới dữ liệu xe");

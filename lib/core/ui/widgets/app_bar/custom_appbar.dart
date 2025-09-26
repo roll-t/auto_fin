@@ -1,7 +1,7 @@
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +13,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final bool showBackButton;
   final bool titleCenter;
+  final Widget? leadingIcon;
 
   const CustomAppBar({
     super.key,
     required this.title,
     this.titleWidget,
     this.actions,
+    this.leadingIcon,
     this.showBackButton = true,
     this.titleCenter = false,
   });
@@ -28,12 +30,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppThemeColors.appBar,
       leading: showBackButton && Navigator.of(context).canPop()
-          ? IconButton(
-              icon: Utils.iconSvg(svgUrl: AppVectors.icArrowBack),
-              onPressed: () {
-                Get.back();
-              },
-            )
+          ? leadingIcon ??
+              IconButton(
+                icon: Utils.iconSvg(svgUrl: AppVectors.icArrowBack),
+                onPressed: () {
+                  Get.back();
+                },
+              )
           : null,
       title: titleWidget ??
           TextWidget(

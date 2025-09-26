@@ -1,4 +1,4 @@
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/app_bar/main_appbar.dart';
 import 'package:auto_find/core/ui/widgets/standard_layout_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';

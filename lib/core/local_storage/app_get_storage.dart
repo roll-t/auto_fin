@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auto_find/core/config/const/app_logger.dart';
 import 'package:auto_find/main/user/data/model/user_model.dart'; // import model
 import 'package:auto_find/core/config/theme/app_color_scheme.dart';
 import 'package:auto_find/core/lang/translation_service.dart';
@@ -117,6 +118,6 @@ class AppGetStorage {
   static void printCacheSize() {
     int cacheSizeInBytes = estimateCacheSize();
     double cacheSizeInMB = cacheSizeInBytes / (1024 * 1024);
-    print("Kích thước bộ nhớ cache: ${cacheSizeInMB.toStringAsFixed(2)} MB");
+    AppLogger.i("Kích thước bộ nhớ cache: ${cacheSizeInMB.toStringAsFixed(2)} MB");
   }
 }

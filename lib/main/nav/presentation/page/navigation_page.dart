@@ -1,5 +1,5 @@
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/extension/rx_extension.dart';
+import 'package:auto_find/core/extension/core/rx_extensions.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/core/utils/custom_framework.dart';
 import 'package:auto_find/main/nav/presentation/controller/navigation_controller.dart';

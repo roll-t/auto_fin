@@ -1,10 +1,11 @@
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
-import 'package:auto_find/core/extension/datetime.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/extension/currency_extensions.dart';
-import 'package:auto_find/core/ui/styles/app_container_styles.dart';
-import 'package:auto_find/core/ui/styles/app_padding.dart';
+import 'package:auto_find/core/config/theme/app_theme_colors.dart';
+import 'package:auto_find/core/extension/core/date_extensions.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
+import 'package:auto_find/core/extension/core/currency_extensions.dart';
+import 'package:auto_find/core/config/const/app_container_styles.dart';
+import 'package:auto_find/core/config/const/app_padding.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/utils/utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
@@ -43,7 +44,7 @@ class CarItemWidget extends StatelessWidget {
                     lineHeight: 1.5,
                     maxLine: 2,
                     textColor1: AppColors.grey,
-                    textColor2: AppColors.palette1,
+                    textColor2: AppThemeColors.text100,
                     fontWeight2: FontWeight.w500,
                     text1: "Tên xe: ",
                     text2: car.name.orNA(),
@@ -70,7 +71,7 @@ class CarItemWidget extends StatelessWidget {
                 ),
                 TextSpanWidget(
                   textColor1: AppColors.grey,
-                  textColor2: AppColors.palette1,
+                  textColor2: AppThemeColors.text100,
                   fontWeight2: FontWeight.w500,
                   text1: 'Ngày nhập: ',
                   text2: car.importDate.toString().toVNDate(),
@@ -97,7 +98,7 @@ class CarItemWidget extends StatelessWidget {
                 Expanded(
                   child: TextSpanWidget(
                     textColor1: AppColors.grey,
-                    textColor2: AppColors.palette1,
+                    textColor2: AppThemeColors.text100,
                     fontWeight2: FontWeight.w500,
                     text1: 'Biển số: ',
                     text2: car.plate.orNA(),
@@ -107,7 +108,7 @@ class CarItemWidget extends StatelessWidget {
                 if (car.releaseYear?.isNotEmpty ?? false)
                   TextSpanWidget(
                     textColor1: AppColors.grey,
-                    textColor2: AppColors.palette1,
+                    textColor2: AppThemeColors.text100,
                     fontWeight2: FontWeight.w500,
                     text1: 'Năm SX: ',
                     text2: car.releaseYear!,

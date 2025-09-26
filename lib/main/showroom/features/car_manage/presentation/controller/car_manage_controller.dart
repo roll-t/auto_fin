@@ -193,7 +193,7 @@ class CarManageController extends GetxController {
         pageToken: loadMore ? _nextPageToken : null,
       );
 
-      profit.value = result.totals?.profit ?? 0;
+      profit.value = result!.totals?.profit ?? 0;
       soldValue.value = result.totals?.soldValue ?? 0;
       final items = result.items ?? [];
 
@@ -218,7 +218,7 @@ class CarManageController extends GetxController {
       final res = await _carUsecase.getShowroomCars();
       _allShowroomCars
         ..clear()
-        ..addAll(res.items ?? []);
+        ..addAll(res!.items ?? []);
       cars.assignAll(_allShowroomCars);
       inventoryValue.value = res.inventoryValue ?? 0;
       errorMessage.value = '';
@@ -266,11 +266,12 @@ class CarManageController extends GetxController {
   }
 
   Future<void> onToDetailCar(CarModel arguments) async {
-    bool result = await Get.toNamed(
+    final result = await Get.toNamed(
       const CarDetailPage().routeName,
       arguments: arguments,
     );
-    if (result) {
+
+    if (result == true) {
       refreshCars();
     }
   }

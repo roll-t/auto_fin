@@ -1,7 +1,7 @@
 import 'package:auto_find/core/config/const/app_dimens.dart';
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

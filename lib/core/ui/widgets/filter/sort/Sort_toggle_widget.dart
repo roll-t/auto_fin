@@ -1,8 +1,8 @@
 // ignore: file_names
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class SortToggleWidget extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6.0),
-          color: AppColors.white.withValues(alpha: .8),
+          color: AppThemeColors.background100,
           border: Border.all(
             width: .5,
             color: AppColors.text400,

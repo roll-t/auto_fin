@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "bookara (dev)",
+            "name": "auto_fin (dev)",
             "request": "launch",
             "type": "dart",
             "args": [
@@ -10,7 +10,7 @@
             ]
         },
         {
-            "name": "bookara (prod)",
+            "name": "auto_fin (prod)",
             "request": "launch",
             "type": "dart",
             "args": [
@@ -18,7 +18,7 @@
             ]
         },
         {
-            "name": "bookara (test)",
+            "name": "auto_fin (test)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
@@ -26,14 +26,5 @@
                 "--dart-define=ENV=test"
             ]
         },
-        {
-            "name": "bookara (release)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "args": [
-                "--dart-define=ENV=prod"
-            ]
-        }
     ]
 }

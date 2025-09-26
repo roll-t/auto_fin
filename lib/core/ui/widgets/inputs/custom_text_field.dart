@@ -1,7 +1,7 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_find/core/ui/widgets/inputs/date_time_picker_text_field_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/year_picker_text_field_widget.dart';
@@ -137,8 +137,8 @@ class CustomTextField extends StatelessWidget {
           onDateSelected: onDateSelected,
           enabled: enabled,
           backgroundColor: enabled
-              ? backgroundColor ?? AppColors.white
-              : AppColors.neutralColor6,
+              ? backgroundColor ?? AppThemeColors.background100
+              : AppThemeColors.background300,
         );
         break;
       case CustomTextFieldType.yearPicker:
@@ -149,8 +149,8 @@ class CustomTextField extends StatelessWidget {
           onYearSelected: onYearSelected,
           enabled: enabled,
           backgroundColor: enabled
-              ? backgroundColor ?? AppColors.white
-              : AppColors.neutralColor6,
+              ? backgroundColor ?? AppThemeColors.background100
+              : AppThemeColors.background300,
         );
         break;
       case CustomTextFieldType.textArea: // 🆕 thêm mới
@@ -171,7 +171,7 @@ class CustomTextField extends StatelessWidget {
     Widget decorated = Container(
       height: height,
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.white,
+        color: backgroundColor ?? AppThemeColors.background100,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: inputChild,
@@ -226,15 +226,15 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       onSubmitted: onSubmit,
       style: TextStyle(
-        color: textColor ?? AppColors.text700,
+        color: textColor ?? AppThemeColors.text100,
         fontSize: textSize ?? 14,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         filled: true,
         fillColor: enabled
-            ? backgroundColor ?? AppColors.white
-            : AppColors.neutralColor6,
+            ? backgroundColor ?? AppThemeColors.background100
+            : AppThemeColors.background300,
         hintText: hintText,
         hintStyle: TextStyle(
             color: hintColor ?? AppColors.grey,
@@ -285,8 +285,8 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
         fillColor: enabled
-            ? backgroundColor ?? AppColors.white
-            : AppColors.neutralColor6,
+            ? backgroundColor ?? AppThemeColors.background100
+            : AppThemeColors.background300,
         hintText: hintText,
         hintStyle: TextStyle(
           color: hintColor ?? AppColors.grey,
@@ -353,14 +353,13 @@ class CustomTextField extends StatelessWidget {
         }),
       ],
       style: TextStyle(
-        color: textColor ?? Colors.black,
+        color: textColor ?? AppThemeColors.text100,
         fontSize: textSize ?? 14,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         filled: true,
-        fillColor:
-            enabled ? backgroundColor ?? Colors.white : AppColors.neutralColor6,
+        fillColor: enabled ? backgroundColor ??AppThemeColors.background100 : AppThemeColors.background300,
         hintText: hintText,
         hintStyle: TextStyle(
           color: hintColor ?? Colors.grey,

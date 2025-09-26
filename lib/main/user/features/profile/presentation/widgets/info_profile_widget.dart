@@ -1,8 +1,8 @@
 import 'package:auto_find/core/config/const/app_images.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/extension/empty_extension.dart';
-import 'package:auto_find/core/ui/styles/app_text_styles.dart';
+import 'package:auto_find/core/extension/core/empty_extensions.dart';
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/main/user/data/model/user_model.dart';

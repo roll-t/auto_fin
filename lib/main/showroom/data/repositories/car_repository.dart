@@ -36,7 +36,14 @@ class CarRepository {
       }
       return ListModel<CarModel>(items: [], nextPageToken: null);
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return ListModel<CarModel>(items: [], nextPageToken: null);
   }
 
   /// Lấy toàn bộ xe (không phân trang)
@@ -47,17 +54,31 @@ class CarRepository {
           (result.data as List).map((e) => CarModel.fromJson(e)).toList();
       return list;
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return [];
   }
 
-  Future<CarModel> getCarDetail(int id) async {
+  Future<CarModel?> getCarDetail(int id) async {
     DialogUtils.showProgressDialog();
     final result = await _api.getCarDetail(id);
     Get.back();
     if (result.isSuccess) {
       return CarModel.fromJson(result.data);
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return null;
   }
 
   Future<void> createCar(CarModel car) async {
@@ -86,12 +107,20 @@ class CarRepository {
 
   Future<bool> deleteCar(int id) async {
     final result = await _api.deleteCar(id);
-    if (!result.isSuccess) return false;
+    if (!result.isSuccess) {
+      if (result.data is Map<String, dynamic>) {
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          content: result.data['message'] ?? "N/A",
+        );
+      }
+      return false;
+    }
     return true;
   }
 
   /// Danh sách xe đã bán
-  Future<SoldCarsModel> getSoldCars({
+  Future<SoldCarsModel?> getSoldCars({
     int? pageSize,
     String? pageToken,
   }) async {
@@ -102,16 +131,29 @@ class CarRepository {
       return SoldCarsModel.fromJson(result.data);
     }
 
-    throw Exception(result.message);
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return null;
   }
 
   /// Xe trong showroom
-  Future<ShowroomCarsModel> getShowroomCars() async {
+  Future<ShowroomCarsModel?> getShowroomCars() async {
     final result = await _api.getShowroomCars();
     if (result.isSuccess) {
       return ShowroomCarsModel.fromJson(result.data);
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return null;
   }
 
   /// Tìm kiếm xe
@@ -137,12 +179,18 @@ class CarRepository {
         (json) => CarModel.fromJson(json),
       );
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return ListModel<CarModel>(items: [], nextPageToken: null);
   }
 
   /// Biểu đồ line/bar
-  /// Biểu đồ line/bar
-  Future<CarChartsModel> getCharts({required int year}) async {
+  Future<CarChartsModel?> getCharts({required int year}) async {
     final result = await _api.getCharts(year: year);
 
     if (result.isSuccess) {
@@ -150,15 +198,24 @@ class CarRepository {
       if (data is Map<String, dynamic>) {
         return CarChartsModel.fromJson(data);
       } else {
-        throw Exception("Invalid data format from API");
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          content: "Invalid data format from API",
+        );
       }
     } else {
-      throw Exception(result.message ?? "Unknown error");
+      if (result.data is Map<String, dynamic>) {
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          content: result.data['message'] ?? "Unknown error",
+        );
+      }
     }
+    return null;
   }
 
   /// Ma trận lợi nhuận
-  Future<ProfitMatrixResponseModel> getProfitMatrix(
+  Future<ProfitMatrixResponseModel?> getProfitMatrix(
       {int? year, int? month}) async {
     final result = await _api.getProfitMatrix(year: year, month: month);
 
@@ -167,11 +224,20 @@ class CarRepository {
       if (data is Map<String, dynamic>) {
         return ProfitMatrixResponseModel.fromJson(data);
       } else {
-        throw Exception("Dữ liệu trả về không hợp lệ: $data");
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          content: "Dữ liệu trả về không hợp lệ",
+        );
+      }
+    } else {
+      if (result.data is Map<String, dynamic>) {
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          content: result.data['message'] ?? "N/A",
+        );
       }
     }
-
-    throw Exception(result.message);
+    return null;
   }
 
   /// Top 5 thương hiệu lợi nhuận cao
@@ -182,7 +248,14 @@ class CarRepository {
           .map((e) => TopModel.fromJson(e as Map<String, dynamic>))
           .toList();
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return [];
   }
 
   Future<List<TopModel>> getTopProducts() async {
@@ -192,7 +265,14 @@ class CarRepository {
           .map((e) => TopModel.fromJson(e as Map<String, dynamic>))
           .toList();
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return [];
   }
 
   Future<List<CarModel>> getTopProfit() async {
@@ -200,7 +280,14 @@ class CarRepository {
     if (result.isSuccess) {
       return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return [];
   }
 
   Future<List<CarModel>> getTopValue() async {
@@ -208,7 +295,14 @@ class CarRepository {
     if (result.isSuccess) {
       return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return [];
   }
 
   Future<List<CarModel>> getTopRecent() async {
@@ -216,6 +310,13 @@ class CarRepository {
     if (result.isSuccess) {
       return (result.data as List).map((e) => CarModel.fromJson(e)).toList();
     }
-    throw Exception(result.message);
+
+    if (result.data is Map<String, dynamic>) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        content: result.data['message'] ?? "N/A",
+      );
+    }
+    return [];
   }
 }
