@@ -11,7 +11,7 @@ import 'package:auto_find/core/ui/widgets/shimmer/shimmer_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
-import 'package:auto_find/core/utils/custom_framework.dart';
+import 'package:auto_find/core/utils/custom_state.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/controller/profit_manage_controller.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/section/car_profit_section.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/section/year_profit_car_section.dart';

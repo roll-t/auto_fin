@@ -1,3 +1,4 @@
+import 'package:auto_find/core/utils/binding/internet_binding.dart';
 import 'package:auto_find/main/nav/di/manage_section_binding.dart';
 import 'package:auto_find/main/nav/di/profile_section_binding%20.dart';
 import 'package:auto_find/main/nav/presentation/section/manage_section.dart';
@@ -21,7 +22,10 @@ class NavigationController extends GetxController {
           settings: settings,
           page: () => const ManageSection(),
           transition: Transition.fadeIn,
-          binding: ManageSectionBinding(),
+          bindings: [
+            InternetBinding(),
+            ManageSectionBinding(),
+          ],
         );
       case '/profile-section':
         return GetPageRoute(

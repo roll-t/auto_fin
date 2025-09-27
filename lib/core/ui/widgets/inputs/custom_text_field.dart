@@ -42,6 +42,8 @@ class CustomTextField extends StatelessWidget {
   final bool enableBorder;
   final EdgeInsets? scrollPadding;
   final bool isRequired;
+  final bool hasClear;
+  final FocusNode? focusNode;
 
   final double? height;
   final List<BoxShadow>? boxShadow;
@@ -100,9 +102,11 @@ class CustomTextField extends StatelessWidget {
     this.firstDate,
     this.lastDate,
     this.onDateSelected,
+    this.hasClear = false,
     this.startYear,
     this.endYear,
     this.onYearSelected,
+    this.focusNode,
   });
 
   @override
@@ -153,7 +157,7 @@ class CustomTextField extends StatelessWidget {
               : AppThemeColors.background300,
         );
         break;
-      case CustomTextFieldType.textArea: // 🆕 thêm mới
+      case CustomTextFieldType.textArea:
         inputChild = _buildTextAreaField();
         break;
     }
@@ -241,7 +245,6 @@ class CustomTextField extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w400),
         prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
         errorText: errorText,
         enabledBorder: buildBorder(borderColor),
         focusedBorder: buildBorder(focusedBorderColor),
@@ -252,6 +255,31 @@ class CustomTextField extends StatelessWidget {
           vertical: height != null ? (height! - 24) / 2 : 12,
           horizontal: 12,
         ),
+        suffixIcon: suffixIcon ??
+            ((enabled && hasClear)
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: () => controller?.clear(),
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: AppThemeColors.text300.withValues(alpha: .5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.close,
+                            size: 12,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink()),
       ),
     );
   }
@@ -320,6 +348,7 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(color: color, width: borderWidth),
           );
     return TextField(
+      focusNode: focusNode,
       controller: controller,
       scrollPadding: scrollPadding ?? EdgeInsets.zero,
       keyboardType:
@@ -359,7 +388,9 @@ class CustomTextField extends StatelessWidget {
       ),
       decoration: InputDecoration(
         filled: true,
-        fillColor: enabled ? backgroundColor ??AppThemeColors.background100 : AppThemeColors.background300,
+        fillColor: enabled
+            ? backgroundColor ?? AppThemeColors.background100
+            : AppThemeColors.background300,
         hintText: hintText,
         hintStyle: TextStyle(
           color: hintColor ?? Colors.grey,
@@ -367,20 +398,45 @@ class CustomTextField extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
         prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon ??
-            const SizedBox(
-              width: 30,
-              height: 30,
-              child: Center(
-                child: Text(
-                  "VND",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
+        suffixIcon: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            suffixIcon ??
+                const SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: Center(
+                    child: Text(
+                      "VND",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+            if (enabled)
+              GestureDetector(
+                onTap: () => controller?.clear(),
+                child: Container(
+                  margin: const EdgeInsets.only(
+                    left: 5,
+                    right: 10,
+                  ),
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: AppThemeColors.text300.withValues(alpha: .5),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.close,
+                    size: 12,
+                    color: AppColors.white,
+                  ),
+                ),
+              )
+          ],
+        ),
         errorText: errorText,
         enabledBorder: buildBorder(borderColor),
         focusedBorder: buildBorder(focusedBorderColor),

@@ -1,3 +1,4 @@
+import 'package:auto_find/core/utils/binding/internet_binding.dart';
 import 'package:auto_find/main/nav/di/navigation_binding.dart';
 import 'package:auto_find/main/nav/presentation/page/navigation_page.dart';
 import 'package:auto_find/core/ui/widgets/notFound/not_found_page.dart';
@@ -41,7 +42,10 @@ final appPage = [
   GetPage(
     name: const LoginPage().routeName,
     page: () => const LoginPage(),
-    binding: LoginBinding(),
+    bindings: [
+      InternetBinding(),
+      LoginBinding(),
+    ],
   ),
   GetPage(
     name: const SigninPage().routeName,

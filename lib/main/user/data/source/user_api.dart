@@ -1,6 +1,6 @@
 import 'package:auto_find/core/config/result.dart';
-import 'package:auto_find/core/services/network/api_endpoint.dart';
-import 'package:auto_find/core/services/network/api_client.dart';
+import 'package:auto_find/core/services/api_endpoint.dart';
+import 'package:auto_find/core/services/api_client.dart';
 import 'package:auto_find/main/user/data/model/user_model.dart';
 import 'package:get/get.dart';
 

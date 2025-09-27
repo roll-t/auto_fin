@@ -1,8 +1,4 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-/// Feature toggle controller đọc từ `.env`
-///
-/// Sử dụng trong code: `FeatureConfigs.isNotificationEnabled`
 class FeatureConfigs {
   static final _env = dotenv.env;
 

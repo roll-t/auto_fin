@@ -7,6 +7,7 @@ import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/select_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/core/ui/widgets/expand/expand_controller.dart';
+import 'package:auto_find/core/utils/controller/keyboard_controller.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:auto_find/core/utils/mixin_controller/argument_handle_mixin_controller.dart';
 import 'package:auto_find/core/utils/time_utils.dart';
@@ -21,6 +22,7 @@ class CarDetailController extends GetxController
     with ArgumentHandlerMixinController<CarModel> {
   final CarUsecase _carUsecase;
   final DropdownDataCarFeatureController _dropdownDataCarFeatureController;
+  final KeyboardController keyBoardController = Get.find<KeyboardController>();
 
   CarDetailController(
     this._dropdownDataCarFeatureController,
@@ -30,23 +32,29 @@ class CarDetailController extends GetxController
   Rxn<CarModel> carDetail = Rxn<CarModel>();
   RxBool isLoading = true.obs;
   RxBool isEditMode = false.obs;
+  RxBool isMoneyFieldFocused = false.obs;
   bool isUpdated = false;
 
   /// UI expand controllers
   final expandInformation = ExpandController();
   final expandVehicle = ExpandController();
 
-  /// --------- TextEditingController cho từng field trong UI ----------
+  /// --------- TextEditingController cho từng field trong UI ----------z
   final nameController = TextEditingController(); // tên xe
   final plateController = TextEditingController(); // biển số
   final releaseYearController = TextEditingController(); // năm sx
   final priceController = TextEditingController(); // giá niêm yết bán
   final profitController = TextEditingController(); // lợi nhuận
 
-  // mua
+  // Mua - Text Editing
   final importDateController = TextEditingController();
   final importPriceController = TextEditingController();
   final importCostController = TextEditingController();
+
+  // Mua - Focus node
+  final priceFocusNode = FocusNode(); // giá niêm yết bán
+  final importPriceFocusNode = FocusNode();
+  final importCostFocusNode = FocusNode();
 
   // bán
   final soldDateController = TextEditingController();
@@ -71,12 +79,26 @@ class CarDetailController extends GetxController
   @override
   void onReady() {
     initializedData();
+    _setupFocusListeners();
   }
 
   void initializedData() {
     bool hasArg = handleArgumentFromGet();
     if (!hasArg) return;
     fetchCarDetail(argsData?.id ?? 0);
+  }
+
+  void _setupFocusListeners() {
+    void checkFocus() {
+      isMoneyFieldFocused.value = priceFocusNode.hasFocus ||
+          importPriceFocusNode.hasFocus ||
+          importCostFocusNode.hasFocus;
+      update(["BOTTOM_BAR_ID"]);
+    }
+
+    priceFocusNode.addListener(checkFocus);
+    importPriceFocusNode.addListener(checkFocus);
+    importCostFocusNode.addListener(checkFocus);
   }
 
   /// Gọi API lấy chi tiết xe
@@ -97,7 +119,8 @@ class CarDetailController extends GetxController
       importDateController.text = (car?.importDate).toString().toVNDate();
       importPriceController.text =
           (car?.importPrice ?? 0).toString().toCurrency();
-      importCostController.text = (car?.importCost ?? 0).toString().toCurrency();
+      importCostController.text =
+          (car?.importCost ?? 0).toString().toCurrency();
 
       soldDateController.text = (car?.soldDate ?? "").toString().toVNDate();
       soldPriceController.text = (car?.soldPrice ?? 0).toString().toCurrency();
@@ -248,10 +271,10 @@ class CarDetailController extends GetxController
         soldCost: soldCostController.text.toCurrencyNum().toDouble(),
         soldDes: currentCar.soldDes,
       );
-      
+
       await _carUsecase.updateCar(updatedCar);
       carDetail.value = updatedCar;
-      isUpdated= true;
+      isUpdated = true;
       update(["FORM_ID"]);
       refreshData();
     } catch (e) {
@@ -341,7 +364,6 @@ class CarDetailController extends GetxController
 
       // Gọi fill lại dữ liệu vào controller
       _fillDataToControllers(car!);
-
     } catch (e) {
       AppLogger.e("❌ Lỗi khi refreshData: $e");
       Get.snackbar("Lỗi", "Không thể làm mới dữ liệu xe");
@@ -406,6 +428,9 @@ class CarDetailController extends GetxController
     colorController.dispose();
     modelController.dispose();
     statusController.dispose();
+    priceFocusNode.dispose();
+    importPriceFocusNode.dispose();
+    importCostFocusNode.dispose();
     super.onClose();
   }
 }

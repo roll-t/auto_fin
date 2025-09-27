@@ -10,7 +10,7 @@ import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
-import 'package:auto_find/core/utils/custom_framework.dart';
+import 'package:auto_find/core/utils/custom_state.dart';
 import 'package:auto_find/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -102,35 +102,76 @@ class _BuildLeadingIconBack extends StatelessWidget {
   }
 }
 
-class _BuildBottomBar extends StatelessWidget {
+class _BuildBottomBar extends GetView<CarDetailController> {
   const _BuildBottomBar();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CarDetailController>(
-      id: "BOTTOM_BAR_ID",
-      builder: (controller) {
-        if (!controller.isEditMode.value) return const SizedBox.shrink();
-        return Container(
-          decoration: BoxDecoration(
-            color: AppThemeColors.background100,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.dark300.withValues(alpha: .1),
-                offset: const Offset(0, -1),
-                blurRadius: 6,
-                spreadRadius: 1,
-              )
+    return Obx(() {
+      if (controller.keyBoardController.isKeyboardOpen.value &&
+          controller.isMoneyFieldFocused.value) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            left: 16,
+            right: 16,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _QuickNumberButton("000", controller.priceController),
+              _QuickNumberButton("000.000", controller.priceController),
+              _QuickNumberButton("00", controller.priceController),
             ],
           ),
-          padding: AppPadding.v16h20,
-          child: PrimaryButton(
-            isMaxParent: true,
-            text: "Cập nhật thông tin xe",
-            onPressed: controller.updateCar,
-          ),
+        );
+      }
+      if (!controller.isEditMode.value) return const SizedBox.shrink();
+      return Container(
+        decoration: BoxDecoration(
+          color: AppThemeColors.background100,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.dark300.withValues(alpha: .1),
+              offset: const Offset(0, -1),
+              blurRadius: 6,
+              spreadRadius: 1,
+            )
+          ],
+        ),
+        padding: AppPadding.v16h20,
+        child: PrimaryButton(
+          isMaxParent: true,
+          text: "Cập nhật thông tin xe",
+          onPressed: controller.updateCar,
+        ),
+      );
+    });
+  }
+}
+
+class _QuickNumberButton extends StatelessWidget {
+  final String value;
+  final TextEditingController controller;
+
+  const _QuickNumberButton(this.value, this.controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        backgroundColor: AppThemeColors.primary,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      onPressed: () {
+        controller.text = controller.text + value;
+        controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: controller.text.length),
         );
       },
+      child: Text(value, style: const TextStyle(fontSize: 14)),
     );
   }
 }
@@ -170,6 +211,8 @@ class _BuildFormBody extends StatelessWidget {
             child: Column(
               children: [
                 CustomTextField(
+                  isRequired: true,
+                  hasClear: true,
                   enabled: controller.isEditMode.value,
                   label: "Tên xe",
                   hintText: "Nhập tên xe",
@@ -183,6 +226,7 @@ class _BuildFormBody extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomTextField(
+                        hasClear: true,
                         enabled: controller.isEditMode.value,
                         label: "Biển số xe",
                         hintText: "Nhập biển số xe",
@@ -195,6 +239,7 @@ class _BuildFormBody extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: CustomTextField(
+                        isRequired: true,
                         enabled: controller.isEditMode.value,
                         label: "Năm sản xuất",
                         controller: controller.releaseYearController,
@@ -214,6 +259,7 @@ class _BuildFormBody extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomTextField(
+                        isRequired: true,
                         enabled: controller.isEditMode.value,
                         label: "Hãng xe",
                         hintText: "Chọn hãng xe",
@@ -262,6 +308,7 @@ class _BuildFormBody extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: CustomTextField(
+                        isRequired: true,
                         enabled: controller.isEditMode.value,
                         label: "Mẫu xe",
                         hintText: "Chọn mẫu xe",
@@ -279,6 +326,7 @@ class _BuildFormBody extends StatelessWidget {
 
                 /// Trạng thái xe
                 CustomTextField(
+                  isRequired: true,
                   enabled: controller.isEditMode.value,
                   label: "Trạng thái xe",
                   hintText: "Chọn trạng thái xe",
@@ -291,6 +339,8 @@ class _BuildFormBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
+                  focusNode: controller.priceFocusNode,
+                  isRequired: true,
                   enabled: controller.isEditMode.value,
                   label: "Giá nêm yết bán",
                   hintText: "Giá nêm yết bán",
@@ -331,6 +381,7 @@ class _BuildFormBody extends StatelessWidget {
                 child: Column(
                   children: [
                     CustomTextField(
+                      isRequired: true,
                       enabled: controller.isEditMode.value,
                       label: "Ngày bán",
                       controller: controller.soldDateController,
@@ -342,6 +393,7 @@ class _BuildFormBody extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     CustomTextField(
+                      isRequired: true,
                       enabled: controller.isEditMode.value,
                       label: "Giá bán",
                       hintText: "Nhập giá bán",
@@ -355,7 +407,6 @@ class _BuildFormBody extends StatelessWidget {
                       enabled: controller.isEditMode.value,
                       label: "Chi phí bán",
                       hintText: "Chi phí bán",
-                      backgroundColor: AppColors.white,
                       height: 45,
                       textSize: 14,
                       type: CustomTextFieldType.money,
@@ -375,6 +426,7 @@ class _BuildFormBody extends StatelessWidget {
             child: Column(
               children: [
                 CustomTextField(
+                  isRequired: true,
                   enabled: controller.isEditMode.value,
                   label: "Ngày mua",
                   controller: controller.importDateController,
@@ -386,6 +438,8 @@ class _BuildFormBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
+                  focusNode: controller.importPriceFocusNode,
+                  isRequired: true,
                   enabled: controller.isEditMode.value,
                   label: "Giá mua",
                   hintText: "Giá mua",
@@ -396,6 +450,7 @@ class _BuildFormBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
+                  focusNode: controller.importCostFocusNode,
                   enabled: controller.isEditMode.value,
                   label: "Chi phí mua",
                   hintText: "Chi phí mua",

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:auto_find/core/ui/widgets/app_bar/main_appbar.dart';
 import 'package:auto_find/core/ui/widgets/standard_layout_widget.dart';
-import 'package:auto_find/core/utils/custom_framework.dart';
+import 'package:auto_find/core/utils/custom_state.dart';
 import 'package:auto_find/main/setting/presentation/page/setting_page.dart';
 import 'package:auto_find/core/config/theme/theme_controller.dart';
 import 'package:auto_find/main/user/features/profile/presentation/widgets/info_profile_widget.dart';

@@ -8,7 +8,7 @@ class SplashController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     if (AppGetStorage.isLoggedIn()) {
       Get.offAllNamed(const NavigationPage().routeName);
       AppLogger.i("Đã đăng nhập");

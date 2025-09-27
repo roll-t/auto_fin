@@ -1,3 +1,4 @@
+import 'package:auto_find/core/utils/controller/keyboard_controller.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/controller/car_detail_controller.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +11,10 @@ class CarDetailBinding extends Bindings {
         Get.find(),
         Get.find(),
       ),
+    );
+
+    Get.lazyPut(
+      () => KeyboardController(),
     );
   }
 }

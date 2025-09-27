@@ -12,7 +12,7 @@ import 'package:auto_find/core/ui/widgets/images/asset_image_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
-import 'package:auto_find/core/utils/custom_framework.dart';
+import 'package:auto_find/core/utils/custom_state.dart';
 import 'package:auto_find/core/utils/utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/model/chart_data_model.dart';

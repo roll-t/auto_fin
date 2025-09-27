@@ -11,7 +11,7 @@ import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
-import 'package:auto_find/core/utils/custom_framework.dart';
+import 'package:auto_find/core/utils/custom_state.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/controller/add_car_controller.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_manage_page.dart';
 import 'package:flutter/material.dart';
@@ -210,6 +210,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                             ),
                             const SizedBox(height: 6.0),
                             CustomTextField(
+                              hasClear: true,
                               hintText: "Nhập tên xe",
                               controller: controller.nameController,
                             ),
@@ -223,10 +224,10 @@ class _BodyBuilder extends GetView<AddCarController> {
                     children: [
                       Expanded(
                         child: CustomTextField(
+                          hasClear: true,
                           label: "Biển số",
                           hintText: "Nhập biển số xe",
-                          controller:
-                              controller.plateController, // 🆕 gắn controller
+                          controller: controller.plateController,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -369,7 +370,6 @@ class _BodyBuilder extends GetView<AddCarController> {
                 ],
               ),
             ),
-
             const SizedBox(height: 10),
           ],
         ),

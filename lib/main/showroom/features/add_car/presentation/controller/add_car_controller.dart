@@ -28,11 +28,11 @@ class AddCarController extends GetxController {
   final nameController = TextEditingController();
   final plateController = TextEditingController();
   final yearController = TextEditingController();
-  final buyDateController = TextEditingController(text: DateTime.now().toString().toVNDate());
   final buyPriceController = TextEditingController();
   final buyCostController = TextEditingController();
   final sellPriceController = TextEditingController();
   final desController = TextEditingController();
+  final buyDateController = TextEditingController(text: DateTime.now().toString().toVNDate());
   final soldDesController = TextEditingController();
 
   // Bán
@@ -98,16 +98,11 @@ class AddCarController extends GetxController {
       await _dropdownDataCarFeatureController.loadAllDropdown();
     }
 
-    brandController.listItem
-        .assignAll(_dropdownDataCarFeatureController.brandList);
-    typeController.listItem
-        .assignAll(_dropdownDataCarFeatureController.typeCarList);
-    colorController.listItem
-        .assignAll(_dropdownDataCarFeatureController.colorList);
-    modelController.listItem
-        .assignAll(_dropdownDataCarFeatureController.modelList);
-    statusController.listItem
-        .assignAll(_dropdownDataCarFeatureController.statusList);
+    brandController.listItem.assignAll(_dropdownDataCarFeatureController.brandList);
+    typeController.listItem.assignAll(_dropdownDataCarFeatureController.typeCarList);
+    colorController.listItem.assignAll(_dropdownDataCarFeatureController.colorList);
+    modelController.listItem.assignAll(_dropdownDataCarFeatureController.modelList);
+    statusController.listItem.assignAll(_dropdownDataCarFeatureController.statusList);
   }
 
   // ----------------------------
@@ -262,7 +257,6 @@ class AddCarController extends GetxController {
     nameController.clear();
     plateController.clear();
     yearController.clear();
-    buyDateController.clear();
     buyPriceController.clear();
     buyCostController.clear();
     sellPriceController.clear();
@@ -270,6 +264,8 @@ class AddCarController extends GetxController {
     soldCostController.clear();
     desController.clear();
     soldDesController.clear();
+    soldDateController.text = DateTime.now().toString().toVNDate();
+    buyDateController.text = DateTime.now().toString().toVNDate();
 
     brandController.itemSelected.value = ItemModel(title: "");
     typeController.itemSelected.value = ItemModel(title: "");

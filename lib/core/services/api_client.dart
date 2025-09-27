@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/result.dart';
 import 'package:auto_find/core/local_storage/app_get_storage.dart';
-import 'package:auto_find/core/services/network/api_intercepter.dart';
+import 'package:auto_find/core/services/api_intercepter.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
