@@ -220,6 +220,7 @@ class CustomTextField extends StatelessWidget {
           );
 
     return TextField(
+      focusNode: focusNode,
       scrollPadding: scrollPadding ?? EdgeInsets.zero,
       controller: controller,
       obscureText: obscureText,
@@ -355,31 +356,36 @@ class CustomTextField extends StatelessWidget {
           const TextInputType.numberWithOptions(decimal: false, signed: false),
       textInputAction: TextInputAction.done,
       inputFormatters: [
-        TextInputFormatter.withFunction((oldValue, newValue) {
-          // Nếu xoá hết dữ liệu -> trả về "0"
-          if (newValue.text.isEmpty) {
-            return const TextEditingValue(
-              text: '0',
-              selection:
-                  TextSelection.collapsed(offset: 1), // con trỏ ngay sau số 0
+        TextInputFormatter.withFunction(
+          (oldValue, newValue) {
+            if (newValue.text.isEmpty) {
+              return const TextEditingValue(
+                text: '0',
+                selection: TextSelection.collapsed(offset: 1),
+              );
+            }
+
+            final digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+            final numericValue = int.tryParse(digits) ?? 0;
+
+            if (numericValue > 999999999999) {
+              return oldValue;
+            }
+
+            final formatted =
+                NumberFormat("#,###", "vi_VN").format(numericValue);
+
+            // Tính toán lại offset để caret không luôn nhảy về cuối
+            final diff = formatted.length - newValue.text.length;
+            final newOffset =
+                (newValue.selection.end + diff).clamp(0, formatted.length);
+
+            return TextEditingValue(
+              text: formatted,
+              selection: TextSelection.collapsed(offset: newOffset),
             );
-          }
-
-          // Parse số (bỏ dấu '.')
-          final numericValue =
-              int.tryParse(newValue.text.replaceAll('.', '')) ?? 0;
-
-          if (numericValue > 999999999999) {
-            return oldValue;
-          }
-
-          final formatted = NumberFormat("#,###", "vi_VN").format(numericValue);
-
-          return TextEditingValue(
-            text: formatted,
-            selection: TextSelection.collapsed(offset: formatted.length),
-          );
-        }),
+          },
+        )
       ],
       style: TextStyle(
         color: textColor ?? AppThemeColors.text100,

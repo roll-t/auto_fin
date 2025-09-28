@@ -18,7 +18,7 @@ extension StringCurrencyExtension on String? {
       decimalDigits: 0,
     );
 
-    return formatter.format(value);
+    return formatter.format(value).trim();
   }
 
   num toCurrencyNum() {

@@ -1,13 +1,14 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
+import 'package:auto_find/core/config/const/app_padding.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
-import 'package:auto_find/core/config/const/app_padding.dart';
-import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
 import 'package:auto_find/core/ui/widgets/circle_icon_button%20_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
+import 'package:auto_find/core/ui/widgets/keyboard/currency_quick_number_item.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
@@ -30,57 +31,93 @@ class AddCarPage extends CustomState {
   bool get dismissKeyboard => true;
 
   @override
-  List<Widget>? get actionAppBar => [
-        Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: CircleIconButton(
-            isActive: true,
-            svgUrl: AppVectors.icList,
-            onTap: () {
-              Get.toNamed(const CarManagePage().routeName);
-            },
-          ),
-        ),
-      ];
+  Widget get actionAppBar => _BuildActionAppBar(routeName: routeName);
 
   @override
   Widget buildBody(BuildContext context) => const _BodyBuilder();
 
   @override
-  Widget? get bottomNavigationBar => const _BuildBottomNavigation();
+  Widget? get bottomNavigationBar => const _BuildBottomBar();
 }
 
-class _BuildBottomNavigation extends StatelessWidget {
-  const _BuildBottomNavigation();
+class _BuildActionAppBar extends StatelessWidget {
+  const _BuildActionAppBar({
+    required this.routeName,
+  });
+
+  final String routeName;
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AddCarController>(
-      builder: (controller) {
-        return Container(
-          decoration: BoxDecoration(
-            color: AppThemeColors.background100,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.dark300.withOpacity(.1),
-                offset: const Offset(0, -1),
-                blurRadius: 6,
-                spreadRadius: 1,
-              )
-            ],
-          ),
-          padding: AppPadding.v16h20,
-          child: PrimaryButton(
-            isMaxParent: true,
-            text: "Thêm xe",
-            onPressed: controller.addCar,
-          ),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.only(right: 16),
+      child: CircleIconButton(
+        isActive: true,
+        svgUrl: AppVectors.icList,
+        onTap: () {
+          Get.toNamed(const CarManagePage().routeName);
+        },
+      ),
     );
   }
 }
 
+class _BuildBottomBar extends GetView<AddCarController> {
+  const _BuildBottomBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.keyBoardController.isKeyboardOpen.value &&
+          controller.isMoneyFieldFocused.value) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            left: 16,
+            right: 16,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CurrencyQuickNumberItem(
+                value: "00",
+                controller: controller.sellPriceController,
+              ),
+              CurrencyQuickNumberItem(
+                value: ".000",
+                controller: controller.sellPriceController,
+              ),
+              CurrencyQuickNumberItem(
+                value: ".000.000",
+                controller: controller.sellPriceController,
+              ),
+            ],
+          ),
+        );
+      }
+      return Container(
+        decoration: BoxDecoration(
+          color: AppThemeColors.background100,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.dark300.withValues(alpha: .1),
+              offset: const Offset(0, -1),
+              blurRadius: 6,
+              spreadRadius: 1,
+            )
+          ],
+        ),
+        padding: AppPadding.v16h20,
+        child: PrimaryButton(
+          isMaxParent: true,
+          text: "Thêm xe",
+          onPressed: controller.addCar,
+        ),
+      );
+    });
+  }
+}
 class _BodyBuilder extends GetView<AddCarController> {
   const _BodyBuilder();
 
@@ -211,6 +248,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                             const SizedBox(height: 6.0),
                             CustomTextField(
                               hasClear: true,
+                              focusNode: controller.nameFocusNode,
                               hintText: "Nhập tên xe",
                               controller: controller.nameController,
                             ),
@@ -225,6 +263,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                       Expanded(
                         child: CustomTextField(
                           hasClear: true,
+                          focusNode: controller.plateFocusNode,
                           label: "Biển số",
                           hintText: "Nhập biển số xe",
                           controller: controller.plateController,
@@ -252,6 +291,15 @@ class _BodyBuilder extends GetView<AddCarController> {
                     hint: "Chọn trạng thái xe",
                     controller: controller.statusController,
                     onSelectedItem: controller.onSelectedStatus,
+                  ),
+                  const SizedBox(height: 14),
+                  CustomTextField(
+                    isRequired: true,
+                    type: CustomTextFieldType.money,
+                    focusNode: controller.sellPriceFocusNode,
+                    label: "Giá nêm yết bán",
+                    hintText: "Nhập giá nêm yết bán",
+                    controller: controller.sellPriceController,
                   ),
                   const SizedBox(height: 14),
                   CustomTextField(
@@ -298,6 +346,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                         isRequired: true,
                         label: "Giá bán",
                         hintText: "Nhập giá bán",
+                        focusNode: controller.soldPriceFocusNode,
                         backgroundColor: AppColors.white,
                         height: 45,
                         textSize: 14,
@@ -308,6 +357,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                       CustomTextField(
                         label: "Chi phí bán",
                         hintText: "Chi phí bán",
+                        focusNode: controller.soldCostFocusNode,
                         backgroundColor: AppColors.white,
                         height: 45,
                         textSize: 14,
@@ -348,16 +398,9 @@ class _BodyBuilder extends GetView<AddCarController> {
                   CustomTextField(
                     isRequired: true,
                     type: CustomTextFieldType.money,
-                    label: "Giá nêm yết bán",
-                    hintText: "Nhập giá nêm yết bán",
-                    controller: controller.sellPriceController,
-                  ),
-                  const SizedBox(height: 14),
-                  CustomTextField(
-                    isRequired: true,
-                    type: CustomTextFieldType.money,
                     label: "Giá mua",
                     hintText: "Nhập giá mua",
+                    focusNode: controller.buyPriceFocusNode,
                     controller: controller.buyPriceController,
                   ),
                   const SizedBox(height: 14),
@@ -366,6 +409,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                     label: "Chi phí mua",
                     hintText: "Nhập chi phí mua",
                     controller: controller.buyCostController,
+                    focusNode: controller.buyCostFocusNode,
                   ),
                 ],
               ),

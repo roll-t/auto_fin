@@ -1,26 +1,28 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/extension/core/currency_extensions.dart';
 import 'package:auto_find/core/extension/core/date_extensions.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/bottom_sheet_controller.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
+import 'package:auto_find/core/utils/controller/keyboard_controller.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
-
-import 'package:auto_find/main/showroom/controller/dropdown_data_car_feature_controller.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/usecase/car_usecase.dart';
+import 'package:auto_find/main/showroom/shared/controller/dropdown_data_car_feature_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AddCarController extends GetxController {
   final CarUsecase _carUsecase;
   final DropdownDataCarFeatureController _dropdownDataCarFeatureController;
+  final KeyboardController keyBoardController = Get.find<KeyboardController>();
 
   AddCarController(
     this._carUsecase,
     this._dropdownDataCarFeatureController,
   );
+
+  final RxBool isMoneyFieldFocused = false.obs;
 
   // ----------------------------
   // 🏷 TextEditingController
@@ -32,13 +34,25 @@ class AddCarController extends GetxController {
   final buyCostController = TextEditingController();
   final sellPriceController = TextEditingController();
   final desController = TextEditingController();
-  final buyDateController = TextEditingController(text: DateTime.now().toString().toVNDate());
+  final buyDateController =
+      TextEditingController(text: DateTime.now().toString().toVNDate());
   final soldDesController = TextEditingController();
 
   // Bán
   final soldDateController = TextEditingController();
   final soldPriceController = TextEditingController();
   final soldCostController = TextEditingController();
+
+  // ----------------------------
+  // 🏷 Focus node
+  // ----------------------------
+  final nameFocusNode = FocusNode();
+  final plateFocusNode = FocusNode();
+  final buyPriceFocusNode = FocusNode();
+  final buyCostFocusNode = FocusNode();
+  final sellPriceFocusNode = FocusNode();
+  final soldPriceFocusNode = FocusNode();
+  final soldCostFocusNode = FocusNode();
 
   // ----------------------------
   // 🏷 BottomSheetController
@@ -98,11 +112,16 @@ class AddCarController extends GetxController {
       await _dropdownDataCarFeatureController.loadAllDropdown();
     }
 
-    brandController.listItem.assignAll(_dropdownDataCarFeatureController.brandList);
-    typeController.listItem.assignAll(_dropdownDataCarFeatureController.typeCarList);
-    colorController.listItem.assignAll(_dropdownDataCarFeatureController.colorList);
-    modelController.listItem.assignAll(_dropdownDataCarFeatureController.modelList);
-    statusController.listItem.assignAll(_dropdownDataCarFeatureController.statusList);
+    brandController.listItem
+        .assignAll(_dropdownDataCarFeatureController.brandList);
+    typeController.listItem
+        .assignAll(_dropdownDataCarFeatureController.typeCarList);
+    colorController.listItem
+        .assignAll(_dropdownDataCarFeatureController.colorList);
+    modelController.listItem
+        .assignAll(_dropdownDataCarFeatureController.modelList);
+    statusController.listItem
+        .assignAll(_dropdownDataCarFeatureController.statusList);
   }
 
   // ----------------------------
@@ -138,7 +157,7 @@ class AddCarController extends GetxController {
     if (selectedStatus.value == null) {
       messErrorValidate = "Vui lòng chọn trạng thái xe";
       return _showError(messErrorValidate);
-    } 
+    }
 
     if (selectedStatus.value?.id == "sold") {
       if (soldDateController.text.isEmpty) {

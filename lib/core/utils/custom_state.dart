@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:recase/recase.dart';
-
 import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/ui/widgets/app_bar/custom_appbar.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:auto_find/core/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:recase/recase.dart';
 
 /// ✅ Base class cho các màn hình Stateless sử dụng GetX
 abstract class CustomState extends StatelessWidget {
@@ -30,7 +29,7 @@ abstract class CustomState extends StatelessWidget {
   // ===== AppBar & Navigation =====
   Widget? get appBar => null;
   Widget? get leadingIconAppBar => null;
-  List<Widget>? get actionAppBar => null;
+  Widget? get actionAppBar => null;
   Widget? get drawer => null;
   Widget? get floatingActionButton => null;
   Widget? get bottomNavigationBar => null;
@@ -42,18 +41,20 @@ abstract class CustomState extends StatelessWidget {
   // ===== AppBar Builder =====
   PreferredSizeWidget buildDefaultAppBar(BuildContext context) {
     return CustomAppBar(
-      leadingIcon: leadingIconAppBar
-      ,
+      leadingIcon: leadingIconAppBar,
       showBackButton: showBack,
       title: title,
-      actions: actionAppBar,
+      actions: actionAppBar != null
+          ? [actionAppBar ?? const SizedBox.shrink()]
+          : null,
     );
   }
 
   PreferredSizeWidget? _buildAppBar(BuildContext context) {
     if (appBar != null) {
       return AppBar(
-        leading: leadingIconAppBar ?? Utils.iconSvg(svgUrl: AppVectors.icArrowBack),
+        leading:
+            leadingIconAppBar ?? Utils.iconSvg(svgUrl: AppVectors.icArrowBack),
         backgroundColor: Colors.transparent,
         title: appBar,
       );

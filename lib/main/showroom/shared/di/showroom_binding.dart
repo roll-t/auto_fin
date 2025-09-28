@@ -1,4 +1,3 @@
-import 'package:auto_find/main/showroom/controller/dropdown_data_car_feature_controller.dart';
 import 'package:auto_find/main/showroom/data/repositories/brand_car_repository.dart';
 import 'package:auto_find/main/showroom/data/repositories/car_repository.dart';
 import 'package:auto_find/main/showroom/data/repositories/color_repository.dart';
@@ -7,6 +6,7 @@ import 'package:auto_find/main/showroom/data/usecase/brand_product_usecase.dart'
 import 'package:auto_find/main/showroom/data/usecase/car_usecase.dart';
 import 'package:auto_find/main/showroom/data/usecase/color_uscase.dart';
 import 'package:auto_find/main/showroom/data/usecase/type_car_usecase.dart';
+import 'package:auto_find/main/showroom/shared/controller/dropdown_data_car_feature_controller.dart';
 import 'package:get/get.dart';
 
 class ShowroomBinding extends Bindings {
