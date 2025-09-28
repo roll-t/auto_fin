@@ -113,30 +113,43 @@ class _BuildBottomBar extends GetView<CarDetailController> {
     return Obx(() {
       if (controller.keyBoardController.isKeyboardOpen.value &&
           controller.isMoneyFieldFocused.value) {
-        return Padding(
+        return Container(
+          decoration: BoxDecoration(
+            color: AppThemeColors.background100,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.dark300.withValues(alpha: .1),
+                offset: const Offset(0, -1),
+                blurRadius: 6,
+                spreadRadius: 1,
+              )
+            ],
+          ),
           padding: EdgeInsets.only(
             top: 10,
             bottom: MediaQuery.of(context).viewInsets.bottom + 10,
             left: 16,
             right: 16,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CurrencyQuickNumberItem(
-                value: "00",
-                controller: controller.priceController,
-              ),
-              CurrencyQuickNumberItem(
-                value: ".000",
-                controller: controller.priceController,
-              ),
-              CurrencyQuickNumberItem(
-                value: ".000.000",
-                controller: controller.priceController,
-              ),
-            ],
-          ),
+          child: controller.activeMoneyController.value != null
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CurrencyQuickNumberItem(
+                      value: "00",
+                      controller: controller.activeMoneyController.value!,
+                    ),
+                    CurrencyQuickNumberItem(
+                      value: ".000",
+                      controller: controller.activeMoneyController.value!,
+                    ),
+                    CurrencyQuickNumberItem(
+                      value: ".000.000",
+                      controller: controller.activeMoneyController.value!,
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(),
         );
       }
       if (!controller.isEditMode.value) return const SizedBox.shrink();
@@ -197,14 +210,16 @@ class _BodyBuilder extends StatelessWidget {
                       children: [
                         Expanded(
                           child: CustomTextField(
-                            hasClear: true,
+                            isRequired: true,
                             enabled: controller.isEditMode.value,
-                            label: "Biển số xe",
-                            hintText: "Nhập biển số xe",
+                            label: "Hãng xe",
+                            hintText: "Chọn hãng xe",
+                            controller: controller.brandController,
+                            suffixIcon: const Icon(Icons.arrow_drop_down),
                             height: 45,
                             textSize: 14,
-                            type: CustomTextFieldType.text,
-                            controller: controller.plateController,
+                            type: CustomTextFieldType.dropdown,
+                            onTap: controller.showBrandBottomSheet,
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -212,13 +227,14 @@ class _BodyBuilder extends StatelessWidget {
                           child: CustomTextField(
                             isRequired: true,
                             enabled: controller.isEditMode.value,
-                            label: "Năm sản xuất",
-                            controller: controller.releaseYearController,
-                            startYear: 2000,
-                            endYear: DateTime.now().year,
+                            label: "Mẫu xe",
+                            hintText: "Chọn mẫu xe",
+                            controller: controller.modelController,
+                            suffixIcon: const Icon(Icons.arrow_drop_down),
                             height: 45,
                             textSize: 14,
-                            type: CustomTextFieldType.yearPicker,
+                            type: CustomTextFieldType.dropdown,
+                            onTap: controller.showModelBottomSheet,
                           ),
                         ),
                       ],
@@ -231,15 +247,14 @@ class _BodyBuilder extends StatelessWidget {
                         Expanded(
                           child: CustomTextField(
                             isRequired: true,
-                            enabled: controller.isEditMode.value,
-                            label: "Hãng xe",
-                            hintText: "Chọn hãng xe",
-                            controller: controller.brandController,
-                            suffixIcon: const Icon(Icons.arrow_drop_down),
+                            label: "Năm sản xuất",
+                            startYear: 2000,
+                            endYear: DateTime.now().year,
                             height: 45,
                             textSize: 14,
-                            type: CustomTextFieldType.dropdown,
-                            onTap: controller.showBrandBottomSheet,
+                            enabled: controller.isEditMode.value,
+                            type: CustomTextFieldType.yearPicker,
+                            controller: controller.releaseYearController,
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -265,6 +280,19 @@ class _BodyBuilder extends StatelessWidget {
                       children: [
                         Expanded(
                           child: CustomTextField(
+                            hasClear: true,
+                            enabled: controller.isEditMode.value,
+                            label: "Biển số xe",
+                            hintText: "Nhập biển số xe",
+                            height: 45,
+                            textSize: 14,
+                            type: CustomTextFieldType.text,
+                            controller: controller.plateController,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: CustomTextField(
                             enabled: controller.isEditMode.value,
                             label: "Màu xe",
                             hintText: "Chọn màu xe",
@@ -274,21 +302,6 @@ class _BodyBuilder extends StatelessWidget {
                             textSize: 14,
                             type: CustomTextFieldType.dropdown,
                             onTap: controller.showColorBottomSheet,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CustomTextField(
-                            isRequired: true,
-                            enabled: controller.isEditMode.value,
-                            label: "Mẫu xe",
-                            hintText: "Chọn mẫu xe",
-                            controller: controller.modelController,
-                            suffixIcon: const Icon(Icons.arrow_drop_down),
-                            height: 45,
-                            textSize: 14,
-                            type: CustomTextFieldType.dropdown,
-                            onTap: controller.showModelBottomSheet,
                           ),
                         ),
                       ],
@@ -310,7 +323,7 @@ class _BodyBuilder extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     CustomTextField(
-                      focusNode: controller.priceFocusNode,
+                      focusNode: controller.sellPriceFocusNode,
                       isRequired: true,
                       enabled: controller.isEditMode.value,
                       label: "Giá nêm yết bán",
@@ -320,7 +333,17 @@ class _BodyBuilder extends StatelessWidget {
                       type: CustomTextFieldType.money,
                       controller: controller.priceController,
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 14),
+                    CustomTextField(
+                      enabled: controller.isEditMode.value,
+                      height: 80,
+                      type: CustomTextFieldType.textArea,
+                      label: "Mô tả",
+                      hintText: "Nhập mô tả xe",
+                      controller: controller.desController,
+                      maxLines: 6, // Cho phép nhập 6 dòng
+                      minLines: 3, // Ít nhất 3 dòng
+                    ),
                   ],
                 ),
               ),
@@ -372,6 +395,7 @@ class _BodyBuilder extends StatelessWidget {
                           textSize: 14,
                           type: CustomTextFieldType.money,
                           controller: controller.soldPriceController,
+                          focusNode: controller.soldPriceFocusNode,
                         ),
                         const SizedBox(height: 16),
                         CustomTextField(
@@ -382,8 +406,19 @@ class _BodyBuilder extends StatelessWidget {
                           textSize: 14,
                           type: CustomTextFieldType.money,
                           controller: controller.soldCostController,
+                          focusNode: controller.soldCostFocusNode,
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 14),
+                        CustomTextField(
+                          height: 80,
+                          enabled: controller.isEditMode.value,
+                          type: CustomTextFieldType.textArea,
+                          label: "Mô tả bán",
+                          hintText: "Nhập mô tả bán",
+                          controller: controller.soldDesController,
+                          maxLines: 6, // Cho phép nhập 6 dòng
+                          minLines: 3, // Ít nhất 3 dòng
+                        ),
                       ],
                     ),
                   );
@@ -409,7 +444,7 @@ class _BodyBuilder extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     CustomTextField(
-                      focusNode: controller.importPriceFocusNode,
+                      focusNode: controller.buyPriceFocusNode,
                       isRequired: true,
                       enabled: controller.isEditMode.value,
                       label: "Giá mua",
@@ -421,7 +456,7 @@ class _BodyBuilder extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     CustomTextField(
-                      focusNode: controller.importCostFocusNode,
+                      focusNode: controller.buyCostFocusNode,
                       enabled: controller.isEditMode.value,
                       label: "Chi phí mua",
                       hintText: "Chi phí mua",

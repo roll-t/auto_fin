@@ -48,6 +48,7 @@ class InternetService extends GetxService {
     if (!Get.isSnackbarOpen) {
       if (!online) {
         DialogUtils.showAlert(
+          barrierDismissible: false,
           alertType: AlertType.error,
           title: "Lỗi kết nối mạng",
           content: "Vui lòng kiểm tra lại kết nối mạng.",

@@ -70,30 +70,43 @@ class _BuildBottomBar extends GetView<AddCarController> {
     return Obx(() {
       if (controller.keyBoardController.isKeyboardOpen.value &&
           controller.isMoneyFieldFocused.value) {
-        return Padding(
+        return Container(
+          decoration: BoxDecoration(
+            color: AppThemeColors.background100,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.dark300.withValues(alpha: .1),
+                offset: const Offset(0, -1),
+                blurRadius: 6,
+                spreadRadius: 1,
+              )
+            ],
+          ),
           padding: EdgeInsets.only(
             top: 10,
             bottom: MediaQuery.of(context).viewInsets.bottom + 10,
             left: 16,
             right: 16,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CurrencyQuickNumberItem(
-                value: "00",
-                controller: controller.sellPriceController,
-              ),
-              CurrencyQuickNumberItem(
-                value: ".000",
-                controller: controller.sellPriceController,
-              ),
-              CurrencyQuickNumberItem(
-                value: ".000.000",
-                controller: controller.sellPriceController,
-              ),
-            ],
-          ),
+          child: controller.activeMoneyController.value != null
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CurrencyQuickNumberItem(
+                      value: "00",
+                      controller: controller.activeMoneyController.value!,
+                    ),
+                    CurrencyQuickNumberItem(
+                      value: ".000",
+                      controller: controller.activeMoneyController.value!,
+                    ),
+                    CurrencyQuickNumberItem(
+                      value: ".000.000",
+                      controller: controller.activeMoneyController.value!,
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(),
         );
       }
       return Container(
@@ -118,6 +131,7 @@ class _BuildBottomBar extends GetView<AddCarController> {
     });
   }
 }
+
 class _BodyBuilder extends GetView<AddCarController> {
   const _BodyBuilder();
 
@@ -187,6 +201,7 @@ class _BodyBuilder extends GetView<AddCarController> {
                       Expanded(
                         child: CustomBottomSheetWidget(
                           height: 45,
+                          titleBottomSheet: "Loại xe",
                           label: "Loại xe",
                           hint: "Chọn loại xe",
                           controller: controller.typeController, // 🆕

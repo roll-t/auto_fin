@@ -45,7 +45,7 @@ class CurrencyQuickNumberItem extends StatelessWidget {
         ),
         child: TextWidget(
           text: value,
-          textStyle: AppTextStyle.regular20,
+          textStyle: AppTextStyle.regular18,
         ),
       ),
     );

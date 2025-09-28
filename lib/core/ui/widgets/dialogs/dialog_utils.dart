@@ -91,6 +91,7 @@ class DialogUtils {
     String? content,
     VoidCallback? onConfirm,
     String confirmText = 'Đồng ý',
+    bool  barrierDismissible = true,
   }) {
     final config = _getAlertConfig(alertType);
 
@@ -145,6 +146,7 @@ class DialogUtils {
           ),
         ),
       ),
+      barrierDismissible:barrierDismissible, 
     );
   }
 

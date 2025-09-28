@@ -22,7 +22,11 @@ class AddCarController extends GetxController {
     this._dropdownDataCarFeatureController,
   );
 
+  // ----------------------------
+  // 🏷  RX
+  // ----------------------------
   final RxBool isMoneyFieldFocused = false.obs;
+  final Rx<TextEditingController?> activeMoneyController = Rx<TextEditingController?>(null);
 
   // ----------------------------
   // 🏷 TextEditingController
@@ -34,8 +38,7 @@ class AddCarController extends GetxController {
   final buyCostController = TextEditingController();
   final sellPriceController = TextEditingController();
   final desController = TextEditingController();
-  final buyDateController =
-      TextEditingController(text: DateTime.now().toString().toVNDate());
+  final buyDateController = TextEditingController(text: DateTime.now().toString().toVNDate());
   final soldDesController = TextEditingController();
 
   // Bán
@@ -79,6 +82,7 @@ class AddCarController extends GetxController {
   Future<void> onReady() async {
     DialogUtils.showProgressDialog();
     await initDropdownData();
+    _setupFocusListeners();
     Get.back();
   }
 
@@ -122,6 +126,32 @@ class AddCarController extends GetxController {
         .assignAll(_dropdownDataCarFeatureController.modelList);
     statusController.listItem
         .assignAll(_dropdownDataCarFeatureController.statusList);
+  }
+
+  void _setupFocusListeners() {
+    final mapping = {
+      buyPriceFocusNode: buyPriceController,
+      buyCostFocusNode: buyCostController,
+      sellPriceFocusNode: sellPriceController,
+      soldPriceFocusNode: soldPriceController,
+      soldCostFocusNode: soldCostController,
+    };
+
+    mapping.forEach((node, ctrl) {
+      node.addListener(() {
+        if (node.hasFocus) {
+          isMoneyFieldFocused.value = true;
+          activeMoneyController.value = ctrl;
+        } else {
+          // Nếu tất cả đều blur thì reset
+          final anyFocused = mapping.keys.any((f) => f.hasFocus);
+          if (!anyFocused) {
+            isMoneyFieldFocused.value = false;
+            activeMoneyController.value = null;
+          }
+        }
+      });
+    });
   }
 
   // ----------------------------

@@ -33,6 +33,9 @@ class CarDetailController extends GetxController
   RxBool isLoading = true.obs;
   RxBool isEditMode = false.obs;
   RxBool isMoneyFieldFocused = false.obs;
+  final Rx<TextEditingController?> activeMoneyController =
+      Rx<TextEditingController?>(null);
+
   bool isUpdated = false;
 
   /// UI expand controllers
@@ -45,21 +48,29 @@ class CarDetailController extends GetxController
   final releaseYearController = TextEditingController(); // năm sx
   final priceController = TextEditingController(); // giá niêm yết bán
   final profitController = TextEditingController(); // lợi nhuận
+  final soldDesController = TextEditingController();
+  final desController = TextEditingController();
 
   // Mua - Text Editing
   final importDateController = TextEditingController();
   final importPriceController = TextEditingController();
   final importCostController = TextEditingController();
 
-  // Mua - Focus node
-  final priceFocusNode = FocusNode(); // giá niêm yết bán
-  final importPriceFocusNode = FocusNode();
-  final importCostFocusNode = FocusNode();
-
   // bán
   final soldDateController = TextEditingController();
   final soldPriceController = TextEditingController();
   final soldCostController = TextEditingController();
+
+  // ----------------------------
+  // 🏷 Focus node
+  // ----------------------------
+  final nameFocusNode = FocusNode();
+  final plateFocusNode = FocusNode();
+  final buyPriceFocusNode = FocusNode();
+  final buyCostFocusNode = FocusNode();
+  final sellPriceFocusNode = FocusNode();
+  final soldPriceFocusNode = FocusNode();
+  final soldCostFocusNode = FocusNode();
 
   // Dropdown (hãng xe, loại xe, màu xe, mẫu xe, trạng thái)
   Rx<ItemModel> selectedBrand = ItemModel().obs;
@@ -89,16 +100,29 @@ class CarDetailController extends GetxController
   }
 
   void _setupFocusListeners() {
-    void checkFocus() {
-      isMoneyFieldFocused.value = priceFocusNode.hasFocus ||
-          importPriceFocusNode.hasFocus ||
-          importCostFocusNode.hasFocus;
-      update(["BOTTOM_BAR_ID"]);
-    }
+    final mapping = {
+      buyPriceFocusNode: importPriceController,
+      buyCostFocusNode: importCostController,
+      sellPriceFocusNode: priceController,
+      soldPriceFocusNode: soldPriceController,
+      soldCostFocusNode: soldCostController,
+    };
 
-    priceFocusNode.addListener(checkFocus);
-    importPriceFocusNode.addListener(checkFocus);
-    importCostFocusNode.addListener(checkFocus);
+    mapping.forEach((node, ctrl) {
+      node.addListener(() {
+        if (node.hasFocus) {
+          isMoneyFieldFocused.value = true;
+          activeMoneyController.value = ctrl;
+        } else {
+          // Nếu tất cả đều blur thì reset
+          final anyFocused = mapping.keys.any((f) => f.hasFocus);
+          if (!anyFocused) {
+            isMoneyFieldFocused.value = false;
+            activeMoneyController.value = null;
+          }
+        }
+      });
+    });
   }
 
   /// Gọi API lấy chi tiết xe
@@ -112,19 +136,20 @@ class CarDetailController extends GetxController
       nameController.text = (car?.name).orEmpty();
       plateController.text = (car?.plate).orEmpty();
       releaseYearController.text = (car?.releaseYear).toString();
+      desController.text = (car?.des).toString();
 
       priceController.text = (car?.price ?? 0).toString().toCurrency();
       profitController.text = (car?.profit ?? 0).toString().toCurrency();
 
       importDateController.text = (car?.importDate).toString().toVNDate();
-      importPriceController.text =
-          (car?.importPrice ?? 0).toString().toCurrency();
-      importCostController.text =
-          (car?.importCost ?? 0).toString().toCurrency();
+      importPriceController.text = (car?.importPrice ?? 0).toString().toCurrency();
+      importCostController.text = (car?.importCost ?? 0).toString().toCurrency();
 
       soldDateController.text = (car?.soldDate ?? "").toString().toVNDate();
       soldPriceController.text = (car?.soldPrice ?? 0).toString().toCurrency();
       soldCostController.text = (car?.soldCost ?? 0).toString().toCurrency();
+
+      soldDesController.text = (car?.soldDes).toString();
 
       // ---- Fill dropdown ----
       selectedBrand.value = ItemModel(title: car?.brand);
@@ -428,9 +453,13 @@ class CarDetailController extends GetxController
     colorController.dispose();
     modelController.dispose();
     statusController.dispose();
-    priceFocusNode.dispose();
-    importPriceFocusNode.dispose();
-    importCostFocusNode.dispose();
+    nameFocusNode.dispose();
+    plateFocusNode.dispose();
+    buyPriceFocusNode.dispose();
+    buyCostFocusNode.dispose();
+    sellPriceFocusNode.dispose();
+    soldPriceFocusNode.dispose();
+    soldCostFocusNode.dispose();
     super.onClose();
   }
 }
