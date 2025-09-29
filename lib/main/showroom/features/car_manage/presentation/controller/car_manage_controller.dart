@@ -1,13 +1,17 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/model/ui/item_model.dart';
 import 'package:auto_find/core/model/ui/popup_dropdown_model.dart';
+import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/core/ui/widgets/filter/popup_dropdown/popup_dropdown_controller.dart';
 import 'package:auto_find/core/ui/widgets/filter/sort/sort_controller.dart';
+import 'package:auto_find/core/utils/utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/usecase/car_usecase.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../../../../core/config/const/app_logger.dart';
 
 class CarManageController extends GetxController {
   // ---------------------------------------------------------------------------
@@ -151,7 +155,6 @@ class CarManageController extends GetxController {
     if (!loadMore) _nextPageToken = null;
 
     try {
-      print(">>> ${sortController.sortType}");
       final isSearching = searchText.value.isNotEmpty;
       final result = isSearching
           ? await _carUsecase.searchCars(
@@ -248,6 +251,38 @@ class CarManageController extends GetxController {
             (e.brand ?? '').toLowerCase().contains(lower),
       ),
     );
+  }
+
+  Future<void> onDeleteCar(int? id) async {
+    try {
+      final isSuccess = await Utils.runWithLoading(
+        () async {
+          return await _carUsecase.deleteCar(id ?? -1);
+        },
+      );
+
+      if (isSuccess == true) {
+        DialogUtils.showAlert(
+          alertType: AlertType.success,
+          title: "Thành công",
+          content: "Đã xoá xe thành công",
+        );
+        refreshCars();
+      } else {
+        DialogUtils.showAlert(
+          alertType: AlertType.error,
+          title: "Lỗi",
+          content: "Không thể xoá xe",
+        );
+      }
+    } catch (e) {
+      AppLogger.e(e);
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        title: "Lỗi",
+        content: "Có lỗi xảy ra khi xoá xe",
+      );
+    }
   }
 
   Future<void> refreshCars() async {

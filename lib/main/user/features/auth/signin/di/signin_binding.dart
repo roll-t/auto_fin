@@ -1,9 +1,32 @@
+import 'package:auto_find/main/user/data/repositories/user_repository_impl.dart';
+import 'package:auto_find/main/user/data/source/user_api.dart';
+import 'package:auto_find/main/user/domain/repositories/user_repository.dart';
+import 'package:auto_find/main/user/domain/usecase/user_usecase.dart';
 import 'package:auto_find/main/user/features/auth/signin/presentation/controller/signin_controller.dart';
 import 'package:get/get.dart';
 
 class SigninBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SigninController());
+    ///---> [API]
+    Get.lazyPut(
+      () => UserApi(),
+    );
+
+    ///---> [Repository]
+    Get.lazyPut<UserRepository>(
+      () => UserRepositoryImpl(
+        Get.find(),
+      ),
+    );
+
+    ///---> [User]
+    Get.lazyPut(
+      () => UserUseCase(
+        Get.find(),
+      ),
+    );
+
+    Get.lazyPut(() => SigninController(Get.find()));
   }
 }

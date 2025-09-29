@@ -120,7 +120,7 @@ class UserModel {
     return {
       'username': username,
       'password': password,
-      'displayName': displayName,
+      'displayName': "${firstName?.trim()} ${lastName?.trim()}",
       'firstName': firstName,
       'lastName': lastName,
       'phoneNumber': phoneNumber,

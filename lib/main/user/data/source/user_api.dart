@@ -1,3 +1,4 @@
+import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/result.dart';
 import 'package:auto_find/core/services/api_endpoint.dart';
 import 'package:auto_find/core/services/api_client.dart';
@@ -33,11 +34,19 @@ class UserApi {
   }
 
   /// Đăng ký user mới
-  Future<Result> registerUser(UserModel user) {
-    return _client.post(
+  Future<Result> registerUser(UserModel user) async {
+    final result = await _client.post(
       ApiEndpoint.users,
       data: user.toCreate(),
     );
+    if (result.status == Results.error) {
+      return Result(
+        status: Results.error,
+        data: null,
+        message: result.message,
+      );
+    }
+    return result;
   }
 
   Future<Result> updateUser(UserModel user) {

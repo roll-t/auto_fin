@@ -28,7 +28,6 @@ class _BodyBuilder extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final UserModel? user = controller.user.value;
-
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(

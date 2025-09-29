@@ -1,3 +1,4 @@
+import 'package:auto_find/core/config/const/app_logger.dart';
 import 'package:auto_find/core/local_storage/app_get_storage.dart';
 import 'package:auto_find/main/user/data/model/auth_response.dart';
 import 'package:auto_find/main/user/data/model/user_model.dart';
@@ -33,17 +34,31 @@ class UserUseCase {
     }
   }
 
-  Future<UserModel> register(
-    String displayName,
-    String email,
-    String password, {
-    String? photoURL,
-  }) {
-    final user = UserModel.create(
-      username: email,
+  /// ✅ Đăng ký user mới
+  Future<UserModel?> register({
+    required String username,
+    required String password,
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    String role = "user",
+  }) async {
+    final user = UserModel(
+      username: username,
       password: password,
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phoneNumber,
+      role: role,
     );
-    return _repository.register(user);
+
+    try {
+      final UserModel ? result = await _repository.register(user);
+      return result;
+    } catch (e) {
+      AppLogger.i(e);
+      return null;
+    }
   }
 
   Future<UserModel> updateUser(UserModel user) => _repository.updateUser(user);

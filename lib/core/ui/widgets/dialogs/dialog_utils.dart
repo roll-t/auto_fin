@@ -91,7 +91,7 @@ class DialogUtils {
     String? content,
     VoidCallback? onConfirm,
     String confirmText = 'Đồng ý',
-    bool  barrierDismissible = true,
+    bool barrierDismissible = true,
   }) {
     final config = _getAlertConfig(alertType);
 
@@ -146,7 +146,7 @@ class DialogUtils {
           ),
         ),
       ),
-      barrierDismissible:barrierDismissible, 
+      barrierDismissible: barrierDismissible,
     );
   }
 
@@ -158,10 +158,12 @@ class DialogUtils {
     VoidCallback? onCancel,
     String confirmText = 'Đồng ý',
     String cancelText = 'Hủy',
+    bool barrierDismissible = true,
   }) {
     final config = _getAlertConfig(alertType);
 
     Get.dialog(
+      barrierDismissible: barrierDismissible,
       Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

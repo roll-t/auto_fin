@@ -45,12 +45,20 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserModel> register(UserModel user) async {
+  Future<UserModel?> register(UserModel user) async {
     final result = await _api.registerUser(user);
+    if (!result.isSuccess) {
+      DialogUtils.showAlert(
+        alertType: AlertType.error,
+        title: "Lỗi đăng ký",
+        content: result.message,
+      );
+      return null;
+    }
     if (result.isSuccess) {
       return UserModel.fromJson(result.data);
     }
-    throw result.status;
+    return null;
   }
 
   @override

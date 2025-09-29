@@ -14,7 +14,7 @@ class ProfileController extends GetxController {
 
   void onLogOut() {
     AppGetStorage.clearAuth();
-    user.value = null; // reset user data
+    user.value = null;
     Get.offAllNamed(const LoginPage().routeName);
   }
 }

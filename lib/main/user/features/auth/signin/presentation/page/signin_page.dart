@@ -72,7 +72,7 @@ class _BodyBuilder extends GetView<SigninController> {
             const SizedBox(height: 16),
             CustomTextField(
               hintText: "Nhập lại mật khẩu",
-              controller: controller.passwordController,
+              controller: controller.confirmPasswordController,
               scrollPadding: const EdgeInsets.only(bottom: 120),
             ),
             const SizedBox(height: 16),

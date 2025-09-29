@@ -14,9 +14,7 @@ import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/utils/custom_state.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/controller/car_manage_controller.dart';
-import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_in_showroom_item_widget.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_item_widget.dart';
-import 'package:auto_find/main/showroom/features/car_manage/presentation/widget/car_sold_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -172,47 +170,8 @@ class _ListCarWidget extends GetView<CarManageController> {
         if (controller.isLoading.value && controller.cars.isEmpty) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (controller.headerTabSelectedIndex.value == 1) {
-          return Padding(
-            padding: AppPadding.h16,
-            child: RefreshIndicator(
-              onRefresh: controller.refreshCars,
-              child: LoadMoreListViewWidget<CarModel>(
-                items: controller.cars,
-                isLoading: controller.isLoading.value,
-                isLoadMore: controller.isLoadMore.value,
-                scrollController: controller.scrollController,
-                itemBuilder: (car) => CarInShowroomItemWidget(
-                  carModel: car,
-                  onTap: () {
-                    controller.onToDetailCar(car);
-                  },
-                ),
-              ),
-            ),
-          );
-        }
 
-        if (controller.headerTabSelectedIndex.value == 2) {
-          return Padding(
-            padding: AppPadding.h16,
-            child: RefreshIndicator(
-              onRefresh: controller.refreshCars,
-              child: LoadMoreListViewWidget<CarModel>(
-                items: controller.cars,
-                isLoading: controller.isLoading.value,
-                isLoadMore: controller.isLoadMore.value,
-                scrollController: controller.scrollController,
-                itemBuilder: (car) => CarSoldItemWidget(
-                  carModel: car,
-                  onTap: () {
-                    controller.onToDetailCar(car);
-                  },
-                ),
-              ),
-            ),
-          );
-        }
+        // Dùng chung 1 widget, không cần lặp lại
         return Padding(
           padding: AppPadding.h16,
           child: RefreshIndicator(
@@ -223,10 +182,11 @@ class _ListCarWidget extends GetView<CarManageController> {
               isLoadMore: controller.isLoadMore.value,
               scrollController: controller.scrollController,
               itemBuilder: (car) => CarItemWidget(
-                car: car,
-                onTap: () {
-                  controller.onToDetailCar(car);
+                onDeleteItem: () {
+                  controller.onDeleteCar(car.id);
                 },
+                car: car,
+                onTap: () => controller.onToDetailCar(car),
               ),
             ),
           ),

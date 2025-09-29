@@ -88,9 +88,13 @@ class ApiClient extends GetxService {
 
     try {
       final response = await _dio.post(path, data: data);
+      print("Chạy vào đây");
       return _handleResponse(response);
     } on DioException catch (e) {
-      return Result(status: Results.error, message: _handleError(e));
+      return Result(
+        status: Results.error,
+        message: _handleError(e),
+      );
     }
   }
 
@@ -162,6 +166,8 @@ class ApiClient extends GetxService {
   String _handleError(DioException e) {
     if (e.type == DioExceptionType.connectionTimeout) {
       return 'Kết nối server quá thời gian cho phép';
+    } else if (e.message != null) {
+      return e.message.toString();
     } else if (e.type == DioExceptionType.receiveTimeout) {
       return 'Server phản hồi quá chậm';
     } else if (e.type == DioExceptionType.badResponse) {

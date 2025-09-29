@@ -142,8 +142,10 @@ class CarDetailController extends GetxController
       profitController.text = (car?.profit ?? 0).toString().toCurrency();
 
       importDateController.text = (car?.importDate).toString().toVNDate();
-      importPriceController.text = (car?.importPrice ?? 0).toString().toCurrency();
-      importCostController.text = (car?.importCost ?? 0).toString().toCurrency();
+      importPriceController.text =
+          (car?.importPrice ?? 0).toString().toCurrency();
+      importCostController.text =
+          (car?.importCost ?? 0).toString().toCurrency();
 
       soldDateController.text = (car?.soldDate ?? "").toString().toVNDate();
       soldPriceController.text = (car?.soldPrice ?? 0).toString().toCurrency();
@@ -284,7 +286,7 @@ class CarDetailController extends GetxController
         product: selectedModel.value.title, // Mẫu xe
         status: selectedStatus.value.title, // Trạng thái
         price: priceController.text.toCurrencyNum().toDouble(), // Giá nêm yết
-        des: currentCar.des,
+        des: desController.text,
 
         // --- Thông tin giao dịch ---
         importDate: importDateController.text.toIsoUtcDateTime(),
@@ -294,7 +296,7 @@ class CarDetailController extends GetxController
         soldDate: soldDateController.text.toIsoUtcDateTime(),
         soldPrice: soldPriceController.text.toCurrencyNum().toDouble(),
         soldCost: soldCostController.text.toCurrencyNum().toDouble(),
-        soldDes: currentCar.soldDes,
+        soldDes: soldDesController.text,
       );
 
       await _carUsecase.updateCar(updatedCar);
