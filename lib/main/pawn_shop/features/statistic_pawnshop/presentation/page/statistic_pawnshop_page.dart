@@ -51,7 +51,7 @@ class _BodyBuilder extends StatelessWidget {
           _BuildBodyPieChart(),
 
           ///---> [RENDER BẢN THỐNG KÊ]
-          _BuildTableStatistic()
+          _BuildTableStatistic(),
         ],
       ),
     );
@@ -156,41 +156,47 @@ class _BuildBodyPieChart extends GetView<StatisticPawnshopController> {
   }
 }
 
-class _BuildListStatistic extends StatelessWidget {
+class _BuildListStatistic extends GetView<StatisticPawnshopController> {
   const _BuildListStatistic();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: 8.0,
-      children: [
-        Row(
-          spacing: 8.0,
-          children: [
-            _BuildItemStatistic(
-              title: "TỔNG QUỸ TIỀN MẶT",
-              value: "900000000000".toCurrency(withSymbol: true),
-            ),
-            const _BuildItemStatistic(
-              title: "Số hợp đồng đang vay",
-              value: "53",
-            ),
-          ],
-        ),
-        Row(
-          spacing: 8.0,
-          children: [
-            _BuildItemStatistic(
-              title: "Tiền đang cho vay",
-              value: "79000000000".toCurrency(withSymbol: true),
-            ),
-            _BuildItemStatistic(
-              title: "Lãi đã thu trong tháng",
-              value: "62002000".toCurrency(withSymbol: true),
-            ),
-          ],
-        )
-      ],
+    return WrapBodyWidget(
+      child: Column(
+        spacing: 8.0,
+        children: [
+          Row(
+            spacing: 8.0,
+            children: [
+              _BuildItemStatistic(
+                title: "TỔNG QUỸ TIỀN MẶT",
+                value: "900000000000".toCurrency(withSymbol: true),
+                colorTitle: AppColors.blue,
+              ),
+              const _BuildItemStatistic(
+                title: "Số hợp đồng đang vay",
+                value: "53",
+                colorTitle: AppColors.text600,
+              ),
+            ],
+          ),
+          Row(
+            spacing: 8.0,
+            children: [
+              _BuildItemStatistic(
+                title: "Tiền đang cho vay",
+                value: "79000000000".toCurrency(withSymbol: true),
+                colorTitle: AppColors.red,
+              ),
+              _BuildItemStatistic(
+                title: "Lãi đã thu trong tháng",
+                value: "62002000".toCurrency(withSymbol: true),
+                colorTitle: AppColors.green,
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -198,9 +204,11 @@ class _BuildListStatistic extends StatelessWidget {
 class _BuildItemStatistic extends StatelessWidget {
   final String? value;
   final String? title;
+  final Color? colorTitle;
   const _BuildItemStatistic({
     this.value,
     this.title,
+    this.colorTitle,
   });
 
   @override
@@ -210,7 +218,7 @@ class _BuildItemStatistic extends StatelessWidget {
       child: Container(
         padding: AppPadding.all8,
         decoration: BoxDecoration(
-          color: AppThemeColors.background100,
+          color: AppThemeColors.primary.withValues(alpha: .04),
           borderRadius: BorderRadius.circular(6),
         ),
         child: Column(
@@ -222,13 +230,13 @@ class _BuildItemStatistic extends StatelessWidget {
               maxLines: 1,
               textAlign: TextAlign.start,
               text: value.orNA(),
-              textStyle: AppTextStyle.medium14,
-              color: AppColors.blue,
+              textStyle: AppTextStyle.semiBold14,
+              color: colorTitle ?? AppColors.blue,
             ),
             TextWidget(
               maxLines: 1,
               text: title.orNA(),
-              textStyle: AppTextStyle.regular14,
+              textStyle: AppTextStyle.medium12,
               transform: TextTransformType.capitalizeWords,
             ),
           ],
