@@ -8,7 +8,7 @@ import 'package:auto_find/core/utils/controller/keyboard_controller.dart';
 import 'package:auto_find/core/utils/keyboard_utils.dart';
 import 'package:auto_find/main/showroom/data/model/car_model.dart';
 import 'package:auto_find/main/showroom/data/usecase/car_usecase.dart';
-import 'package:auto_find/main/showroom/shared/controller/dropdown_data_car_feature_controller.dart';
+import 'package:auto_find/main/showroom/controller/dropdown_data_car_feature_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

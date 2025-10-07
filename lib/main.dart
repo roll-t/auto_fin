@@ -6,4 +6,4 @@ import 'package:flutter/material.dart';
 Future<void> main() async {
   await configs();
   runApp(const App());
-}
+} 

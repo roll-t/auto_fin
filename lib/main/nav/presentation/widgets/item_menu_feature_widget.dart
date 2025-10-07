@@ -24,7 +24,7 @@ class ItemMenuFeatureWidget extends StatelessWidget {
         Get.toNamed(routeNameUrl ?? "/");
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 6).copyWith(bottom: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,5 +1,7 @@
 import 'package:auto_find/core/config/const/app_icons.dart';
 import 'package:auto_find/main/nav/model/item_menu_feature_model.dart';
+import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/page/capital_manage_page.dart';
+import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/presentation/page/statistic_pawnshop_page.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/page/add_car_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_manage_page.dart';
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/page/profit_manage_page.dart';
@@ -77,15 +79,33 @@ class ManageController extends GetxController {
 
   final List<ItemMenuFeatureModel> listCreditFeature = [
     ItemMenuFeatureModel(
-      title: "20\n Khoản vay",
+      title: "Thống kê chung",
+      routeNameUrl: const StatisticPawnshopPagePage().routeName,
       iconUrl: AppIcons.ic20Loan,
     ),
     ItemMenuFeatureModel(
-      title: "Gốc - Lãi\nHàng tháng",
+      title: "Quản lý nguồn vốn",
+      routeNameUrl: const CapitalManagePage().routeName,
       iconUrl: AppIcons.icMonthlyPrincipalInterest,
     ),
     ItemMenuFeatureModel(
-      title: "Báo cáo tổng nợ",
+      title: "Quản lý thu chi",
+      iconUrl: AppIcons.icReportDebt,
+    ),
+    ItemMenuFeatureModel(
+      title: "Quản lý cửa hàng",
+      iconUrl: AppIcons.icReportDebt,
+    ),
+    ItemMenuFeatureModel(
+      title: "Quản lý khách hàng",
+      iconUrl: AppIcons.icReportDebt,
+    ),
+    ItemMenuFeatureModel(
+      title: "Cầm đồ",
+      iconUrl: AppIcons.icReportDebt,
+    ),
+    ItemMenuFeatureModel(
+      title: "Tín chấp",
       iconUrl: AppIcons.icReportDebt,
     ),
   ];

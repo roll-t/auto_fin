@@ -2,6 +2,9 @@ import 'package:auto_find/core/ui/widgets/notFound/not_found_page.dart';
 import 'package:auto_find/core/utils/binding/internet_binding.dart';
 import 'package:auto_find/main/nav/di/navigation_binding.dart';
 import 'package:auto_find/main/nav/presentation/page/navigation_page.dart';
+import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/page/capital_manage_page.dart';
+import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/di/statistic_pawnshop_binding.dart';
+import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/presentation/page/statistic_pawnshop_page.dart';
 import 'package:auto_find/main/showroom/features/add_car/di/add_car_binding.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/page/add_car_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/di/all_car_binding.dart';
@@ -12,7 +15,7 @@ import 'package:auto_find/main/showroom/features/profit_manage/di/profit_manage_
 import 'package:auto_find/main/showroom/features/profit_manage/presentation/page/profit_manage_page.dart';
 import 'package:auto_find/main/showroom/features/statistic/di/statistic_vehicle_binding.dart';
 import 'package:auto_find/main/showroom/features/statistic/presentation/page/statistic_vehicle_page.dart';
-import 'package:auto_find/main/showroom/shared/di/showroom_binding.dart';
+import 'package:auto_find/main/showroom/di/showroom_binding.dart';
 import 'package:auto_find/main/splash/di/splash_binding.dart';
 import 'package:auto_find/main/splash/presentation/page/splash_page.dart';
 import 'package:auto_find/main/user/features/auth/login/di/login_binding.dart';
@@ -90,5 +93,14 @@ final appPage = [
       StatisticVehicleBinding(),
       ShowroomBinding(),
     ],
+  ),
+  GetPage(
+    name: const CapitalManagePage().routeName,
+    page: () => const CapitalManagePage(),
+  ),
+  GetPage(
+    name: const StatisticPawnshopPagePage().routeName,
+    page: () => const StatisticPawnshopPagePage(),
+    binding: StatisticPawnshopBinding(),
   ),
 ];

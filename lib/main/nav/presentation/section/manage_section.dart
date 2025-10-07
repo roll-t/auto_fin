@@ -34,13 +34,13 @@ class _BodyBuilder extends GetView<ManageController> {
             ),
             const SizedBox(height: 20),
             _buildFeatureSection(
-              title: "Công ty vàng bạc",
-              items: controller.listDiamondFeature,
+              title: "Cửa hàng cầm đồ",
+              items: controller.listCreditFeature,
             ),
             const SizedBox(height: 20),
             _buildFeatureSection(
-              title: "Tín dụng",
-              items: controller.listCreditFeature,
+              title: "Công ty vàng bạc",
+              items: controller.listDiamondFeature,
             ),
             const SizedBox(height: 40),
           ],
