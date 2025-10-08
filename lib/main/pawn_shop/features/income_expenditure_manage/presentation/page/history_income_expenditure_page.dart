@@ -1,57 +1,52 @@
 import 'package:auto_find/core/config/const/app_enum.dart';
 import 'package:auto_find/core/config/const/app_padding.dart';
-import 'package:auto_find/core/config/const/app_vectors.dart';
+import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widget.dart';
-import 'package:auto_find/core/ui/widgets/circle_icon_button_widget.dart';
 import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:auto_find/core/ui/widgets/inputs/search_widget.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_span_currency.dart';
+import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_state.dart';
-import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/controller/capital_manage_controller.dart';
-import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/page/add_capital_contract_page.dart';
 import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/widgets/contract_item_widget.dart';
+import 'package:auto_find/main/pawn_shop/features/income_expenditure_manage/presentation/controller/history_income_expenditure_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class CapitalManagePage extends CustomState {
-  const CapitalManagePage({super.key});
+class HistoryIncomeExpenditurePage extends CustomState {
+  const HistoryIncomeExpenditurePage({super.key});
+
   @override
-  String? get title => "Hợp đồng góp vốn cửa hàng";
+  Widget? get appBar => const _BuildAppBar();
 
   @override
   bool get backgroundImage => true;
 
   @override
-  Widget? get actionAppBar => const _BuildActionAppBar();
-
-  @override
-  bool get dismissKeyboard => true;
-
-  @override
   Widget buildBody(BuildContext context) => const _BodyBuilder();
 }
 
-///=============================== [LAYOUT COMPONENTS] ====================================
-///---> [RENDER APPBAR]
-class _BuildActionAppBar extends StatelessWidget {
-  const _BuildActionAppBar();
+class _BuildAppBar extends StatelessWidget {
+  const _BuildAppBar();
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: CircleIconButton(
-        isActive: true,
-        svgUrl: AppVectors.icAdd,
-        onTap: () {
-          Get.toNamed(const AddCapitalContractPage().routeName);
-        },
-      ),
+    return GetBuilder<HistoryIncomeExpenditureController>(
+      id: "TITLE_PAGE_ID",
+      builder: (controller) {
+        return TextWidget(
+          maxLines: 2,
+          text: controller.titlePage.value,
+          textStyle: AppTextStyle.medium20,
+          color: AppColors.white,
+        );
+      },
     );
   }
 }
 
+///=============================== [LAYOUT COMPONENTS] ====================================
 ///---> [RENDER MAIN BODY]
 class _BodyBuilder extends StatelessWidget {
   const _BodyBuilder();
@@ -63,23 +58,23 @@ class _BodyBuilder extends StatelessWidget {
       child: Column(
         spacing: 16.0,
         children: [
-          ///---> [RENDER FILTER CAPITALS]
-          _BuildFilterCapital(),
+          ///---> [RENDER FILTER LỊCH SỬ THU CHI]
+          _BuildFilter(),
 
-          ///---> [RENDER CONTRACT LIST]
-          _BuildContractList(),
+          ///---> [RENDER LIST LỊCH SỬ THU CHI]
+          _BuildList(),
         ],
       ),
     );
   }
 }
 
-class _BuildFilterCapital extends StatelessWidget {
-  const _BuildFilterCapital();
+class _BuildFilter extends StatelessWidget {
+  const _BuildFilter();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CapitalManageController>(
+    return GetBuilder<HistoryIncomeExpenditureController>(
       builder: (controller) {
         return WrapBodyWidget(
           header: Column(
@@ -136,11 +131,6 @@ class _BuildFilterCapital extends StatelessWidget {
                 textColor: AppColors.blue,
                 isCurrency: true,
               ),
-              TextSpanCurrency(
-                label: "Tổng lãi đã trả",
-                value: "670000000",
-                isCurrency: true,
-              ),
             ],
           ),
         );
@@ -149,9 +139,9 @@ class _BuildFilterCapital extends StatelessWidget {
   }
 }
 
-///---> [LIST HỢP ĐỒNG]
-class _BuildContractList extends StatelessWidget {
-  const _BuildContractList();
+///---> [LIST LỊCH SỬ THU CHI]
+class _BuildList extends StatelessWidget {
+  const _BuildList();
 
   @override
   Widget build(BuildContext context) {

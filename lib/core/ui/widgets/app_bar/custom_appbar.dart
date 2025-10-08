@@ -40,7 +40,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       title: titleWidget ??
           TextWidget(
-            text: title?.tr ?? "",
+            maxLines: 2,
+            text: title ?? "",
             textStyle: AppTextStyle.medium20,
             color: AppColors.white,
           ),

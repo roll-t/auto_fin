@@ -9,8 +9,8 @@ import 'package:auto_find/core/ui/widgets/bottom_sheet/custom_bottom_sheet_widge
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
 import 'package:auto_find/core/utils/custom_state.dart';
-import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/data/model/pie_chart_data_model.dart';
-import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/data/model/row_table_data_model.dart';
+import 'package:auto_find/main/pawn_shop/data/model/pie_chart_data_model.dart';
+import 'package:auto_find/main/pawn_shop/data/model/row_table_data_model.dart';
 import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/presentation/controller/statistic_pawnshop_controller.dart';
 import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/presentation/widget/info_table_widget.dart';
 import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/presentation/widget/pie_chart_widget.dart';

@@ -2,7 +2,7 @@ import 'package:auto_find/core/config/const/app_text_styles.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/ui/widgets/texts/text_widget.dart';
 import 'package:auto_find/core/ui/widgets/wrap_body_widget.dart';
-import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/data/model/row_table_data_model.dart';
+import 'package:auto_find/main/pawn_shop/data/model/row_table_data_model.dart';
 import 'package:flutter/material.dart';
 
 class InfoTable extends StatelessWidget {

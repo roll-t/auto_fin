@@ -135,6 +135,7 @@ class CustomTextField extends StatelessWidget {
         break;
       case CustomTextFieldType.datePicker:
         inputChild = DateTimePickerTextField(
+          hint: hintText,
           controller: controller ?? TextEditingController(),
           firstDate: firstDate ?? DateTime(2000),
           lastDate: lastDate ?? DateTime.now(),

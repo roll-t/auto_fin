@@ -36,6 +36,8 @@ class AppVectors {
   static String icBookcase = "${_root}ic_bookcase$_ext";
   static String icBook = "${_root}ic_book$_ext";
   static String icCurrency = "${_root}ic_currency$_ext";
+  static String icAdd = "${_root}ic_add$_ext";
+  static String icHistory = "${_root}ic_history$_ext";
 
 
 }

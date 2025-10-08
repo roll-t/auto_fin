@@ -5,7 +5,7 @@ import 'package:auto_find/core/config/const/app_vectors.dart';
 import 'package:auto_find/core/config/theme/app_colors.dart';
 import 'package:auto_find/core/config/theme/app_theme_colors.dart';
 import 'package:auto_find/core/ui/widgets/buttons/primary_button.dart';
-import 'package:auto_find/core/ui/widgets/circle_icon_button%20_widget.dart';
+import 'package:auto_find/core/ui/widgets/circle_icon_button_widget.dart';
 import 'package:auto_find/core/ui/widgets/dialogs/dialog_utils.dart';
 import 'package:auto_find/core/ui/widgets/inputs/custom_text_field.dart';
 import 'package:auto_find/core/ui/widgets/keyboard/currency_quick_number_item.dart';

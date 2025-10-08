@@ -1,6 +1,7 @@
 import 'package:auto_find/core/config/const/app_icons.dart';
 import 'package:auto_find/main/nav/model/item_menu_feature_model.dart';
 import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/page/capital_manage_page.dart';
+import 'package:auto_find/main/pawn_shop/features/income_expenditure_manage/presentation/page/add_income_expenditure_page.dart';
 import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/presentation/page/statistic_pawnshop_page.dart';
 import 'package:auto_find/main/showroom/features/add_car/presentation/page/add_car_page.dart';
 import 'package:auto_find/main/showroom/features/car_manage/presentation/page/car_manage_page.dart';
@@ -90,6 +91,7 @@ class ManageController extends GetxController {
     ),
     ItemMenuFeatureModel(
       title: "Quản lý thu chi",
+      routeNameUrl: const AddIncomeExpenditurePage().routeName,
       iconUrl: AppIcons.icReportDebt,
     ),
     ItemMenuFeatureModel(

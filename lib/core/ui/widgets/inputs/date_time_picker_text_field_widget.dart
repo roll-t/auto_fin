@@ -13,6 +13,7 @@ class DateTimePickerTextField extends StatefulWidget {
   final Function(DateTime)? onDateSelected;
   final bool enabled;
   final Color? backgroundColor;
+  final String ? hint;
 
   const DateTimePickerTextField({
     super.key,
@@ -21,6 +22,7 @@ class DateTimePickerTextField extends StatefulWidget {
     this.initialDate,
     this.firstDate,
     this.lastDate,
+    this.hint,
     this.onDateSelected,
     this.enabled = true,
     this.backgroundColor,
@@ -76,7 +78,7 @@ class _DateTimePickerTextFieldState extends State<DateTimePickerTextField> {
       child: AbsorbPointer(
         child: CustomTextField(
           controller: widget.controller,
-          hintText: 'Chọn ngày',
+          hintText: widget.hint ??'Chọn ngày',
           suffixIcon: Icon(
             Icons.calendar_today,
             size: 15,

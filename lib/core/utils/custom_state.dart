@@ -51,8 +51,13 @@ abstract class CustomState extends StatelessWidget {
   PreferredSizeWidget? _buildAppBar(BuildContext context) {
     if (appBar != null) {
       return AppBar(
-        leading:
-            leadingIconAppBar ?? Utils.iconSvg(svgUrl: AppVectors.icArrowBack),
+        leading: leadingIconAppBar ??
+            IconButton(
+              icon: Utils.iconSvg(svgUrl: AppVectors.icArrowBack),
+              onPressed: () {
+                Get.back();
+              },
+            ),
         backgroundColor: Colors.transparent,
         title: appBar,
       );
@@ -66,7 +71,7 @@ abstract class CustomState extends StatelessWidget {
     if (!backgroundImage) return const SizedBox.shrink();
     return Positioned(
       child: Container(
-        height: 220,
+        height: 200,
         decoration: BoxDecoration(
           color: AppThemeColors.appBar,
           borderRadius: const BorderRadius.only(
@@ -82,7 +87,8 @@ abstract class CustomState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final body = size.width > 800 ? buildTabletBody(context) : buildBody(context);
+    final body =
+        size.width > 800 ? buildTabletBody(context) : buildBody(context);
 
     return GestureDetector(
       onTap: dismissKeyboard ? KeyboardUtils.hiddenKeyboard : null,

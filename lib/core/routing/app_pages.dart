@@ -2,7 +2,14 @@ import 'package:auto_find/core/ui/widgets/notFound/not_found_page.dart';
 import 'package:auto_find/core/utils/binding/internet_binding.dart';
 import 'package:auto_find/main/nav/di/navigation_binding.dart';
 import 'package:auto_find/main/nav/presentation/page/navigation_page.dart';
+import 'package:auto_find/main/pawn_shop/features/capital_manage/di/add_capital_contract_binding.dart';
+import 'package:auto_find/main/pawn_shop/features/capital_manage/di/capital_manage_binding.dart';
+import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/page/add_capital_contract_page.dart';
 import 'package:auto_find/main/pawn_shop/features/capital_manage/presentation/page/capital_manage_page.dart';
+import 'package:auto_find/main/pawn_shop/features/income_expenditure_manage/di/add_income_expenditure_binding.dart';
+import 'package:auto_find/main/pawn_shop/features/income_expenditure_manage/di/history_income_expenditure_binding.dart';
+import 'package:auto_find/main/pawn_shop/features/income_expenditure_manage/presentation/page/add_income_expenditure_page.dart';
+import 'package:auto_find/main/pawn_shop/features/income_expenditure_manage/presentation/page/history_income_expenditure_page.dart';
 import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/di/statistic_pawnshop_binding.dart';
 import 'package:auto_find/main/pawn_shop/features/statistic_pawnshop/presentation/page/statistic_pawnshop_page.dart';
 import 'package:auto_find/main/showroom/features/add_car/di/add_car_binding.dart';
@@ -97,10 +104,26 @@ final appPage = [
   GetPage(
     name: const CapitalManagePage().routeName,
     page: () => const CapitalManagePage(),
+    binding: CapitalManageBinding(),
   ),
   GetPage(
     name: const StatisticPawnshopPagePage().routeName,
     page: () => const StatisticPawnshopPagePage(),
     binding: StatisticPawnshopBinding(),
+  ),
+  GetPage(
+    name: const AddCapitalContractPage().routeName,
+    page: () => const AddCapitalContractPage(),
+    binding: AddCapitalContractBinding(),
+  ),
+  GetPage(
+    name: const AddIncomeExpenditurePage().routeName,
+    page: () => const AddIncomeExpenditurePage(),
+    binding: AddIncomeExpenditureBinding(),
+  ),
+  GetPage(
+    name: const HistoryIncomeExpenditurePage().routeName,
+    page: () => const HistoryIncomeExpenditurePage(),
+    binding: HistoryIncomeExpenditureBinding(),
   ),
 ];
